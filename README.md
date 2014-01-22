@@ -9,12 +9,12 @@ You can feed it with any CSV XML or N3 data.
 Optimized for the quick import of Wordnet, DBPEDIA and Freebase (and 
 [private data](https://github.com/pannous/lang) )
 
-Thanks to shared memory and binary dumps you can load and process billions of nodes+statements(edges) and hundreds of gigabytes in no time:
+Thanks to shared memory and binary dumps you can load and process billions of nodes+statements(edges) and hundreds of gigabytes in no time.
 
 `me:~/netbase`
 
 	USING SHARED MEMORY
-	Context#0 name:ROOT CONTEXT nodes:430338, statements:355550 n#0x2e2000000 nN#0x1e8000000 s#0x3dc000000
+	Context#0 name:ROOT CONTEXT nodes:430338000, statements:355550000
 	Warnings: 0
 	Node limit: 1048576000
 	Statements: 1048576000
