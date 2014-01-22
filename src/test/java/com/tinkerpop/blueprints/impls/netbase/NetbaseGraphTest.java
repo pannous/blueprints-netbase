@@ -101,6 +101,13 @@ public class NetbaseGraphTest extends GraphTest {
         for (Method method : testSuite.getClass().getDeclaredMethods()) {
             if (method.getName().startsWith("test")) {
                 System.out.println("Testing " + method.getName() + "...");
+                Netbase.getThe("1").removeProperty("key1");
+                Netbase.getThe("1").removeProperty("key2");
+                Netbase.getThe("2").removeProperty("key2");
+                Netbase.getThe("a").delete();
+                Netbase.getThe("b").delete();
+                Netbase.getThe("c").delete();
+
                 method.invoke(testSuite);
                 deleteDirectory(new File(directory));
             }

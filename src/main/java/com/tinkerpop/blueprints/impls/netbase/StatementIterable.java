@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Pannous (http://Pannous.com)
  */
-public class StatementIterable<T extends Edge> implements CloseableIterable<Statement>, Iterator<Statement>,Iterable<Statement> {
+public class StatementIterable<T extends Edge> implements CloseableIterable<Statement>, Iterator<Statement>, Iterable<Statement> {
     private Direction direction;
     private Node node;
     private NetbaseGraph graph;
@@ -20,12 +20,14 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
     private Iterator<T> iterator;
     private StatementStruct current;
     private NodeStruct nodeS;
+    private List<T> vertices;
 
-    public StatementIterable(NetbaseGraph graph, NodeStruct node, Direction direction, String[] labels) {
+    public StatementIterable(NetbaseGraph graph, Node node, Direction direction, String[] labels) {
         this.graph = graph;
-        this.nodeS=node;
+        this.nodeS = node.getStruct();
+        Netbase.showNode(node.id);
 //        this.node=node;
-        this.direction=direction;
+        this.direction = direction;
         this.labels = labels;
 //        if(labels.length>0){
 //              iterator() = =
@@ -38,6 +40,7 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
     }
 
     public StatementIterable(List<T> vertices) {
+        this.vertices = vertices;
         iterator = vertices.iterator();
     }
 
@@ -48,33 +51,42 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
 
     @Override
     public Iterator<Statement> iterator() {
-        if(iterator!=null)return (Iterator<Statement>) iterator;
+        current = null;
+        if (vertices != null) iterator = vertices.iterator();
+        if (iterator != null) return (Iterator<Statement>) iterator;
         return this;
     }
 
     @Override
     public boolean hasNext() {
-        if(iterator!=null) return iterator.hasNext();
+        if (iterator != null) return iterator.hasNext();
         StatementStruct next = findNext();
         return next != null;
     }
 
     private StatementStruct findNext() {
         StatementStruct next = Netbase.nextStatement(nodeS, current);
-        if(labels.length==0)return next;
-        int c=0;
-        while (next!=null && c++ <333333){
-        for (int i = 0; i < labels.length; i++) {
-            String label = labels[i];
-            if(Netbase.getName(next.predicate).equals(label)) return next;
-        }next = Netbase.nextStatement(nodeS, next);
+        int c = 0;
+        while (next != null && c++ < 333333) {
+            boolean labelOK = labels == null || labels.length == 0;
+            for (int i = 0; i < labels.length; i++) {
+                String label = labels[i];
+                if (Netbase.getName(next.predicate).equals(label))
+                    labelOK = true;
+            }
+            if (labelOK) {
+                if (direction == Direction.BOTH || direction == null) return next;
+                if (direction == Direction.OUT && node!=null && next.subject == node.id) return next;
+                if (direction == Direction.IN && node!=null && next.object == node.id) return next;
+            }
+            next = Netbase.nextStatement(nodeS, next);
         }
         return next;
     }
 
     @Override
     public Statement next() {
-        if(iterator!=null) return (Statement) iterator.next();
+        if (iterator != null) return (Statement) iterator.next();
         current = findNext();
         return new Statement(current);
     }

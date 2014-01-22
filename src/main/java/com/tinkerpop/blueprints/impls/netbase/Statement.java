@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static com.tinkerpop.blueprints.impls.netbase.Netbase.addStatement4;
 import static com.tinkerpop.blueprints.impls.netbase.Netbase.get;
 import static com.tinkerpop.blueprints.impls.netbase.Netbase.getName;
 
@@ -24,7 +25,7 @@ public class Statement implements Edge { // extends Structure
 
     private Node reification;
     private int subject;
-    private int predicate;
+    int predicate;
     private int object;
 
     private Node _subject;
@@ -70,12 +71,14 @@ public class Statement implements Edge { // extends Structure
             _predicate = new Node(predicate);
             _object = new Node(object);
         }
+//        addStatement4(0, this.subject, this.predicate, this.object,false); UNLESS LOADED!
     }
 
     public Statement(StatementStruct statementStruct) {
         subject = statementStruct.subject;
         predicate = statementStruct.predicate;
         object = statementStruct.object;
+        id = Netbase.getStatementId(statementStruct);// double, expensive
     }
 
     @Override
@@ -92,7 +95,7 @@ public class Statement implements Edge { // extends Structure
         return getName(predicate);
     }
 
-    private Node Subject() {
+    protected Node Subject() {
         if (_subject == null) _subject = new Node(subject);
         return _subject;
     }
@@ -110,6 +113,7 @@ public class Statement implements Edge { // extends Structure
 
     @Override
     public boolean equals(final Object o) {
+        if(this.getId()==null) return false;
         if (o == this) return true;
         if (o instanceof StatementStruct) {
             StatementStruct s = (StatementStruct) o;
@@ -118,7 +122,7 @@ public class Statement implements Edge { // extends Structure
         }
         if (o instanceof Statement) {
             Statement s = (Statement) o;
-            if (s.getId().equals(id))
+            if (id.equals(s.getId()))
                 return true;
             if ((s.subject == subject && s.predicate == predicate && s.object == object))
                 return true;
@@ -134,7 +138,8 @@ public class Statement implements Edge { // extends Structure
     }
 
     public String toString() {
-        return getLabel();// StringFactory.edgeString(this);
+        return ""+id+"\t"+ subject + "->" + predicate + "->" + object+" ";
+//        return getLabel();// StringFactory.edgeString(this);
     }
 
     public Node getReification() {
@@ -168,12 +173,14 @@ public class Statement implements Edge { // extends Structure
 
     @Override
     public void remove() {
-
+        Netbase.deleteStatement((int)id);
     }
 
     @Override
     public Object getId() {
+        if(id!=null)
         return id;
+        else throw new RuntimeException("ID NULL");
     }
 
     public Statement setId(Object id) {// Maybe do something with it !!?!

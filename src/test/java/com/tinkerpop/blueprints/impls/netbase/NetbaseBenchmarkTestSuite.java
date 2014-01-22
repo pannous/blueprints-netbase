@@ -27,15 +27,15 @@ public class NetbaseBenchmarkTestSuite extends com.tinkerpop.blueprints.TestSuit
             while (iterator.hasNext()) {
                 Node node = (Node) iterator.next();
                 counter++;
-                for (final Statement relationship : node.getStatements(Direction.OUTGOING)) {
+                for (final Statement relationship : node.getStatements()) {
                     counter++;
                     final Node node2 = relationship.Object();
                     counter++;
-                    for (final Statement relationship2 : node2.getStatements(Direction.OUTGOING)) {
+                    for (final Statement relationship2 : node2.getStatements()) {
                         counter++;
                         final Node node3 = relationship2.Object();
                         counter++;
-                        for (final Statement relationship3 : node3.getStatements(Direction.OUTGOING)) {
+                        for (final Statement relationship3 : node3.getStatements()) {
                             counter++;
                             relationship3.Object();
                             counter++;

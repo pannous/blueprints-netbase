@@ -41,6 +41,9 @@ public class Netbase {
 
     public static native boolean hasNode(String s);
     public static native NodeStruct getNode(int id);
+//    public static Node getNode(int i) {
+//        return new Node(Netbase.getNode(i));
+//    }
     public static native void showNode(int id);
     public static native StatementStruct nextStatement(NodeStruct n, StatementStruct current);//,bool stopAtInstances=false);
     public static native NodeStruct has(NodeStruct n, NodeStruct m);
@@ -49,11 +52,16 @@ public class Netbase {
     public static native StatementStruct findStatement(NodeStruct subject, NodeStruct predicate, NodeStruct object, int recurse, boolean semantic, boolean symmetric, boolean semanticPredicate, boolean matchName);
 //    public static native int has(int n, int m);
 
+    public static native void deleteNode(int id);
+    public static native void deleteStatement(int id);
+
 
     public static Node getThe(String name) {
         return new Node(getAbstract(name));
     }
 
+    public static native StatementStruct getStatement(int id) ;
+    public static native int getStatementId(StatementStruct struct);/// ugly long pointer
 
 //    public static native int addNode(String hi);
 

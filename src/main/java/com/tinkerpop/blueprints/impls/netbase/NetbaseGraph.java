@@ -16,15 +16,13 @@ import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
  */
 public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph implements TransactionalGraph, IndexableGraph, KeyIndexableGraph {//, MetaGraph<GraphDatabaseService>
     private static final Logger logger = Logger.getLogger(NetbaseGraph.class.getName());
-    private ArrayList<Node> nodes =new ArrayList<>();
-    private List<Statement> edges=new ArrayList<>();
+    private ArrayList<Node> nodes = new ArrayList<>();
+    private List<Statement> edges = new ArrayList<>();
 
 //    private static final Relation ANY =(Relation) getNode(1);
 
-    private static Node getNode(int i) {
-        Pointer pointer = Pointer.NULL;
-// = Netbase.get(i);
-        return new Node(pointer);
+    protected static Node getNode(int i) {
+        return new Node(Netbase.getNode(i));
     }
 
     private static NetbaseGraph me;
@@ -77,9 +75,11 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Vertex addVertex(Object id) {
-//        Netbase.addNode()
-//        addNode(id);
-        Node node = new Node(this, id);
+        Node node;
+        if (id!=null&& hasNode("" + id))
+            node = getNode("" + id);
+        else
+            node = new Node(this, id);
         nodes.add(node);
         return node;
     }
@@ -88,13 +88,9 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     public Vertex getVertex(Object id) {
         if (id == null) throw new IllegalArgumentException("getVertex id Must not be null");
         if (id instanceof Integer) {
-//            int id1 = (int) id;
-//            Pointer pointer = Netbase.get(id1);
             return new Node((int) id);
-        } else try {
-            return new Node(Netbase.get(Integer.parseInt("" + id)));
-        } catch (Exception e) {
-            if(!Netbase.hasNode(id.toString())) return null;
+        } else {
+            if (!Netbase.hasNode(id.toString())) return null;
             return new Node(Netbase.getAbstract("" + id));
         }
     }
@@ -109,13 +105,15 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Iterable<Vertex> getVertices(String key, Object value) {
-        return new NodeIterable(key,value);
+        return getThe(key).getVertices(Direction.BOTH, "" + value);//?
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
-        Node predicate= getNode(label);
-        Netbase.addStatement4(0,(int) outVertex.getId(), predicate.id, (int)inVertex.getId(), false);
-        Statement statement = new Statement(outVertex, predicate, inVertex).setId(id);
+        Node predicate = getNode(label);
+        StatementStruct s= Netbase.addStatement4(0, (int) outVertex.getId(), predicate.id, (int) inVertex.getId(), false);
+        if(s==null) throw new RuntimeException("addStatement4 Unsuccessful!");
+        Statement statement = new Statement(s);
+        if(id!=null)statement.setId(id);// Only on the jave side
         edges.add(statement);
         return statement;
     }
@@ -125,11 +123,11 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Edge getEdge(Object id) {
-        return null;
+        return new Statement(Netbase.getStatement((int) id));
     }
 
     public void removeEdge(Edge edge) {
-
+        Netbase.deleteStatement((int)edge.getId());
     }
 
     public Iterable<Edge> getEdges() {
@@ -139,7 +137,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     public Iterable getEdges(String key, Object value) {
 //        ArrayList <Statement> relations=new ArrayList<>();
 //        relations.add(new Statement(getEdge(ANY),getEdge(key),getEdge(value)));
-        return new StatementIterable<Edge>(key,value);
+        return new StatementIterable<Edge>(key, value);
     }
 
 //    private Node getNode(String key) {
@@ -155,7 +153,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public static NetbaseGraph me() {
-        if(me ==null) me = new NetbaseGraph();
+        if (me == null) me = new NetbaseGraph();
         return me;
     }
 

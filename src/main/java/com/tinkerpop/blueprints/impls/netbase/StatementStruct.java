@@ -30,4 +30,12 @@ public class StatementStruct extends Structure {
     protected List getFieldOrder() {
         return Arrays.asList(new String[]{"context", "nextSubjectStatement", "nextPredicateStatement", "nextObjectStatement", "subject", "predicate", "object"});
     }
+
+    public Node getObject() {
+        return NetbaseGraph.getNode(object);
+    }
+
+    public int getId() {
+        return Netbase.getStatementId(this);// ugly
+    }
 }
