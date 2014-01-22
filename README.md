@@ -39,4 +39,10 @@ Optimized for the quick import of Wordnet, DBPEDIA and Freebase (and
 	opposite of bad
 	netbase> 
 
+Live example queries:
+* (Episodes of South Park – Season 4)[http://netbase.pannous.com/html/South%20Park%20-%20Season%204.Episodes]
+* (Places opened in 1974)[http://netbase.pannous.com/html/Opened:1974%20Year]
+* (Chemical structures)[http://netbase.pannous.com/xml/verbose/42636157]
+* All african birds with orange beaks.
+
 Have fun! See [here for more and hosted samples](http://www.pannous.info/products/netbase/).
