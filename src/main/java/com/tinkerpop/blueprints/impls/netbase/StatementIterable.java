@@ -16,7 +16,7 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
     private Direction direction;
     private Node node;
     private NetbaseGraph graph;
-    private String[] labels;
+    private String[] labels=new String[]{};
     private Iterator<T> iterator;
     private StatementStruct current;
     private NodeStruct nodeS;
@@ -26,9 +26,11 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
         this.graph = graph;
         this.nodeS = node.getStruct();
         Netbase.showNode(node.id);
-//        this.node=node;
+        this.node=node;
         this.direction = direction;
-        this.labels = labels;
+
+        if(labels!=null)
+            this.labels = labels;
 //        if(labels.length>0){
 //              iterator() = =
 //            new Node(node).getEdges()
@@ -68,16 +70,14 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
         StatementStruct next = Netbase.nextStatement(nodeS, current);
         int c = 0;
         while (next != null && c++ < 333333) {
-            boolean labelOK = labels == null || labels.length == 0;
-            for (int i = 0; i < labels.length; i++) {
-                String label = labels[i];
-                if (Netbase.getName(next.predicate).equals(label))
+            boolean labelOK = labels==null||labels.length==0;
+            for (int i = 0; i < labels.length; i++)
+                if (Netbase.getName(next.predicate).equals(labels[i]))
                     labelOK = true;
-            }
             if (labelOK) {
                 if (direction == Direction.BOTH || direction == null) return next;
-                if (direction == Direction.OUT && node!=null && next.subject == node.id) return next;
-                if (direction == Direction.IN && node!=null && next.object == node.id) return next;
+                if (direction == Direction.OUT && node != null && next.subject == node.id) return next;
+                if (direction == Direction.IN && node != null && next.object == node.id) return next;
             }
             next = Netbase.nextStatement(nodeS, next);
         }

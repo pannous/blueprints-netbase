@@ -14,7 +14,7 @@ import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
  * @author Pannous (http://Pannous.com)
  */
 public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, Iterator<Node> {
-    private  String[] labels;
+    private  String[] labels=new String[]{};
     private  NetbaseGraph graph;
     private  Node node;
     private  Direction direction;
@@ -28,6 +28,7 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
         this.node=node;
         nodeS = node.getStruct();
         this.direction=direction;
+        if(labels!=null)
         this.labels = labels;
 //        showNode(node.id);
         statements = node.getStatements().iterator();
@@ -58,17 +59,18 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
     private StatementStruct findNext() {
         StatementStruct next = Netbase.nextStatement(nodeS, current);
         int c=0;
-        while (next!=null && c++ <333333){
-            boolean labelOK = labels == null || labels.length == 0;
+        while (next!=null && c++ <333333) {
+            boolean labelOK = labels==null||labels.length==0;
+            if(labels !=null)
             for (int i = 0; i < labels.length; i++) {
                 String label = labels[i];
-                if(Netbase.getName(next.predicate).equals(label))// expensive!
-                    labelOK=true;
+                if (Netbase.getName(next.predicate).equals(label))// expensive!
+                    labelOK = true;
             }
-            if(labelOK){
-                if(direction==Direction.BOTH || direction==null ) return next;
-                if(direction==Direction.OUT && next.subject==node.id) return next;
-                if(direction==Direction.IN && next.object==node.id) return next;
+            if (labelOK) {
+                if (direction == Direction.BOTH || direction == null) return next;
+                if (direction == Direction.OUT && next.subject == node.id) return next;
+                if (direction == Direction.IN && next.object == node.id) return next;
             }
             next = Netbase.nextStatement(nodeS, next);
         }

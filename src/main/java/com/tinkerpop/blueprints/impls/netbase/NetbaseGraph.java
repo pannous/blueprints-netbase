@@ -2,6 +2,7 @@ package com.tinkerpop.blueprints.impls.netbase;
 
 import com.sun.jna.Pointer;
 import com.tinkerpop.blueprints.*;
+import com.tinkerpop.blueprints.util.StringFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
         FEATURES.supportsMapProperty = false;//
         FEATURES.supportsStringProperty = true;
 
-        FEATURES.supportsDuplicateEdges = true;
+        FEATURES.supportsDuplicateEdges = false;// true == bad?!
         FEATURES.supportsSelfLoops = true;
         FEATURES.isPersistent = true;
         FEATURES.isWrapper = false;
@@ -97,7 +98,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
 
     public void removeVertex(Vertex vertex) {
         nodes.remove(vertex);
-//        Netbase.delete(vertex.getId());
+        Netbase.deleteNode((int) vertex.getId());
     }
 
     public Iterable<Vertex> getVertices() {
@@ -109,6 +110,13 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+
+        if(label==null|| label.equals("")) throw new IllegalArgumentException("EMPTY label not allowed as property");
+        if(label.equals(StringFactory.LABEL)) throw new IllegalArgumentException("label 'LABEL' not allowed as property");// why??
+        if(label.equals(StringFactory.ID)) throw new IllegalArgumentException("label 'ID' not allowed as property");
+
+//        if(value==null|| value.equals("")) throw new IllegalArgumentException("EMPTY value not allowed as property");
+//        if(key.equals("id")) throw new IllegalArgumentException("id key Not allowed as property");
         Node predicate = getNode(label);
         StatementStruct s= Netbase.addStatement4(0, (int) outVertex.getId(), predicate.id, (int) inVertex.getId(), false);
         if(s==null) throw new RuntimeException("addStatement4 Unsuccessful!");
@@ -123,6 +131,8 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Edge getEdge(Object id) {
+        if(id==null) throw new IllegalArgumentException("getEdge id Must not be null");
+        if(!(id instanceof Integer))return null;// BAD Requirement
         return new Statement(Netbase.getStatement((int) id));
     }
 

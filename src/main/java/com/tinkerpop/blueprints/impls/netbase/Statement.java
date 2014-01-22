@@ -143,7 +143,7 @@ public class Statement implements Edge { // extends Structure
     }
 
     public Node getReification() {
-        if (reification == null) reification = new Node(this);
+        if (reification == null) reification = new Node(graph,"reification of "+id);
         return reification;
     }
 
@@ -163,6 +163,7 @@ public class Statement implements Edge { // extends Structure
 
     @Override
     public void setProperty(String key, Object value) {
+        if(value==null)throw new IllegalArgumentException("EMPTY value not allowed as property");
         getReification().addEdge(key, new Node(graph, value));
     }
 

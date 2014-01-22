@@ -91,7 +91,7 @@ public class Node implements Vertex {
 
 
     public Iterable<Edge> getEdges(final com.tinkerpop.blueprints.Direction direction, final String... labels) {
-            return new StatementIterable(graph(), this, direction, labels);
+        return new StatementIterable(graph(), this, direction, labels);
     }
 
     protected NodeStruct getStruct() {
@@ -100,7 +100,7 @@ public class Node implements Vertex {
     }
 
     public Iterable<Vertex> getVertices(final com.tinkerpop.blueprints.Direction direction, final String... labels) {
-            return new NodeIterable(graph(), this, direction, labels);
+        return new NodeIterable(graph(), this, direction, labels);
     }
 
     private NetbaseGraph graph() {
@@ -130,13 +130,9 @@ public class Node implements Vertex {
 
     @Override
     public <T> T getProperty(String key) {
-        Node object = findStatement(this.getStruct(), getAbstract(key), ANY, 0, false, false, false, true).getObject();
-//        if(object instanceof T) return (T) object;
-        try {
-            return (T) (Integer) Integer.parseInt(object.getName());
-        } catch (Exception e) {
-            return (T) object.getName();
-        }
+        StatementStruct statement = findStatement(this.getStruct(), getAbstract(key), ANY, 0, false, false, false, true);
+        if (statement == null) return null;
+        return getValue(statement.getObject());
     }
 
     @Override
@@ -150,8 +146,10 @@ public class Node implements Vertex {
 
     @Override
     public void setProperty(String key, Object value) {
-        if(key==null|| key.equals("")) throw new IllegalArgumentException("EMPTY ID not allowed as property");
-        if(key.equals("id")) throw new IllegalArgumentException("id key Not allowed as property");
+        if (key == null || key.equals("")) throw new IllegalArgumentException("EMPTY ID not allowed as property");
+        if (value == null || value.equals(""))
+            throw new IllegalArgumentException("EMPTY value not allowed as property");
+        if (key.equals("id")) throw new IllegalArgumentException("id key Not allowed as property");
         addStatement4(0, this.id, getAbstract(key).id, getThe("" + value).id, false);
     }
 
@@ -163,6 +161,7 @@ public class Node implements Vertex {
             statement = findStatement(this.getStruct(), getAbstract(key), ANY, 0, false, false, false, true);
             if (statement == null) return r;// 'break'
             Node object = statement.getObject();
+            if(r ==null)// keep first Just for testAddingRemovingEdgeProperties
             r = getValue(object);
             int id1 = statement.getId();
             Debugger.info(id1);
@@ -173,15 +172,19 @@ public class Node implements Vertex {
 
     private <T> T getValue(Node object) {
         try {
+            return (T) (Double) Double.parseDouble(object.getName());
+        } catch (Exception e) {
+        }
+        try {
             return (T) (Integer) Integer.parseInt(object.getName());
         } catch (Exception e) {
-            return (T) object.getName();
         }
+        return (T) object.getName();
     }
 
     @Override
     public void remove() {
-        Netbase.deleteNode(id);
+        graph.removeVertex(this);
     }
 
     @Override
