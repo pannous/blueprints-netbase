@@ -11,7 +11,19 @@ Optimized for the quick import of Wordnet, DBPEDIA and Freebase (and
 
 Thanks to shared memory and binary dumps you can load and process billions of nodes+statements(edges) and hundreds of gigabytes in no time.
 
-`me:~/netbase`
+Requirements: 
+* Lots of RAM favorable
+* For java-binding / blueprints : no requirements
+* For server : data favorable
+* For command line access: 'readline' lib :
+
+	sudo port install readline
+	sudo yum install readline
+	sudo apt-get install readline
+
+Playing with it:
+
+`./bin/netbase`
 
 	USING SHARED MEMORY
 	Context#0 name:ROOT CONTEXT nodes:430338000, statements:355550000
@@ -38,7 +50,7 @@ Thanks to shared memory and binary dumps you can load and process billions of no
 	all city with countrycode ZW
 	Population of Gehren
 	opposite of bad
-	netbase> 
+	netbase> import
 
 Live example queries:
 * [Episodes of South Park – Season 4](http://netbase.pannous.com/html/South%20Park%20-%20Season%204.Episodes)
