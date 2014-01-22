@@ -14,12 +14,12 @@ Thanks to shared memory and binary dumps you can load and process billions of no
 Requirements: 
 * Lots of RAM favorable
 * For java-binding / blueprints : no requirements
-* For server : data favorable
-* For command line access: 'readline' lib :
+* For server: lots data favorable
+* For command line access: 'readline' lib
 
-	sudo port install readline
-	sudo yum install readline
-	sudo apt-get install readline
+`	sudo port install readline`
+`	sudo yum install readline`
+`	sudo apt-get install readline`
 
 Playing with it:
 
