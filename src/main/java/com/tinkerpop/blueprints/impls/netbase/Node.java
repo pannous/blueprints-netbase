@@ -163,7 +163,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         return list;
     }
 
-//public <T> void setProperty(String key, T value) {
+    //public <T> void setProperty(String key, T value) {
 //    @Override
     public void setProperty(String key, Object value) {
         if (key == null || key.equals("")) throw new IllegalArgumentException("EMPTY ID not allowed as property");
@@ -181,7 +181,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 // OR FORGET KEY:addStatement4(0, this.id, getAbstract(""+k).id,getValueNode(map.get(k)).id, false);
         }
         if (value.getClass().isArray()) {
-            addAll(key,value);
+            addAll(key, value);
         } else {
             if (value instanceof Iterable) {
 //            Node arrayKey = getNew(key,Relation.Array);
@@ -200,12 +200,23 @@ public class Node extends Structure implements Vertex {// extends Structure make
     private <T> void addAll(String key, T values) {
         Node arrayKey = getNew(key);
         Netbase.setKind(arrayKey.id, Relation.array);
-        if(values instanceof int[])
-            for (int i:(int[])values)
+        if (values instanceof int[])
+            for (int i : (int[]) values)
                 addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
-        else for (Object o : (Object[]) values) {
-            addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
-        }
+        else if (values instanceof long[])
+            for (long i : (long[]) values)
+                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+        else if (values instanceof double[])
+            for (double i : (double[]) values)
+                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+        else if (values instanceof float[])
+            for (float i : (float[]) values)
+                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+        else if (values instanceof boolean[])
+            for (boolean i : (boolean[]) values)
+                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+        else for (Object o : (Object[]) values)
+                addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
 //        for (Object o : Arrays.asList(value)) {
 //            addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
 //        }
@@ -219,12 +230,12 @@ public class Node extends Structure implements Vertex {// extends Structure make
         StatementStruct statement = findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
         if (getNode(statement.predicate).kind == Relation.list) return getProperties(key);
-        if (getNode(statement.predicate).kind == Relation.array) return getPropertiesA(key,new ArrayList<T>());
+        if (getNode(statement.predicate).kind == Relation.array) return getPropertiesA(key, new ArrayList<T>());
         statement.show();
         return getValue(statement.getObject());
     }
 
-    public <T,U> T getPropertiesA(String key, ArrayList<U> list) {
+    public <T, U> T getPropertiesA(String key, ArrayList<U> list) {
         for (Statement statement : getStatements()) {
             if (key.equals(Netbase.getName(statement.predicate))) {
                 Object value = getValue(statement.Object());
@@ -232,11 +243,13 @@ public class Node extends Structure implements Vertex {// extends Structure make
             }
         }
         Collections.reverse(list);
-        if(list.get(0) instanceof String)
-            return (T) list.toArray(new String [0]);
-        if(list.get(0) instanceof Integer)
+        if (list.get(0) instanceof String)
+            return (T) list.toArray(new String[0]);
+        if (list.get(0) instanceof Integer)
             return (T) list.toArray(new Integer[0]);
-        return (T)(U[]) list.toArray();//
+        if (list.get(0) instanceof Long)
+            return (T) list.toArray(new Long[0]);
+        return (T) (U[]) list.toArray();//
     }
 
     public <T> T getProperties(String key) {
