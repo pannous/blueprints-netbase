@@ -13,9 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.addStatement4;
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.get;
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.getName;
+import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -24,7 +22,7 @@ public class Statement implements Edge { // extends Structure
 
 
     private Node reification;
-    private int subject;
+    public int subject;
     int predicate;
     int object;
 
@@ -32,7 +30,7 @@ public class Statement implements Edge { // extends Structure
     private Node _predicate;
     private Node _object;
     private NetbaseGraph graph;
-    private Object id;
+    public int id;
 
     public Statement() {
 //        setFieldOrder(new String[]{"context","subject","predicate","object", "nextSubjectStatement", "nextPredicateStatement", "nextObjectStatement"});
@@ -96,17 +94,17 @@ public class Statement implements Edge { // extends Structure
     }
 
     protected Node Subject() {
-        if (_subject == null) _subject = new Node(subject);
+        if (_subject == null) _subject = get(subject);
         return _subject;
     }
 
     private Node Predicate() {
-        if (_predicate == null) _predicate = new Node(predicate);
+        if (_predicate == null) _predicate = get(predicate);
         return _predicate;
     }
 
     public Node Object() {
-        if (_object == null) _object = new Node(object);
+        if (_object == null) _object = get(object);
         return _object;
     }
 
@@ -122,7 +120,8 @@ public class Statement implements Edge { // extends Structure
         }
         if (o instanceof Statement) {
             Statement s = (Statement) o;
-            if (id.equals(s.getId()))
+            Object id1 = s.getId();
+            if (id1!=null && id1.equals(id))
                 return true;
             if ((s.subject == subject && s.predicate == predicate && s.object == object))
                 return true;
@@ -143,7 +142,8 @@ public class Statement implements Edge { // extends Structure
     }
 
     public Node getReification() {
-        if (reification == null) reification = new Node(graph,"reification of "+id);
+        if (reification == null) reification = getAbstract("reification of "+id);
+        reification = get(valueId("reification of " + id, (double) id, Relation.reification));
         return reification;
     }
 
@@ -178,13 +178,18 @@ public class Statement implements Edge { // extends Structure
 
     @Override
     public Object getId() {
-        if(id!=null)
         return id;
-        else throw new RuntimeException("ID NULL");
     }
 
-    public Statement setId(Object id) {// Maybe do something with it !!?!
-        this.id = id;
-        return this;
-    }
+//    @Override
+//    public Object getId() {
+//        if(id!=null)
+//        return id;
+//        else throw new RuntimeException("ID NULL");
+//    }
+//
+//    public Statement setId(Object id) {// Maybe do something with it !!?!
+//        this.id = id;
+//        return this;
+//    }
 }

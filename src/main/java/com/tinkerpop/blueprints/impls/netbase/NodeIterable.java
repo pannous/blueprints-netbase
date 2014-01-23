@@ -22,12 +22,11 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
     List<Node> vertices;
     private Iterator<Statement> statements;
     private StatementStruct current;
-    private NodeStruct nodeS;
+
 
     public NodeIterable(NetbaseGraph graph, Node node, Direction direction, String[] labels) {
         this.graph = graph;
         this.node=node;
-        nodeS = node.getStruct();
         this.direction=direction;
         if(labels!=null)
         this.labels = labels;
@@ -60,7 +59,7 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
     }
 
     private StatementStruct findNext() {
-        StatementStruct next = Netbase.nextStatement(nodeS, current);
+        StatementStruct next = Netbase.nextStatement(node.id, current);
         int c=0;
         while (next!=null && c++ <333333) {
             boolean labelOK = labels==null||labels.length==0;
@@ -77,7 +76,7 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
                 if (direction == Direction.OUT && next.subject == node.id) return next;
                 if (direction == Direction.IN && next.object == node.id) return next;
             }
-            next = Netbase.nextStatement(nodeS, next);
+            next = Netbase.nextStatement(node.id, next);
         }
         return next;
     }
@@ -87,10 +86,10 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
     public Node next() {
         if(iterator!=null) return (Node)iterator.next();
         current = findNext();
-        if(node.id==current.object) return new Node(current.subject);
-        if(node.id==current.subject) return new Node(current.object);
-//        if(node.id==current.predicate) return new Node(current.object);// b.c=x OR
-        if(node.id==current.predicate) return new Node(current.subject);// x.b:c
+        if(node.id==current.object) return get(current.subject);
+        if(node.id==current.subject) return get(current.object);
+//        if(node.id==current.predicate) return get(current.object);// b.c=x OR
+        if(node.id==current.predicate) return get(current.subject);// x.b:c
         throw new RuntimeException("iterator met predicate");
     }
 

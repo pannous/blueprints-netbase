@@ -23,4 +23,8 @@ public class Debugger {
     public static void warn(Exception e) {
         logger.log(Level.WARNING,e.getMessage(),e);
     }
+
+    public static void trace(String s) {
+        logger.info(s);
+    }
 }

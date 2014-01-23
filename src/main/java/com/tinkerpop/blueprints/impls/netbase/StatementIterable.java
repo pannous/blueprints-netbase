@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
 
     public StatementIterable(NetbaseGraph graph, Node node, Direction direction, String[] labels) {
         this.graph = graph;
-        this.nodeS = node.getStruct();
         Netbase.showNode(node.id);
         this.node=node;
         this.direction = direction;
@@ -67,19 +67,20 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
     }
 
     private StatementStruct findNext() {
-        StatementStruct next = Netbase.nextStatement(nodeS, current);
+        StatementStruct next = Netbase.nextStatement(node.id, current);
         int c = 0;
         while (next != null && c++ < 333333) {
             boolean labelOK = labels==null||labels.length==0;
             for (int i = 0; i < labels.length; i++)
                 if (Netbase.getName(next.predicate).equals(labels[i]))
                     labelOK = true;
+            if(next.subject==Relation.reification) labelOK = false;
             if (labelOK) {
                 if (direction == Direction.BOTH || direction == null) return next;
                 if (direction == Direction.OUT && node != null && next.subject == node.id) return next;
                 if (direction == Direction.IN && node != null && next.object == node.id) return next;
             }
-            next = Netbase.nextStatement(nodeS, next);
+            next = Netbase.nextStatement(node.id, next);
         }
         return next;
     }
@@ -88,6 +89,7 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
     public Statement next() {
         if (iterator != null) return (Statement) iterator.next();
         current = findNext();
+        if (current == null) throw new IndexOutOfBoundsException("NoSuchElementException next()");
         return new Statement(current);
     }
 

@@ -1,16 +1,6 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
-import com.tinkerpop.blueprints.EdgeTestSuite;
-import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.GraphQueryTestSuite;
-import com.tinkerpop.blueprints.GraphTestSuite;
-import com.tinkerpop.blueprints.IndexTestSuite;
-import com.tinkerpop.blueprints.IndexableGraphTestSuite;
-import com.tinkerpop.blueprints.KeyIndexableGraphTestSuite;
-import com.tinkerpop.blueprints.TestSuite;
-import com.tinkerpop.blueprints.TransactionalGraphTestSuite;
-import com.tinkerpop.blueprints.VertexQueryTestSuite;
-import com.tinkerpop.blueprints.VertexTestSuite;
+import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.impls.GraphTest;
 import com.tinkerpop.blueprints.util.io.gml.GMLReaderTestSuite;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReaderTestSuite;
@@ -109,12 +99,17 @@ public class NetbaseGraphTest extends GraphTest {
     }
 
     private void cleanup() {
-        Netbase.getThe("location").delete();// danger!
-        Netbase.getThe("name").delete();// danger!
-        Netbase.getThe("a").delete();
-        Netbase.getThe("b").delete();
-        Netbase.getThe("c").delete();
-        for (int i = 0; i < 1000; i++) Netbase.getThe("" + i).delete();
+        Netbase.getAbstract("location").delete();// danger!
+        Netbase.getAbstract("name").delete();// danger!
+        Netbase.getAbstract("a").delete();
+        Netbase.getAbstract("b").delete();
+        Netbase.getAbstract("c").delete();
+        for (int i = 0; i < 1000; i++) Netbase.getAbstract("" + i).delete();
+        for (Object o : NetbaseGraph.me().getVertices()){
+            Netbase.getAbstract(""+o).delete();
+            ((Vertex)o).remove();
+        }
+//        Netbase.getAbstract("a").delete();
     }
 
     private String getWorkingDirectory() {

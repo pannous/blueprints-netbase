@@ -28,14 +28,19 @@ public class StatementStruct extends Structure {
 
     @Override
     protected List getFieldOrder() {
-        return Arrays.asList(new String[]{"context", "nextSubjectStatement", "nextPredicateStatement", "nextObjectStatement", "subject", "predicate", "object"});
+//        return Arrays.asList(new String[]{"context", "nextSubjectStatement", "nextPredicateStatement", "nextObjectStatement", "subject", "predicate", "object"}); // Changed ORDER!!
+        return Arrays.asList(new String[]{"context", "subject", "predicate", "object","nextSubjectStatement", "nextPredicateStatement", "nextObjectStatement"});
     }
 
     public Node getObject() {
-        return NetbaseGraph.getNode(object);
+        return Netbase.getNode(object);
     }
 
     public int getId() {
         return Netbase.getStatementId(this);// ugly
+    }
+
+    public void show() {
+        Netbase.showStatement(getId());
     }
 }
