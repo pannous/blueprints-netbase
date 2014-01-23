@@ -11,8 +11,9 @@ import java.util.logging.Logger;
  * Time: 17:16
  */
 public class Debugger {
-    private static final Logger logger = Logger.getLogger("Netbase");// 'global'
+    public static final Logger logger = Logger.getLogger("Netbase");// 'global'
     public static void info(Object whattt) {
+        logger.setLevel(Level.ALL);
         logger.info(""+whattt);
     }
 

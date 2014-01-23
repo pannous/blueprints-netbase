@@ -26,7 +26,7 @@ public class Statement implements Edge { // extends Structure
     private Node reification;
     private int subject;
     int predicate;
-    private int object;
+    int object;
 
     private Node _subject;
     private Node _predicate;
@@ -163,8 +163,7 @@ public class Statement implements Edge { // extends Structure
 
     @Override
     public void setProperty(String key, Object value) {
-        if(value==null)throw new IllegalArgumentException("EMPTY value not allowed as property");
-        getReification().addEdge(key, new Node(graph, value));
+        getReification().setProperty(key,value);
     }
 
     @Override

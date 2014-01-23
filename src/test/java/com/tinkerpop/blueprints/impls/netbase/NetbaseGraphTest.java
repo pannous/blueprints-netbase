@@ -109,6 +109,8 @@ public class NetbaseGraphTest extends GraphTest {
     }
 
     private void cleanup() {
+        Netbase.getThe("location").delete();// danger!
+        Netbase.getThe("name").delete();// danger!
         Netbase.getThe("a").delete();
         Netbase.getThe("b").delete();
         Netbase.getThe("c").delete();

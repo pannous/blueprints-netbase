@@ -35,16 +35,16 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     private static final Features FEATURES = new Features();
 
     static {
-        FEATURES.supportsSerializableObjectProperty = false;// ?!
+        FEATURES.supportsSerializableObjectProperty = true;// false true Date AND ... ? false;// ?!
         FEATURES.supportsBooleanProperty = true;
         FEATURES.supportsDoubleProperty = true;
         FEATURES.supportsFloatProperty = true;
         FEATURES.supportsIntegerProperty = true;
-        FEATURES.supportsPrimitiveArrayProperty = true;
-        FEATURES.supportsUniformListProperty = true;
-        FEATURES.supportsMixedListProperty = false;
+        FEATURES.supportsPrimitiveArrayProperty =true;// testNetbaseArray true;// todo!! true;
+        FEATURES.supportsUniformListProperty = true;// todo!! true;
+        FEATURES.supportsMixedListProperty = true;
         FEATURES.supportsLongProperty = true;
-        FEATURES.supportsMapProperty = false;//
+        FEATURES.supportsMapProperty = true;//false
         FEATURES.supportsStringProperty = true;
 
         FEATURES.supportsDuplicateEdges = false;// true == bad?!
@@ -88,6 +88,12 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
 
     public Vertex getVertex(Object id) {
         if (id == null) throw new IllegalArgumentException("getVertex id Must not be null");
+        try {
+            int i = Integer.parseInt("" + id);
+            if(i>10000)// wth?
+            return new Node(i);
+        } catch (NumberFormatException e) {
+        }
         if (id instanceof Integer) {
             return new Node((int) id);
         } else {
@@ -106,6 +112,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Iterable<Vertex> getVertices(String key, Object value) {
+//        return getThe(key).getVertices(Direction.VALUE, "" + value);//? TPDP!
         return getThe(key).getVertices(Direction.BOTH, "" + value);//?
     }
 
@@ -167,4 +174,8 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
         return me;
     }
 
+    @Override
+    public String toString() {
+        return "NetbaseGraph".toLowerCase()+"_"+ super.toString();
+    }
 }

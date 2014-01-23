@@ -27,7 +27,8 @@ public class NodeStruct extends Structure {
     public int statementCount; //implicit, can be replaced with iterator
     public int firstStatement;
     public int lastStatement;// remove
-//    Union value; // for statements, numbers  WASTE!!! remove
+    Union value; // for statements, numbers  WASTE!!! remove
+
 //    Union.setType(java.lang.Class)
 
 //    public volatile int refCount;

@@ -3,6 +3,7 @@ package com.tinkerpop.blueprints.impls.netbase;
 import com.sun.jna.Pointer;
 import com.tinkerpop.blueprints.*;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +15,30 @@ import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
 public class NetbaseCoreTest extends BaseTest {
     private static final Logger logger = Logger.getLogger(NetbaseCoreTest.class.getName());
 
-//    @Test
+    public NetbaseCoreTest() {
+        super();
+        logger.setLevel(Level.ALL);
+        Debugger.logger.setLevel(Level.ALL);
+    }
+
+    public void testNetbaseArray() throws Exception {
+        ArrayList arr = new ArrayList();
+        arr.add("a");
+        arr.add("b");
+        Node ar = new Node("ar");
+        ar.setProperty("q", 2);
+        ar.setProperty("t", arr);
+        showNode(ar.id);
+//        showNode(679258);
+//        Object t = ar.getProperty("q");
+//        logger.info("..........." + t);
+        ArrayList t = ar.getProperty("t");
+        logger.info("..........." + t);
+        assertEquals(getNode(679258).kind, Relation._array);
+        assertEquals(arr, t);
+    }
+
+    //    @Test
     public void testNetbaseCore() throws Exception {
 //        logger.setUseParentHandlers(false);// Results in silence !?!
         logger.setLevel(Level.ALL);
@@ -67,14 +91,15 @@ public class NetbaseCoreTest extends BaseTest {
         Iterable<Edge> edges = node.getEdges(Direction.BOTH, "*");
         Statement next = (Statement) edges.iterator().next();
 //        assertEquals(next.getLabel(),"instance");
-        assertEquals(next.getLabel(),"Instanz");
-        assertEquals(next.getVertex(Direction.OUT),frau);
-        assertEquals(next.getVertex(Direction.OUT).getId(),61069);
-        assertEquals(next.getVertex(Direction.IN).getId(),258623);
+        assertEquals(next.getLabel(), "Instanz");
+        assertEquals(next.getVertex(Direction.OUT), frau);
+        assertEquals(next.getVertex(Direction.OUT).getId(), 61069);
+        assertEquals(next.getVertex(Direction.IN).getId(), 258623);
         int count = count(edges);
-        assertEquals(count,frau.statementCount-1);// -1 wegen next ^^
+        assertEquals(count, frau.statementCount - 1);// -1 wegen next ^^
 //        frau.getEdgeIterator();
     }
+
     public void testNetbaseEdges2() {
         NodeStruct frau = getAbstract("frau");
         Node node = new Node(frau);
