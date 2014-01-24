@@ -1,4 +1,4 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
@@ -13,7 +13,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 import java.text.DateFormat;
 import java.util.*;
 
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
+import static com.pannous.netbase.blueprints.Netbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -35,6 +35,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     //    @Override
     protected List getFieldOrder() {
+//        JdbcRowSet
+
         return Arrays.asList(new String[]{"id", "name", "kind"});//, "statementCount", "firstStatement", "lastStatement" ,"value"
     }
 
@@ -404,8 +406,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public Node load() {
-//        if(pointer!=null)
-//            super.autoRead();
+        super.autoRead();
         return this;
     }
 

@@ -1,16 +1,16 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
-import com.sun.jna.Pointer;
+import com.pannous.netbase.blueprints.*;
 import com.tinkerpop.blueprints.*;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
+import static com.pannous.netbase.blueprints.Netbase.*;
+
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -23,9 +23,11 @@ public class NetbaseCoreTest extends BaseTest {
         logger.setLevel(Level.ALL);
         Debugger.logger.setLevel(Level.ALL);
     }
+
+
     public void testNetbaseProperty(){;
         assertEquals(Relation.object,Relation.Object.id);
-        assertEquals(get(Relation.object),Relation.Object);
+        assertEquals(get(Relation.object), Relation.Object);
         Node ar = getNew("arg1");
         int kind = ar.kind;
         assertEquals(Relation.object, kind);

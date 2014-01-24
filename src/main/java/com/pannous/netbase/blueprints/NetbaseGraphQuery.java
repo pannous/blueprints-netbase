@@ -1,4 +1,4 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.util.DefaultGraphQuery;

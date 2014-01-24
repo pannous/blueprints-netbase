@@ -1,13 +1,5 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
-import com.sun.org.apache.xpath.internal.operations.Equals;
-import com.sun.tools.corba.se.idl.constExpr.Not;
-import com.tinkerpop.blueprints.Contains;
-import com.tinkerpop.blueprints.Edge;
-import javafx.scene.Parent;
-
-import java.security.acl.Owner;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 
@@ -20,75 +12,75 @@ import java.util.IdentityHashMap;
  */
 public class Relation extends Node {
 
-    private static final IdentityHashMap<Integer, String> names = new IdentityHashMap<>();
-    private static final IdentityHashMap<Integer, Relation> relations = new IdentityHashMap<>();
-    private static final HashMap<String, Relation> relationByName = new HashMap<>();
+    public static final IdentityHashMap<Integer, String> names = new IdentityHashMap<>();
+    public static final IdentityHashMap<Integer, Relation> relations = new IdentityHashMap<>();
+    public static final HashMap<String, Relation> relationByName = new HashMap<>();
 
-    //    public static OnceVector<Relation> all = new OnceVector<Relation>();
-    public static final int ANY = 333;
-    public static final int ERROR = 666;
+    //    public  static OnceVector<Relation> all = new OnceVector<Relation>();
+    public  static final int ANY = 0;
+    public  static final int ERROR = 666;
 
-    public static int wordnet = 0;// 303; //context==Class??   TODO!
+    public  static int wordnet = 0;// 303; //context==Class??   TODO!
     // DANGER!!
-    public static int internal = 100;
-    public static int node = 101;// dont change
-    public static int _abstract = 102;
+    public  static int internal = 100;
+    public  static int node = 101;// dont change
+    public  static int _abstract = 102;
     //int Class=103;
-    public static int klass = 103;
-    public static int clazz = 103;
-    public static int concept = 103;
-    public static int object = 104;
+    public  static int klass = 103;
+    public  static int clazz = 103;
+    public  static int concept = 103;
+    public  static int object = 104;
     //int Object=104;
-    public static int relation = 105;
-    public static int person = 106;
-    public static int reification = 107;//== statement ??
-    public static int pattern = 108;
-    public static int statement = 109;
+    public  static int relation = 105;
+    public  static int person = 106;
+    public  static int reification = 107;//== statement ??
+    public  static int pattern = 108;
+    public  static int statement = 109;
 
 // wn: done via type(33) statements
 
-    public static int _attribute = 42;
-    public static int noun = 110;
-    public static int verb = 111;
-    public static int adjective = 112;
-    public static int adverb = 113;
-    public static int array = 121;
-    public static int list = 122;// because T == [] or ArrayList ????
-    public static int number= 123;
-    public static int integer = 124; //naa, see number
-    public static int _float = 125; //naa, see number
-    public static int string = 126; // text
-    public static int date = 127;
-    public static int unit = 128;
-    public static int range = 129;
+    public  static int _attribute = 42;
+    public  static int noun = 110;
+    public  static int verb = 111;
+    public  static int adjective = 112;
+    public  static int adverb = 113;
+    public  static int array = 121;
+    public  static int list = 122;// because T == [] or ArrayList ????
+    public  static int number= 123;
+    public  static int integer = 124; //naa, see number
+    public  static int _float = 125; //naa, see number
+    public  static int string = 126; // text
+    public  static int date = 127;
+    public  static int unit = 128;
+    public  static int range = 129;
 
     // syntactic relations:
-    public static int singular = 130;
-    public static int plural = 131;
-    public static int presenttense = 132;
-    public static int pasttense = 133;
-    public static int futuretense = 134;
-    public static int translation = 139;
+    public  static int singular = 130;
+    public  static int plural = 131;
+    public  static int presenttense = 132;
+    public  static int pasttense = 133;
+    public  static int futuretense = 134;
+    public  static int translation = 139;
 
-    public static int and = 140;
-    public static int or = 141;
-    public static int not = 142;
-    public static int equals = 150;
-    public static int greater = 151;
-    public static int less = 152;
-    public static int between = 153;
-    public static int circa = 154;
-    public static int much = 155;
-    public static int very = 156;
-    public static int contains = 157;
-    public static int startswith = 158;
-    public static int endswith = 159;
-    public static int _false = 200;// not '0' by design!
-    public static int _true = 201;
+    public  static int and = 140;
+    public  static int or = 141;
+    public  static int not = 142;
+    public  static int equals = 150;
+    public  static int greater = 151;
+    public  static int less = 152;
+    public  static int between = 153;
+    public  static int circa = 154;
+    public  static int much = 155;
+    public  static int very = 156;
+    public  static int contains = 157;
+    public  static int startswith = 158;
+    public  static int endswith = 159;
+    public  static int _false = 200;// not '0' by design!
+    public  static int _true = 201;
 
-    public static int see = 0;//50 also, 40 similar
-    public static int hypernym = 1;//superclass
-    public static int hyponym = 2,//subclass
+    public  static int see = 0;//50 also, 40 similar
+    public  static int hypernym = 1;//superclass
+    public  static int hyponym = 2,//subclass
             type = 3,
             instance = 4,
             entailment = 21,// implies
@@ -112,111 +104,111 @@ public class Relation extends Node {
             memberdomainregion = 94,
             memberdomainusage = 96,
             verbgroup = 70;
-    public static int antonym = 30;
+    public  static int antonym = 30;
 
 
-    static Relation Unknown;
-    static Relation Antonym;
-    static Relation Parent;
-    static Relation SuperClass; // Parent
-    // static Relation IsA;// Parent
-    static Relation SubClass;
-    static Relation Cause;
-    static Relation Entailment; // Implication
-    static Relation Owner; //Owner inverse Member   (Prince of Persia) <=> (Persia has Prince)
-    static Relation Member;
-    static Relation Part;
-    static Relation PartOf;
-    static Relation Substance;
-    static Relation Synonym;
-    static Relation Domain;
-    static Relation PERTAINYM;
-    static Relation Weight;
-    static Relation Type;
-    static Relation Instance;
+    public static Relation Unknown;
+    public static Relation Antonym;
+    public static Relation Parent;
+    public static Relation SuperClass; // Parent
+    // public static Relation IsA;// Parent
+    public static Relation SubClass;
+    public static Relation Cause;
+    public static Relation Entailment; // Implication
+    public static Relation Owner; //Owner inverse Member   (Prince of Persia) <=> (Persia has Prince)
+    public  static Relation Member;
+    public static Relation Part;
+    public static Relation PartOf;
+    public static Relation Substance;
+    public static Relation Synonym;
+    public static Relation Domain;
+    public static Relation PERTAINYM;
+    public static Relation Weight;
+    public static Relation Type;
+    public  static Relation Instance;
 
-    static Relation Active;
-    static Relation Passive;
-    static Relation Tag;
-    static Relation Label;
-    static Relation BackLabel;
-    static Relation Comment;
-    static Relation Labels;
-    static Relation LabeledNode;
-    static Relation Category;
-    static Relation SubContext;
-    static Relation SuperContext;
+    public static Relation Active;
+    public static Relation Passive;
+    public static Relation Tag;
+    public static Relation Label;
+    public static Relation BackLabel;
+    public static Relation Comment;
+    public static Relation Labels;
+    public static Relation LabeledNode;
+    public static Relation Category;
+    public static Relation SubContext;
+    public static Relation SuperContext;
 
     // Types
-    static Relation Internal;
-    static Relation Node;
-    static Relation Thing;
-    static Relation Item;
-    static Relation Abstract; // Thing
-    static Relation Class;
-    static Relation Object;
-    static Relation Relation;
-    static Relation Reification;
-    static Relation Property;
-    static Relation Pattern; // temporary
+    public static Relation Internal;
+    public static Relation Node;
+    public static Relation Thing;
+    public static Relation Item;
+    public static Relation Abstract; // Thing
+    public static Relation Class;
+    public  static Relation Object;
+    public static Relation Relation;
+    public static Relation Reification;
+    public static Relation Property;
+    public static Relation Pattern; // temporary
 
-    static Relation Any;
+    public static Relation Any;
     // Semantics
-    static Relation Attribute; //ok, if  static Relation Attribute declared in netbase.cpp
-// static Relation Is; // danger: obama is president etc
+    public static Relation Attribute; //ok, if  public static Relation Attribute declared in netbase.cpp
+// public static Relation Is; // danger: obama is president etc
 
-    static Relation Person;
-    static Relation Adjective;
-    static Relation Noun;
-    static Relation Verb;
-    static Relation Adverb;
+    public static Relation Person;
+    public static Relation Adjective;
+    public static Relation Noun;
+    public static Relation Verb;
+    public static Relation Adverb;
 
-    static Relation Derived;// Adjective^-1
-    static Relation DerivedFromNoun;
+    public static Relation Derived;// Adjective^-1
+    public static Relation DerivedFromNoun;
 
-    static Relation Number;
-    static Relation String;
-    static Relation Date;
-    static Relation Float;
-    static Relation Integer;
-    static Relation Array;
-    static Relation List;
-    static Relation Range;
-    static Relation Unit;
+    public static Relation Number;
+    public static Relation String;
+    public static Relation Date;
+    public static Relation Float;
+    public static Relation Integer;
+    public static Relation Array;
+    public static Relation List;
+    public static Relation Range;
+    public static Relation Unit;
 
-    static Relation True;
-    static Relation False;
+    public static Relation True;
+    public static Relation False;
 
-    static Relation Translation;
-    static Relation Plural;
-    static Relation And;
-    static Relation Or;
-    static Relation Not;
+    public static Relation Translation;
+    public static Relation Plural;
+    public static Relation And;
+    public static Relation Or;
+    public static Relation Not;
 
     //There are about 150 prepositions in English
-    static Relation Of; // ==owner
-    static Relation In; // ==location,...
-    static Relation To; // ==direction,<object>
-    static Relation From;
-    static Relation By;
-    static Relation For;
-    static Relation On;
+    public static Relation Of; // ==owner
+    public static Relation In; // ==location,...
+    public static Relation To; // ==direction,<object>
+    public static Relation From;
+    public static Relation By;
+    public static Relation For;
+    public static Relation On;
 
 
-    static Relation Equals;
-    static Relation Greater;
-    static Relation More;
-    static Relation Smaller;
-    static Relation Less; //smaller
-    static Relation Between;
-    static Relation Circa;
-    static Relation Much;
-    static Relation Little;
-    static Relation Very;
-    static Relation Contains;
-    static Relation StartsWith;
-    static Relation EndsWith;
-    static Relation UsageContext;
+    public static Relation Equals;
+    public static Relation Greater;
+    public static Relation More;
+    public static Relation Smaller;
+    public static Relation Less; //smaller
+    public static Relation Between;
+    public static Relation Circa;
+    public static Relation Much;
+    public static Relation Little;
+    public static Relation Very;
+    public static Relation Contains;
+    public static Relation StartsWith;
+    public static Relation EndsWith;
+    public static Relation UsageContext;
 
 
     static {
@@ -246,9 +238,11 @@ public class Relation extends Node {
 //        return _name;
     }
 
-    static void initRelations() {
+    public static void initRelations() {
 //        if(germanLabels){initRelationsDE();return;}
-        Unknown = addRelation(see, "see");
+
+        Any = addRelation(ANY, "*");
+        Unknown = Any;// addRelation(see, "see");
         Antonym = addRelation(antonym, "antonym");
 //	Part = addRelation(1, "part"); USA etc BUG!?!!
         Attribute = addRelation(attribute, "attribute"); // tag
@@ -358,7 +352,6 @@ public class Relation extends Node {
         And = addRelation(and, "and");
         Or = addRelation(or, "or");
         Not = addRelation(not, "not");
-        Any = addRelation(666, "*");
 
         Equals = addRelation(equals, "=");
         Greater = addRelation(greater, ">");
@@ -394,13 +387,13 @@ public class Relation extends Node {
 
 
 
-    public static String name(int kind) {
+    public  static String name(int kind) {
         return names.get(kind);
     }
-    public static Relation byName(String kind) {
+    public  static Relation byName(String kind) {
         return relationByName.get(kind);
     }
-    public static  Relation byId(int kind) {
+    public  static  Relation byId(int kind) {
         return relations.get(kind);
     }
 

@@ -1,5 +1,7 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
+import com.pannous.netbase.blueprints.Netbase;
+import com.pannous.netbase.blueprints.NetbaseGraph;
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.impls.GraphTest;
 import com.tinkerpop.blueprints.util.io.gml.GMLReaderTestSuite;

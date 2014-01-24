@@ -1,12 +1,10 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 
 import com.tinkerpop.blueprints.CloseableIterable;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Vertex;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 

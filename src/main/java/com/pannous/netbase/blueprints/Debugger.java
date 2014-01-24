@@ -1,4 +1,4 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -1,7 +1,8 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.IntByReference;
 
 /**
  * * Copyright 2013 Pannous GmbH
@@ -47,7 +48,7 @@ public class Netbase {
     //    public static native Pointer getAbstract(String name);// just id!
 //    public static native int getAbstract(String name);// just id!
 //    public static native  String query2(String s, int limit);
-    public static native Pointer execute(String s);
+
 
     public static native String getName(int id);
 
@@ -134,6 +135,30 @@ public class Netbase {
     public static native void showStatement(int id);
 
     public static native Node add(String s,int kind);
+
+    public static void showNodes(Node... nodes) {
+        for (Node node : nodes) {
+            showNode(node.id);
+        }
+    }
+
+    public static native Pointer execute(String s,IntByReference hits);// -> Node[] :
+    public static Node[] doExecute(String sql) {
+        IntByReference hitRef = new IntByReference();
+        Pointer n=Netbase.execute(sql, hitRef);
+        int hits = hitRef.getValue();
+        Node[] nodes = new Node[hits];
+        if(hits==1)nodes=new Node[]{new Node(n).load()};
+        else
+        for (Pointer p : n.getPointerArray(0, hits)) {
+            Node node = new Node(p);
+            node.load();
+            showNode(node.id);
+            nodes[--hits] = node;
+        }
+//        Node[] nodes = (Node[]) n.toArray(2);// hits.getValue());
+        return nodes;
+    }
 //    public static native void showStatement(Statement s);
 
 //    public static native int addNode(String hi);

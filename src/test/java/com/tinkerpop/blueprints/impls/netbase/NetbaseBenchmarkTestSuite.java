@@ -1,5 +1,8 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
+import com.pannous.netbase.blueprints.NetbaseGraph;
+import com.pannous.netbase.blueprints.Node;
+import com.pannous.netbase.blueprints.Statement;
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
 

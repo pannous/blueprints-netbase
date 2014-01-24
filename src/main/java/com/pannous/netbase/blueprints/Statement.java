@@ -1,19 +1,13 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 
-import com.sun.jna.Structure;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.ExceptionFactory;
-import com.tinkerpop.blueprints.util.StringFactory;
 
-import javax.security.auth.Subject;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
-
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
+import static com.pannous.netbase.blueprints.Netbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)

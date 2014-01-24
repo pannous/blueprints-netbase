@@ -1,5 +1,6 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
+import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
 import java.util.Arrays;
@@ -12,22 +13,29 @@ import java.util.List;
  * Date: 21/01/14
  * Time: 18:20
  */
-public class NodeStructure extends Structure { // faster than NodeStruct
-// twall.github.io/jna/4.0/javadoc/overview-summary.html#overview_description
+public class NodeStruct extends Structure {
+
+    // twall.github.io/jna/4.0/javadoc/overview-summary.html#overview_description
     @Override
     protected List getFieldOrder() {
-        return Arrays.asList(new String[]{"id", "name"});//, "kind", "statementCount", "firstStatement", "lastStatement","value"});// ,"value"
+        return Arrays.asList(new String[]{"id", "name", "kind", "statementCount", "firstStatement", "lastStatement","value"});// ,"value"
     }
 
     public int id;
+//    public long _name;
     public String name;
-//    public int kind;
-//    public int statementCount; //implicit, can be replaced with iterator
-//    public int firstStatement;
-//    public int lastStatement;// remove
-//    public Value value; // for statements, numbers  WASTE!!! remove
-
+    public int kind;
+    public int statementCount; //implicit, can be replaced with iterator
+    public int firstStatement;
+    public int lastStatement;// remove
+    public Value value; // for statements, numbers  WASTE!!! remove
+//    public int statementCount;
 //    Union.setType(java.lang.Class)
+
+    public NodeStruct(Pointer pointer) {
+        super(pointer);
+    }
+
 
 //    public volatile int refCount;
 //    NodeStruct sub!

@@ -1,4 +1,4 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 
 import com.tinkerpop.blueprints.CloseableIterable;
@@ -7,8 +7,7 @@ import com.tinkerpop.blueprints.Vertex;
 
 import java.util.Iterator;
 import java.util.List;
-
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
+import static com.pannous.netbase.blueprints.Netbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)

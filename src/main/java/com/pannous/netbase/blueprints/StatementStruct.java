@@ -1,6 +1,4 @@
-package com.tinkerpop.blueprints.impls.netbase;
-
-import com.sun.jna.Structure;
+package com.pannous.netbase.blueprints;
 
 import com.sun.jna.Structure;
 

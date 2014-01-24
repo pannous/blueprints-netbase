@@ -1,4 +1,4 @@
-package com.tinkerpop.blueprints.impls.netbase;
+package com.pannous.netbase.blueprints;
 
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.util.StringFactory;
@@ -6,11 +6,10 @@ import com.tinkerpop.blueprints.util.StringFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import static com.tinkerpop.blueprints.impls.netbase.Netbase.*;
+import static com.pannous.netbase.blueprints.Netbase.*;
 
 /**
- * A Blueprints implementation of the graph database netbase (http://netbase.org)
+ * A Blueprints implementation of the graph database netbase (https://github.com/pannous/blueprints-netbase)
  *
  * @author Pannous (http://Pannous.com)
  */
@@ -184,7 +183,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public void shutdown() {
-        Netbase.execute("exit");
+        Netbase.doExecute("exit");
     }
 
     public static NetbaseGraph me() {
