@@ -1,4 +1,5 @@
-Welcome to [**Netbase**](https://github.com/pannous/netbase/) 
+Welcome to [**Netbase**](http://www.pannous.info/products/netbase/) 
+Welcome to [*](https://github.com/pannous/netbase/),
  a high-performance semantic graph database, optimized for natural language queries on static freebase data.
 
 [**blueprints**](https://github.com/tinkerpop/blueprints) is a graph database standard allowing for toolchaining, making databases available to all different tools.
