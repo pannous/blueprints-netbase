@@ -12,6 +12,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 
 import java.text.DateFormat;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static com.pannous.netbase.blueprints.Netbase.*;
 
@@ -19,6 +20,8 @@ import static com.pannous.netbase.blueprints.Netbase.*;
  * @author Pannous (http://Pannous.com)
  */
 public class Node extends Structure implements Vertex {// extends Structure makes get(id) 3* slower, but no further lookups!
+    public Logger logger= Logger.getLogger("Netbase");
+
 
     public int id;
     //    public long name;// offset
@@ -244,6 +247,10 @@ public class Node extends Structure implements Vertex {// extends Structure make
                 list.add((U) value);
             }
         }
+        if (list.size() == 0) {
+            logger.warning("EMPTY property array! "+key);
+            return (T) list.toArray();
+        }
         Collections.reverse(list);
         if (list.get(0) instanceof String)
             return (T) list.toArray(new String[0]);
@@ -277,7 +284,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
             return Netbase.valueId("" + value, (double) (Float) value, Relation.number);
         if (value instanceof Number)
             return Netbase.valueId("" + value, (Double) value, Relation.number);
-        if (value instanceof Boolean) return ((Boolean)value).booleanValue()==true ? Relation._true : Relation._false;
+        if (value instanceof Boolean)
+            return ((Boolean) value).booleanValue() == true ? Relation._true : Relation._false;
         if (value instanceof java.util.Date)
             return Netbase.valueId("" + value, (double) ((Date) value).getTime(), Relation.date);
 //        if(value instanceof java.util.Date /* ETC!@@! */) throw new IllegalArgumentException("not yet supportsSerializableObjectProperty");
