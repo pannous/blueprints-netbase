@@ -150,6 +150,10 @@ public class NetbaseCoreTest extends BaseTest {
         logger.info("OK2");
         logger.info(get(61069).getName());
         logger.info("OK2.1");
+        logger.info(get(61069).toString(true));
+        logger.info("OK2.2");
+        logger.info(get(61069).getName());
+        logger.info("OK2.3");
 //        for (int i = 0; i < 10000; i++) assertEquals("freu", new Node(61069).getName());// 4000 times slower ??
 //        printTestPerformance(" new Node(61069).getName()", this.stopWatch());
         for (int i = 0; i < 10000; i++) assertEquals("freu", get(61069).getName());// 400 times slower
