@@ -1,5 +1,5 @@
-com/tinkerpop/blueprints/impls/netbase/NetbaseCoreTest.class
-com/tinkerpop/blueprints/impls/netbase/NetbaseBenchmarkTestSuite.class
 com/pannous/netbase/jdbc/NetbaseSqlTest.class
+com/tinkerpop/blueprints/impls/netbase/NetbaseBenchmarkTestSuite.class
+com/tinkerpop/blueprints/impls/netbase/NetbaseCoreTest.class
 com/tinkerpop/blueprints/impls/netbase/NetbaseGraphTest.class
 com/tinkerpop/blueprints/impls/netbase/NetbaseGraphSpecificTestSuite.class
