@@ -20,7 +20,6 @@ import static com.pannous.netbase.blueprints.Netbase.*;
  * @author Pannous (http://Pannous.com)
  */
 public class Node extends Structure implements Vertex {// extends Structure makes get(id) 3* slower, but no further lookups!
-    public Logger logger= Logger.getLogger("Netbase");
 
 
     public int id;
@@ -34,6 +33,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //    public Value value; // for statements, numbers  WASTE!!! remove
 
     private Pointer pointer;
+    private Logger logger= Logger.getLogger("Netbase");
     protected NetbaseGraph graph;
 
     //    @Override
