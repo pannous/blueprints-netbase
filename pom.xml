@@ -47,6 +47,10 @@
             <resource>
                 <directory>${basedir}/src/main/resources
                 </directory>
+                <directory>${basedir}/lib</directory>
+				<!-- <copy file="src/main/resources/config.properties" tofile="${project.server.config}/config.properties"/> -->
+
+
             </resource>
         </resources>
         <testResources>
