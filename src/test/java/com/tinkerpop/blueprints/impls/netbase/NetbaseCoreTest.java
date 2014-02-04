@@ -156,16 +156,18 @@ public class NetbaseCoreTest extends BaseTest {
         logger.info("OK2.3");
 //        for (int i = 0; i < 10000; i++) assertEquals("freu", new Node(61069).getName());// 4000 times slower ??
 //        printTestPerformance(" new Node(61069).getName()", this.stopWatch());
+        for (int i = 0; i < 10000; i++) assertEquals("freu", Netbase.getName(61069));// 20 times slower
+        printTestPerformance("Netbase.getName(61069)", this.stopWatch());
+        logger.info("OK3");
         for (int i = 0; i < 10000; i++) assertEquals("freu", get(61069).getName());// 400 times slower
         printTestPerformance(" get(61069).getName()", this.stopWatch());
-        logger.info("OK3");
+        logger.info("OK4");
 
 //        for (int i = 0; i < 10000; i++) assertEquals("freu", getNodeS(61069).name);// 150 times slower
 //        printTestPerformance(" getNodeS(61069).name", this.stopWatch());
 //        for (int i = 0; i < 10000; i++) assertEquals(null, getNodeI(61069).getString(4,false));// 100 times slower
 //        printTestPerformance(" getNodeI(61069).name", this.stopWatch());
-        for (int i = 0; i < 10000; i++) assertEquals("freu", Netbase.getName(61069));// 20 times slower
-        printTestPerformance("Netbase.getName(61069)", this.stopWatch());
+
         for (int i = 0; i < 10000; i++)assertEquals("freu", node1.getName());// cached >> 20 times faster (time vs space)
         printTestPerformance(" node.getName()", this.stopWatch());
         for (int i = 0; i < 10000; i++)assertEquals("freu", node1.name);// cached >> 20 times faster (time vs space)
