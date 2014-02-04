@@ -43,13 +43,15 @@
     <build>
         <directory>${basedir}/target</directory>
         <finalName>${project.artifactId}-${project.version}</finalName>
+	 	<!-- <outputDirectory>${basedir}/target/classes</outputDirectory> -->
+		<!-- <copy file="${basedir}/lib/*" tofile="${basedir}/target/classes"/> -->
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
             </resource>
             <resource>			
-		<!-- <copy file="${basedir}/lib/*" tofile="${basedir}/target/classes"/> -->
-            	<directory>${basedir}/lib</directory>
+			   	<targetPath>${project.build.outputDirectory}</targetPath>
+				<directory>${basedir}/lib/</directory>
             </resource>
         </resources>
         <testResources>

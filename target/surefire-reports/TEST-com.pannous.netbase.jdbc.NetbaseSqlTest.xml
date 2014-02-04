@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="2" time="0.194" errors="1" skipped="0" tests="3" name="com.pannous.netbase.jdbc.NetbaseSqlTest">
+<testsuite failures="2" time="0.156" errors="1" skipped="0" tests="3" name="com.pannous.netbase.jdbc.NetbaseSqlTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/private/tmp/blueprints-netbase"/>
+    <property name="user.dir" value="/Users/me/dev/ai/blueprints/blueprints-netbase"/>
     <property name="java.runtime.version" value="1.7.0_05-b05"/>
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib/endorsed"/>
@@ -62,7 +62,7 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.109" classname="com.pannous.netbase.jdbc.NetbaseSqlTest" name="testNetbaseQuery">
+  <testcase time="0.083" classname="com.pannous.netbase.jdbc.NetbaseSqlTest" name="testNetbaseQuery">
     <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
 	at junit.framework.Assert.fail(Assert.java:55)
 	at junit.framework.Assert.assertTrue(Assert.java:22)
@@ -96,7 +96,7 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
 </failure>
   </testcase>
-  <testcase time="0.01" classname="com.pannous.netbase.jdbc.NetbaseSqlTest" name="testSql">
+  <testcase time="0.008" classname="com.pannous.netbase.jdbc.NetbaseSqlTest" name="testSql">
     <error message="NetbaseStatement execution ERROR" type="java.sql.SQLException">java.sql.SQLException: NetbaseStatement execution ERROR
 	at com.pannous.netbase.jdbc.NetbaseSqlTest.testSql(NetbaseSqlTest.java:22)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
