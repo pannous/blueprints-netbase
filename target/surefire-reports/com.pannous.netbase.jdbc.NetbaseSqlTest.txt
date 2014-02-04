@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.pannous.netbase.jdbc.NetbaseSqlTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.157 sec <<< FAILURE!
-testNetbaseQuery(com.pannous.netbase.jdbc.NetbaseSqlTest)  Time elapsed: 0.083 sec  <<< FAILURE!
+Tests run: 3, Failures: 2, Errors: 1, Skipped: 0, Time elapsed: 0.171 sec <<< FAILURE!
+testNetbaseQuery(com.pannous.netbase.jdbc.NetbaseSqlTest)  Time elapsed: 0.095 sec  <<< FAILURE!
 junit.framework.AssertionFailedError
 	at junit.framework.Assert.fail(Assert.java:55)
 	at junit.framework.Assert.assertTrue(Assert.java:22)
@@ -34,7 +34,7 @@ junit.framework.AssertionFailedError
 	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175)
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
-testSql(com.pannous.netbase.jdbc.NetbaseSqlTest)  Time elapsed: 0.008 sec  <<< ERROR!
+testSql(com.pannous.netbase.jdbc.NetbaseSqlTest)  Time elapsed: 0.009 sec  <<< ERROR!
 java.sql.SQLException: NetbaseStatement execution ERROR
 	at com.pannous.netbase.jdbc.NetbaseSqlTest.testSql(NetbaseSqlTest.java:22)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
@@ -62,7 +62,7 @@ java.sql.SQLException: NetbaseStatement execution ERROR
 	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175)
 	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68)
-testQueryField(com.pannous.netbase.jdbc.NetbaseSqlTest)  Time elapsed: 0.005 sec  <<< FAILURE!
+testQueryField(com.pannous.netbase.jdbc.NetbaseSqlTest)  Time elapsed: 0.006 sec  <<< FAILURE!
 junit.framework.AssertionFailedError: nodes.length==1
 	at junit.framework.Assert.fail(Assert.java:57)
 	at junit.framework.Assert.assertTrue(Assert.java:22)
