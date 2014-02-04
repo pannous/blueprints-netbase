@@ -2,12 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
+    <groupId>com.pannous.blueprints</groupId>
+    <version>2.4.0</version>
+
+    <!-- <parent>
         <groupId>com.tinkerpop.blueprints</groupId>
         <artifactId>blueprints</artifactId>
         <version>2.5.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
-    </parent>
+    </parent> -->
     <artifactId>blueprints-netbase</artifactId>
     <name>Blueprints-Netbase</name>
     <description>Blueprints property graph implementation for the netbase graph database</description>
@@ -15,16 +18,27 @@
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-core</artifactId>
-            <version>2.5.0</version>
+            <version>2.4.0</version>
             <!--<version>${blueprints.version}</version>-->
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-test</artifactId>
             <!--<version>${blueprints.version}</version>-->
-            <version>2.5.0</version>
+            <version>2.4.0</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		
+        <!-- <dependency>
+            <groupId>com.sun.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>3.0.9</version> -->
+        <!-- </dependency> -->
     </dependencies>
     <build>
         <directory>${basedir}/target</directory>
@@ -41,5 +55,28 @@
                 </directory>
             </testResource>
         </testResources>
+
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <version>3.1</version>
+	            <configuration>
+	                <source>1.7</source>
+	                <target>1.7</target>
+	                <fork>true</fork>
+	                <!-- REMOVE WHEN UPGRADE:
+	                     see https://jira.codehaus.org/browse/MCOMPILER-209 it's a bug where
+	                     incremental compilation doesn't work unless it's set to false causeing
+	                     recompilation of the entire codebase each time without any changes. Should
+	                     be fixed in version > 3.1
+	                 -->
+		                <useIncrementalCompilation>true</useIncrementalCompilation>
+		                <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
+	            </configuration>
+	        </plugin>
+		</plugins>
+
     </build>
+
 </project>
