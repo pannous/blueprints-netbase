@@ -234,13 +234,13 @@ public class Node extends Structure implements Vertex {// extends Structure make
         int keyId = Netbase.getId(key);
         StatementStruct statement = findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
-        if (getNode(statement.predicate).kind == Relation.list) return getProperties(key);
-        if (getNode(statement.predicate).kind == Relation.array) return getPropertiesA(key, new ArrayList<T>());
+        if (getNode(statement.predicate).kind == Relation.list) return getPropertyList(key);
+        if (getNode(statement.predicate).kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
         statement.show();
         return getValue(statement.getObject());
     }
 
-    public <T, U> T getPropertiesA(String key, ArrayList<U> list) {
+    public <T, U> T getPropertyArray(String key, ArrayList<U> list) {
         for (Statement statement : getStatements()) {
             if (key.equals(Netbase.getName(statement.predicate))) {
                 Object value = getValue(statement.Object());
@@ -261,7 +261,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         return (T) (U[]) list.toArray();//
     }
 
-    public <T> T getProperties(String key) {
+    public <T> T getPropertyList(String key) {
         ArrayList list = new ArrayList();
         for (Statement statement : getStatements()) {
             if (key.equals(Netbase.getName(statement.predicate)))
