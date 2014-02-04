@@ -33,7 +33,7 @@
 			<artifactId>jna</artifactId>
 			<version>4.0.0</version>
 		</dependency>
-		
+
         <!-- <dependency>
             <groupId>com.sun.jna</groupId>
             <artifactId>jna</artifactId>
@@ -49,7 +49,7 @@
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
             </resource>
-            <resource>			
+            <resource>
 			   	<targetPath>${project.build.outputDirectory}</targetPath>
 				<directory>${basedir}/lib/</directory>
             </resource>
@@ -89,12 +89,17 @@
 		            <index>true</index>
 		            <manifest>
 		              <addClasspath>true</addClasspath>
+
+                        <mainClass>
+                            com.pannous.netbase.blueprints.Main
+                        </mainClass>
 		            </manifest>
 		            <manifestEntries>
 		              <mode>development</mode>
 		              <url>${project.url}</url>
 		              <key>value</key>
 		            </manifestEntries>
+
 		          </archive>
 		        </configuration>
 		      </plugin>
