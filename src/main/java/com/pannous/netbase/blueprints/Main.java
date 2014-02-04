@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Netbase netbase = new Netbase();
         NetbaseGraph<Node> graph = new NetbaseGraph<>();
-//        Netbase.doExecute("help");
+        Netbase.doExecute("help");
         Netbase.doExecute("console");
         String command = "";
         for (String arg : args) command += arg + " ";

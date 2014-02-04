@@ -68,7 +68,7 @@
 	            <version>3.1</version>
 	            <configuration>
 	                <source>1.7</source>
-	                <target>1.7</target>
+	                <target>1.6</target>
 	                <fork>true</fork>
 	                <!-- REMOVE WHEN UPGRADE:
 	                     see https://jira.codehaus.org/browse/MCOMPILER-209 it's a bug where
