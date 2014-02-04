@@ -55,7 +55,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public Node(NetbaseGraph netbaseGraph, Object id) {// id can be string here !!!
 //        graph = netbaseGraph;
-        if (id != null && id instanceof Integer) this.id = (int) id;
+        if (id != null && id instanceof Integer) this.id = (Integer) id;
         else {
             this.id = nextId();
             if (id != null)// wtf ???
@@ -101,7 +101,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public Node(Edge edge) {// reified statement!
         Object edgeId = edge.getId();
-        id = (int) edgeId;
+        id = (Integer) edgeId;
         setName(edge.getLabel());
 
 //        statement = new Statement(Netbase.getStatement(id));
@@ -270,14 +270,14 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if (value instanceof String) return Netbase.getId((String) value);
 //        if (value instanceof String) return getNew((String) value).id;// zickzack!
         if (value instanceof Integer)
-            return Netbase.valueId("" + value, (double) (int) value, Relation.integer);
+            return Netbase.valueId("" + value, (double) (Integer) value, Relation.integer);
         if (value instanceof Long)
-            return Netbase.valueId("" + value, (double) (long) value, Relation.integer);// long
+            return Netbase.valueId("" + value, (double) (Long) value, Relation.integer);// long
         if (value instanceof Float)
-            return Netbase.valueId("" + value, (double) (float) value, Relation.number);
+            return Netbase.valueId("" + value, (double) (Float) value, Relation.number);
         if (value instanceof Number)
-            return Netbase.valueId("" + value, (double) value, Relation.number);
-        if (value instanceof Boolean) return value == true ? Relation._true : Relation._false;
+            return Netbase.valueId("" + value, (Double) value, Relation.number);
+        if (value instanceof Boolean) return ((Boolean)value).booleanValue()==true ? Relation._true : Relation._false;
         if (value instanceof java.util.Date)
             return Netbase.valueId("" + value, (double) ((Date) value).getTime(), Relation.date);
 //        if(value instanceof java.util.Date /* ETC!@@! */) throw new IllegalArgumentException("not yet supportsSerializableObjectProperty");

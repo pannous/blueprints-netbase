@@ -22,7 +22,7 @@ public class NetbaseResultSet implements ResultSet {
     private final String sql;
     public final Node[] nodes;
     private int current = -1;
-    private HashMap<Integer, String> map = new HashMap<>();
+    private HashMap<Integer, String> map = new HashMap();
     private Statement statement;
 
     public NetbaseResultSet(String sql, Node[] nodes) {

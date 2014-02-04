@@ -12,9 +12,9 @@ import java.util.IdentityHashMap;
  */
 public class Relation extends Node {
 
-    public static final IdentityHashMap<Integer, String> names = new IdentityHashMap<>();
-    public static final IdentityHashMap<Integer, Relation> relations = new IdentityHashMap<>();
-    public static final HashMap<String, Relation> relationByName = new HashMap<>();
+    public static final IdentityHashMap<Integer, String> names = new IdentityHashMap();
+    public static final IdentityHashMap<Integer, Relation> relations = new IdentityHashMap();
+    public static final HashMap<String, Relation> relationByName = new HashMap();
 
     //    public  static OnceVector<Relation> all = new OnceVector<Relation>();
     public  static final int ANY = 0;

@@ -15,8 +15,8 @@ import static com.pannous.netbase.blueprints.Netbase.*;
  */
 public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph implements TransactionalGraph, IndexableGraph, KeyIndexableGraph {//, MetaGraph<GraphDatabaseService>
     private static final Logger logger = Logger.getLogger(NetbaseGraph.class.getName());
-    private static ArrayList<Node> nodes = new ArrayList<>();
-    private static List<Statement> edges = new ArrayList<>();
+    private static ArrayList<Node> nodes = new ArrayList();
+    private static List<Statement> edges = new ArrayList();
 
 //    private static final Relation ANY =(Relation) getNode(1);
 
@@ -73,7 +73,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
         Node node;
         if (id != null) {
             if (id instanceof Integer)
-                node = get((int) id);
+                node = get((Integer) id);
             else if (hasNode("" + id))
                 node = getNode("" + id);
             else {
@@ -92,7 +92,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
 
     public Vertex getVertex(Object id) {
         if (id == null) throw new IllegalArgumentException("getVertex id Must not be null");
-        if (id instanceof Integer) return get((int) id);
+        if (id instanceof Integer) return get((Integer) id);
         try {// for Blueprint !!
             int i = Integer.parseInt("" + id);
             if (i > 10000)// wth?
@@ -106,7 +106,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     public void removeVertex(Vertex vertex) {
         nodes.remove(vertex);
         if(vertex.getId() instanceof Integer)
-            Netbase.deleteNode((int) vertex.getId());
+            Netbase.deleteNode((Integer) vertex.getId());
         else
             Netbase.deleteNode(getId("" + vertex.getId()));
     }
@@ -138,7 +138,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
         Statement statement = new Statement(s);
         if (id != null){
             if(id instanceof Integer)
-            statement.id = (int) id;// Only on the jave side
+            statement.id = (Integer) id;// Only on the jave side
             statement.id = Integer.parseInt(""+id);
         }
         edges.add(statement);
@@ -157,11 +157,11 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     public Edge getEdge(Object id) {
         if (id == null) throw new IllegalArgumentException("getEdge id Must not be null");
         if (!(id instanceof Integer)) return null;// BAD Requirement
-        return new Statement(Netbase.getStatement((int) id));
+        return new Statement(Netbase.getStatement((Integer) id));
     }
 
     public void removeEdge(Edge edge) {
-        Netbase.deleteStatement((int) edge.getId());
+        Netbase.deleteStatement((Integer) edge.getId());
     }
 
     public Iterable<Edge> getEdges() {

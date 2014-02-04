@@ -54,9 +54,9 @@ public class Statement implements Edge { // extends Structure
     public Statement(Edge subject, Edge predicate, Edge object) {
 //        super(NetbaseGraph.me());
         try {
-            this.subject = (int) subject.getId();
-            this.predicate = (int) predicate.getId();
-            this.object = (int) object.getId();
+            this.subject = (Integer) subject.getId();
+            this.predicate = (Integer) predicate.getId();
+            this.object = (Integer) object.getId();
         } catch (Exception e) {
             Debugger.warn(e);
             _subject = new Node(subject);
