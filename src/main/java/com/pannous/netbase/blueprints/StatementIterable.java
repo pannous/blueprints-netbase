@@ -70,7 +70,7 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
         while (next != null && c++ < 333333) {
             boolean labelOK = labels==null||labels.length==0;
             for (int i = 0; i < labels.length; i++)
-                if (Netbase.getName(next.predicate).equals(labels[i]))
+                if (Netbase.getName(next.predicate).equalsIgnoreCase(labels[i]))
                     labelOK = true;
             if(next.subject==Relation.reification) labelOK = false;
             if (labelOK) {

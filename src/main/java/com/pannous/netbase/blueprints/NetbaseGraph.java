@@ -165,13 +165,15 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public Iterable<Edge> getEdges() {
-        return null;        // ALL ??
+        return new AllEdges();        // ALL ??
     }
 
     public Iterable getEdges(String key, Object value) {
 //        ArrayList <Statement> relations=new ArrayList<>();
 //        relations.add(new Statement(getEdge(ANY),getEdge(key),getEdge(value)));
-        return new StatementIterable<Edge>(key, value);
+//        Netbase.doExecute()
+//        return new StatementIterable<Edge>(key, value);
+        return getNode(key).getEdges(Direction.BOTH,""+value);
     }
 
 //    private Node getNode(String key) {
