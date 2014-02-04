@@ -45,7 +45,7 @@ public class NetbaseCoreTest extends BaseTest {
         ar.setProperty("t", arr);
         String[] t = ar.getProperty("t");
         logger.info(Arrays.toString(t));
-        assertTrue("Arrays.equals(arr, t)",Arrays.equals(arr, t));
+        assertTrue("Arrays.equals(arr, t)", Arrays.equals(arr, t));
     }
 
     public void testNetbaseIntArray() throws Exception {
@@ -146,7 +146,10 @@ public class NetbaseCoreTest extends BaseTest {
 //        setLabel(node1, "freu");
         logger.info("OK");
         node1.setName("freu");
-        logger.info("OK");
+        logger.info(get(61069).toString(true));
+        logger.info("OK2");
+        logger.info(get(61069).getName());
+        logger.info("OK2.1");
 //        for (int i = 0; i < 10000; i++) assertEquals("freu", new Node(61069).getName());// 4000 times slower ??
 //        printTestPerformance(" new Node(61069).getName()", this.stopWatch());
         for (int i = 0; i < 10000; i++) assertEquals("freu", get(61069).getName());// 400 times slower
