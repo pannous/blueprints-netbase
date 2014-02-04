@@ -60,6 +60,7 @@ public class NetbaseCoreTest extends BaseTest {
     }
 
     public void testNetbaseArrayList() throws Exception {
+        logger.info("testNetbaseArrayList");
         ArrayList arrayList = new ArrayList();
         arrayList.add("A");
         arrayList.add("B");
@@ -79,6 +80,8 @@ public class NetbaseCoreTest extends BaseTest {
     }
 
     public void dont_testNetbaseEdges() {
+        logger.info("testNetbaseEdges1");
+
         Node frau = getThe("freu");
         Node node = frau;// new Node(frau);
         frau.show();
@@ -95,6 +98,8 @@ public class NetbaseCoreTest extends BaseTest {
     }
 
     public void testNetbaseEdges2() {
+        logger.info("testNetbaseEdges2");
+
         Node frau = getThe("frau");
         Node node = frau;// new Node(frau);
 
@@ -105,6 +110,7 @@ public class NetbaseCoreTest extends BaseTest {
     }
 
     public void testNetbaseEdges3() {
+        logger.info("testNetbaseEdges3");
 //        Node frau = getThe("frau");
 
         try {
@@ -130,6 +136,7 @@ public class NetbaseCoreTest extends BaseTest {
 
 
     public void testNetbaseCorePerformance() throws Exception {
+        logger.info("testNetbaseCorePerformance");
         this.stopWatch();
         Node node1 = get(61069);
         node1.addProperty("hi", 4);
