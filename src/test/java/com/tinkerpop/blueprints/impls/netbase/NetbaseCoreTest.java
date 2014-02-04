@@ -144,11 +144,15 @@ public class NetbaseCoreTest extends BaseTest {
         showNode(61069);
         node1.show();
 //        setLabel(node1, "freu");
-         node1.setName("freu");
-        for (int i = 0; i < 10000; i++) assertEquals("freu", new Node(61069).getName());// 4000 times slower ??
-        printTestPerformance(" new Node(61069).getName()", this.stopWatch());
+        logger.info("OK");
+        node1.setName("freu");
+        logger.info("OK");
+//        for (int i = 0; i < 10000; i++) assertEquals("freu", new Node(61069).getName());// 4000 times slower ??
+//        printTestPerformance(" new Node(61069).getName()", this.stopWatch());
         for (int i = 0; i < 10000; i++) assertEquals("freu", get(61069).getName());// 400 times slower
         printTestPerformance(" get(61069).getName()", this.stopWatch());
+        logger.info("OK3");
+
 //        for (int i = 0; i < 10000; i++) assertEquals("freu", getNodeS(61069).name);// 150 times slower
 //        printTestPerformance(" getNodeS(61069).name", this.stopWatch());
 //        for (int i = 0; i < 10000; i++) assertEquals(null, getNodeI(61069).getString(4,false));// 100 times slower
