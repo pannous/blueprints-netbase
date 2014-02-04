@@ -21,7 +21,7 @@ public class NetbaseCoreTest extends BaseTest {
     public NetbaseCoreTest() {
         super();
         logger.setLevel(Level.ALL);
-        Debugger.logger.setLevel(Level.ALL);
+//        Debugger.logger.setLevel(Level.ALL);
     }
 
 
@@ -40,10 +40,11 @@ public class NetbaseCoreTest extends BaseTest {
     }
 
     public void testNetbaseArray() throws Exception {
-        String[] arr = new String[]{"a", "b"};
+        String[] arr = new String[]{"A", "B"};
         Node ar = getNew("a");
         ar.setProperty("t", arr);
         String[] t = ar.getProperty("t");
+        logger.info(Arrays.toString(t));
         assertTrue("Arrays.equals(arr, t)",Arrays.equals(arr, t));
     }
 
@@ -60,8 +61,8 @@ public class NetbaseCoreTest extends BaseTest {
 
     public void testNetbaseArrayList() throws Exception {
         ArrayList arrayList = new ArrayList();
-        arrayList.add("a");
-        arrayList.add("b");
+        arrayList.add("A");
+        arrayList.add("B");
         Node ar = getNew("a");// new Node("ar");
         ar.setProperty("q", 2);
         ar.setProperty("t", arrayList);
@@ -77,7 +78,7 @@ public class NetbaseCoreTest extends BaseTest {
         logger.info("[INFO] click " + (int) this.stopWatch() + " ms");
     }
 
-    public void testNetbaseEdges() {
+    public void dont_testNetbaseEdges() {
         Node frau = getThe("freu");
         Node node = frau;// new Node(frau);
         frau.show();

@@ -29,6 +29,7 @@ public class NetbaseSqlTest extends BaseTest {
         String name= resultSet.getString("name");
 //        resultSet.getString("name");
     }
+
     public void testNetbaseQuery(){
         String sql="select * from dog";
 //        String sql="select Oberklasse from dog";
