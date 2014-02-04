@@ -65,9 +65,9 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
             if(labels !=null)
             for (int i = 0; i < labels.length; i++) {
                 String label = labels[i];
-                if (Netbase.getName(next.predicate).equals(label))// expensive!
+                if (Netbase.getName(next.predicate).equalsIgnoreCase(label))// expensive!
                     labelOK = true;
-                if (Netbase.getName(next.object).equals(label))// expensive!
+                if (Netbase.getName(next.object).equalsIgnoreCase(label))// expensive!
                     labelOK = true;// valueOK !?!
             }
             if (labelOK) {

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author Pannous (http://Pannous.com)
  */
 public class NetbaseGraphTest extends GraphTest {
+
     private static final Logger logger = Logger.getLogger(NetbaseGraphTest.class.getName());
 
     /*public void testNetbaseBenchmarkTestSuite() throws Exception {
@@ -38,6 +39,7 @@ public class NetbaseGraphTest extends GraphTest {
 
     public void testGraphTestSuite() throws Exception {
         this.stopWatch();
+        cleanup();
         doTestSuite(new GraphTestSuite(this));
         printTestPerformance("GraphTestSuite", this.stopWatch());
     }
@@ -52,12 +54,6 @@ public class NetbaseGraphTest extends GraphTest {
         this.stopWatch();
         doTestSuite(new GraphQueryTestSuite(this));
         printTestPerformance("GraphQueryTestSuite", this.stopWatch());
-    }
-
-    public void testGraphMLReaderTestSuite() throws Exception {
-        this.stopWatch();
-        doTestSuite(new GraphMLReaderTestSuite(this));
-        printTestPerformance("GraphMLReaderTestSuite", this.stopWatch());
     }
 
     public void testGraphSONReaderTestSuite() throws Exception {
@@ -78,6 +74,12 @@ public class NetbaseGraphTest extends GraphTest {
         printTestPerformance("NetbaseGraphSpecificTestSuite", this.stopWatch());
     }
 
+//    public void testGraphMLReaderTestSuite() throws Exception {
+//        this.stopWatch();
+//        doTestSuite(new GraphMLReaderTestSuite(this));
+//        printTestPerformance("GraphMLReaderTestSuite", this.stopWatch());
+//    }
+
     public Graph generateGraph() {
         return generateGraph("default");// not good for tests!
     }
@@ -91,9 +93,14 @@ public class NetbaseGraphTest extends GraphTest {
         String directory = this.getWorkingDirectory();
         deleteDirectory(new File(directory));
         for (Method method : testSuite.getClass().getDeclaredMethods()) {
-            if (method.getName().startsWith("test")) {
-                System.out.println("Testing " + method.getName() + "...");
+            String methodName = method.getName();
+            if (methodName.startsWith("test")) {
+                System.out.println("Testing " + methodName + "...");
                 cleanup();
+                if (methodName.equals("testLegalVertexEdgeIterables")
+                        || methodName.equals("testGettingEdgesAndVertices")
+                        || methodName.equals("testVertexCentricLinking"))
+                    logger.info("DEBUG " + methodName);
                 method.invoke(testSuite);
                 deleteDirectory(new File(directory));
             }
@@ -103,13 +110,14 @@ public class NetbaseGraphTest extends GraphTest {
     private void cleanup() {
         Netbase.getAbstract("location").delete();// danger!
         Netbase.getAbstract("name").delete();// danger!
+        Netbase.getAbstract("marko").delete();// danger!
         Netbase.getAbstract("a").delete();
         Netbase.getAbstract("b").delete();
         Netbase.getAbstract("c").delete();
         for (int i = 0; i < 1000; i++) Netbase.getAbstract("" + i).delete();
-        for (Object o : NetbaseGraph.me().getVertices()){
-            Netbase.getAbstract(""+o).delete();
-            ((Vertex)o).remove();
+        for (Object o : NetbaseGraph.me().getVertices()) {
+            Netbase.getAbstract("" + o).delete();
+            ((Vertex) o).remove();
         }
 //        Netbase.getAbstract("a").delete();
     }
