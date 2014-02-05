@@ -1,6 +1,7 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
 import com.pannous.netbase.blueprints.LocalNetbase;
+import com.pannous.netbase.blueprints.LocalNetbaseGraph;
 import com.pannous.netbase.blueprints.NetbaseGraph;
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.impls.GraphTest;
@@ -84,7 +85,7 @@ public class NetbaseGraphTest extends GraphTest {
     }
 
     public Graph generateGraph(final String name) {
-        NetbaseGraph graph = new NetbaseGraph();
+        Graph graph = LocalNetbaseGraph.me();
         return graph;
     }
 
@@ -114,7 +115,7 @@ public class NetbaseGraphTest extends GraphTest {
         LocalNetbase.getAbstract("b").delete();
         LocalNetbase.getAbstract("c").delete();
         for (int i = 0; i < 1000; i++) LocalNetbase.getAbstract("" + i).delete();
-        for (Object o : NetbaseGraph.me().getVertices()) {
+        for (Object o : LocalNetbaseGraph.me().getVertices()) {
             LocalNetbase.getAbstract("" + o).delete();
             ((Vertex) o).remove();
         }

@@ -9,11 +9,15 @@ package com.pannous.netbase.blueprints;
  */
 public class Main {
     public static void main(String[] args) {
-        testRemoteGraph(args);
+        try {
+            testRemoteGraph(args);
+        } catch (Exception e) {
+            Debugger.error(e);
+        }
 //        testLocalGraph(args);
     }
 
-    private static void testRemoteGraph(String[] args) {
+    private static void testRemoteGraph(String[] args) throws Exception {
         RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
 //        client.includeProperty("T-Online", "Url");
 //        client.showView("T-Online");

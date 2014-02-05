@@ -25,7 +25,11 @@ public class AllRemoteVertices implements Iterable<Vertex>, Iterator<Vertex> {
 
     @Override
     public Iterator<Vertex> iterator() {
-        count = graph.nodeCount();
+        try {
+            count = graph.nodeCount();
+        } catch (Exception e) {
+            count = graph.nodeCount;
+        }
         return this;
     }
 

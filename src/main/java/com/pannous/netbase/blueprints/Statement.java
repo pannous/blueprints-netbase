@@ -73,6 +73,12 @@ public class Statement implements Edge { // extends Structure
         id = LocalNetbase.getStatementId(statementStruct);// double, expensive
     }
 
+    public Statement(NetbaseGraph graph, int subject, int predicate, int object) {
+        this.subject = subject;
+        this.predicate = predicate;
+        this.object = object;
+    }
+
     @Override
     public Vertex getVertex(Direction direction) {
         if (direction == Direction.OUT) return Subject();
@@ -191,5 +197,9 @@ public class Statement implements Edge { // extends Structure
 //            return id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "\t" + predicate + "\t" + object;
 //        else
             return id + "\t" + subject + "\t" + predicate + "\t" + object;
+    }
+
+    public int getObject() {
+        return object;
     }
 }

@@ -1,10 +1,12 @@
 package com.pannous.netbase.blueprints;
 
+import com.sun.jna.Structure;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import org.apache.commons.lang.NotImplementedException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,31 +19,37 @@ import java.util.Set;
  * Date: 05/02/14
  * Time: 09:47
  */
-public class RemoteNode extends Node{
-    private RemoteNetbaseGraph netbaseClient;
-    List<RemoteStatement> statements=new ArrayList<RemoteStatement>();
-    public boolean loaded=false;
+public class RemoteNode extends Node {
+    private RemoteNetbaseGraph netbaseAdapter;
+    List<RemoteStatement> statements = new ArrayList<RemoteStatement>();
+    public boolean loaded = false;
 
-    public RemoteNode(int id, String name, RemoteNetbaseGraph netbaseClient) {
+    public RemoteNode(int id, String name, RemoteNetbaseGraph adapter) {
         super(-1);
         super.setAutoRead(false);
         super.setAutoWrite(false);
         super.setAutoSynch(false);
         this.id = id;
         this.name = name;
-        this.netbaseClient = netbaseClient;
+        this.netbaseAdapter = adapter;
     }
 
     @Override
     public String getName() {
-        if (name == null)name=netbaseClient.getName(id);
+        if (name == null) name = netbaseAdapter.getName(id);
         return name;
     }
 
     @Override
     public Edge addEdge(String label, Vertex vertex) {
         try {
-            Node[] nodes = netbaseClient.query("learn " + this.id + " " + label+ " " + vertex.toString());
+//            if (id > 0 && id < graph.nodeCount())
+//                return "" + id;
+//            else
+//                return name;// the? new?
+//            vertex.save()
+            String s = ""+vertex.getId();// toString();
+            Node[] nodes = netbaseAdapter.query("learn " + this.id + " " + label + " " + s);
             return nodes[0].getStatements().iterator().next();// FIRST / LAST ??
         } catch (Exception e) {
             Debugger.error(e);
@@ -52,7 +60,7 @@ public class RemoteNode extends Node{
     @Override
     public void addProperty(String key, Object value) {
         try {
-            Node[] nodes = netbaseClient.query("learn " + this.id + " " + key + " " + value);
+            Node[] nodes = netbaseAdapter.query("learn " + this.id + " " + key + " " + value);
         } catch (Exception e) {
             Debugger.error(e);
         }
@@ -61,7 +69,7 @@ public class RemoteNode extends Node{
     @Override
     public void delete() {
         try {
-            netbaseClient.query("delete " + id);
+            netbaseAdapter.query("delete " + id);
         } catch (Exception e) {
             Debugger.error(e);
         }
@@ -89,13 +97,19 @@ public class RemoteNode extends Node{
 
     @Override
     public <T> T getProperty(String key) {
-        if (statements!=null&&statements.size()>0) {
+//        StatementStruct statement = findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
+        if (statements != null && statements.size() > 0) {
             for (Edge statement : statements) {
-                if(statement.getLabel().equalsIgnoreCase(key)) return (T) statement.getVertex(Direction.OUT);
+                if (statement.getLabel().equalsIgnoreCase(key)) {
+                    RemoteNode vertex = (RemoteNode) statement.getVertex(Direction.IN);
+                    if (vertex.kind == Relation.list) return getPropertyList(key);
+                    if (vertex.kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
+                    return (T) vertex;
+                }
             }
         }
         try {
-            return (T) netbaseClient.query(id + "." + key)[0];
+            return (T) netbaseAdapter.query(id + "." + key)[0];
         } catch (Exception e) {
             return null;
         }
@@ -103,13 +117,13 @@ public class RemoteNode extends Node{
 
     @Override
     public <T, U> T getPropertyArray(String key, ArrayList<U> list) {
-        if (statements!=null&&statements.size()>0) {
+        if (statements != null && statements.size() > 0) {
             for (Edge statement : statements) {
-                if(statement.getLabel().equalsIgnoreCase(key)) list.add((U) statement.getVertex(Direction.OUT));
+                if (statement.getLabel().equalsIgnoreCase(key)) list.add((U) statement.getVertex(Direction.OUT));
             }
         }
         try {
-            return (T) netbaseClient.query(id + "." + key);
+            return (T) netbaseAdapter.query(id + "." + key);
         } catch (Exception e) {
             return null;
         }
@@ -147,7 +161,7 @@ public class RemoteNode extends Node{
     @Override
     public boolean hasMember(Node fog) {
         try {
-            return netbaseClient.query(id + "." + fog.id).length > 0;
+            return netbaseAdapter.query(id + "." + fog.id).length > 0;
         } catch (Exception e) {
             Debugger.error(e);
             return false;
@@ -157,7 +171,7 @@ public class RemoteNode extends Node{
     @Override
     public Node load() {
         try {
-            return netbaseClient.query(""+id)[0];
+            return netbaseAdapter.query("" + id)[0];
         } catch (Exception e) {
             Debugger.error(e);
         }
@@ -177,9 +191,9 @@ public class RemoteNode extends Node{
 
     @Override
     public <T> T removeProperty(String key) {
-        if (statements!=null&&statements.size()>0) {
+        if (statements != null && statements.size() > 0) {
             for (Edge statement : statements) {
-                if(statement.getLabel().equalsIgnoreCase(key)) {
+                if (statement.getLabel().equalsIgnoreCase(key)) {
                     T vertex = (T) statement.getVertex(Direction.OUT);
                     statement.remove();
                     return vertex;
@@ -187,7 +201,7 @@ public class RemoteNode extends Node{
             }
         }
         try {
-//            return (T) netbaseClient.query(delete id + "." + key)[0];
+//            return (T) netbaseAdapter.query(delete id + "." + key)[0];
         } catch (Exception e) {
         }
         return null;
@@ -198,7 +212,7 @@ public class RemoteNode extends Node{
         name = label;
         try {
 //            if(!name.equals(label))
-//            netbaseClient.query("label " + id + " " + label);
+//            netbaseAdapter.query("label " + id + " " + label);
         } catch (Exception e) {
             Debugger.error(e);
         }
@@ -208,7 +222,13 @@ public class RemoteNode extends Node{
     @Override
     public void setProperty(String key, Object value) {
         try {
-            netbaseClient.query(id + "." + key + "=" + value);
+            if (value instanceof Array) {
+                Object[] array = (Object[]) value;
+                for (int i = 0; i < array.length; i++) {
+                    netbaseAdapter.query(id + "." + key + "=" + array[i]);
+                }
+            } else
+                netbaseAdapter.query(id + "." + key + "=" + value);
         } catch (Exception e) {
             Debugger.error(e);
         }
@@ -218,15 +238,15 @@ public class RemoteNode extends Node{
     public void show() {
         System.out.println(id + " " + name);
         for (Edge statement : statements) {
-            if(statement instanceof RemoteStatement)
-                System.out.println(((RemoteStatement)statement).show());
-        else
-            System.out.println(statement.getLabel() + " " +statement.getVertex(Direction.OUT));
+            if (statement instanceof RemoteStatement)
+                System.out.println(((RemoteStatement) statement).show());
+            else
+                System.out.println(statement.getLabel() + " " + statement.getVertex(Direction.OUT));
         }
     }
 
     @Override
     public String toString() {
-        return "("+id+") "+name;
+        return "(" + id + ") " + name;
     }
 }

@@ -14,7 +14,6 @@ import java.text.DateFormat;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static com.pannous.netbase.blueprints.LocalNetbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -34,7 +33,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     private Pointer pointer;
     private Logger logger= Logger.getLogger("Netbase");
-    protected NetbaseGraph graph;
+    protected NetbaseGraph graph=LocalNetbaseGraph.me();
 
 
     @Override
@@ -63,7 +62,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //        graph = netbaseGraph;
         if (id != null && id instanceof Integer) this.id = (Integer) id;
         else {
-            this.id = nextId();
+            this.id = graph.nextId();
             if (id != null)// wtf ???
                 setName(id.toString());
         }
@@ -83,7 +82,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
 //    public Node(String hi) {
 ////        id = Netbase.addNode(hi);
-//        id = nextId();
+//        id = graph.nextId();
 //        setName(hi);
 //        save(this);
 //    }
@@ -102,7 +101,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if(s ==null)return this;// or clear?
         if(s.equals(name)) return this;
 //        name= Netbase.setLabel(this, s);
-        LocalNetbase.setName(id, s);
+        graph.setName(id, s);
         name = s;
         return this;
     }
@@ -116,7 +115,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //        Netbase.setLabel(id,edge.getLabel());
         Set<String> propertyKeys = edge.getPropertyKeys();
         for (String propertyKey : propertyKeys) {
-            addEdge(propertyKey, getThe("" + edge.getProperty(propertyKey)));// todo: doeuble value etc
+            addEdge(propertyKey, graph.getThe("" + edge.getProperty(propertyKey)));// todo: doeuble value etc
         }
     }
 
@@ -136,12 +135,12 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     private NetbaseGraph graph() {
-        if (graph == null) return NetbaseGraph.me();
+        if (graph == null) return LocalNetbaseGraph.me();
         return graph;
     }
 
     public Edge addEdge(final String label, final Vertex vertex) {
-        return graph().addEdge(null, this, vertex, label);
+        return graph().addStatement(id, (Integer) graph.getThe(label).getId(),(Integer)vertex.getId());
     }
 
     public VertexQuery query() {
@@ -157,7 +156,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public String toString() {
-        return StringFactory.vertexString(this);
+        return StringFactory.vertexString(this);// wah! blueprints wtf
     }
 
 
@@ -167,7 +166,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         for (Statement statement : getStatements()) {
             if (statement.object == Relation.reification) continue;
             if (statement.predicate == Relation.instance) continue;
-            String propertyKey = LocalNetbase.getName(statement.predicate);
+            String propertyKey = graph.getName(statement.predicate);
             list.add(propertyKey);
         }
         return list;
@@ -184,51 +183,51 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
         if (value instanceof HashMap) {
             HashMap map = (HashMap) value;
-            Node hashmap = getNew("hashmap");
-            addStatement4(0, this.id, getAbstract(key).id, hashmap.id, false);
+            Node hashmap = graph.getNew("hashmap");
+            graph.addStatement(this.id, (Integer) graph.getAbstract(key).getId(), hashmap.id);
             for (Object k : map.keySet())
-                addStatement4(0, hashmap.id, getAbstract("" + k).id, getValueNode(map.get(k)), false);
-// OR FORGET KEY:addStatement4(0, this.id, getAbstract(""+k).id,getValueNode(map.get(k)).id, false);
+                graph.addStatement(hashmap.id, graph.getAbstract("" + k).id, getValueNode(map.get(k)));
+// OR FORGET KEY:graph.addStatement( this.id, graph.getAbstract(""+k).id,getValueNode(map.get(k)).id, false);
         }
         if (value.getClass().isArray()) {
             addAll(key, value);
         } else {
             if (value instanceof Iterable) {
-//            Node arrayKey = getNew(key,Relation.Array);
-                Node arrayKey = getNew(key);
-                LocalNetbase.setKind(arrayKey.id, Relation.list);
+//            Node arrayKey = graph.getNew(key,Relation.Array);
+                Node arrayKey = graph.getNew(key);
+                graph.setKind(arrayKey.id, Relation.list);
                 for (Object o : (Iterable) value)
-                    addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
+                    graph.addStatement( this.id, arrayKey.id,getValueNode(o));
             } else {
-                int id1 = LocalNetbase.getId(key);
+                int id1 = graph.getId(key);
                 int valueNode = getValueNode(value);
-                addStatement4(0, this.id, id1, valueNode, false);
+                graph.addStatement( this.id, id1, valueNode);
             }
         }
     }
 
     private <T> void addAll(String key, T values) {
-        Node arrayKey = getNew(key);
-        LocalNetbase.setKind(arrayKey.id, Relation.array);
+        Node arrayKey = graph.getNew(key);
+        graph.setKind(arrayKey.id, Relation.array);
         if (values instanceof int[])
             for (int i : (int[]) values)
-                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof long[])
             for (long i : (long[]) values)
-                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof double[])
             for (double i : (double[]) values)
-                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof float[])
             for (float i : (float[]) values)
-                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof boolean[])
             for (boolean i : (boolean[]) values)
-                addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
+                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
         else for (Object o : (Object[]) values)
-                addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
+                graph.addStatement( this.id, arrayKey.id, getValueNode(o));
 //        for (Object o : Arrays.asList(value)) {
-//            addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
+//            graph.addStatement( this.id, arrayKey.id, getValueNode(o), false);
 //        }
     }
 
@@ -236,18 +235,18 @@ public class Node extends Structure implements Vertex {// extends Structure make
     @Override
     public <T> T getProperty(String key) {
         show();
-        int keyId = LocalNetbase.getId(key);
-        StatementStruct statement = findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
+        int keyId = graph.getId(key);
+        Statement statement = graph.findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
-        if (getNode(statement.predicate).kind == Relation.list) return getPropertyList(key);
-        if (getNode(statement.predicate).kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
+        if (graph.getNode(statement.predicate).kind == Relation.list) return getPropertyList(key);
+        if (graph.getNode(statement.predicate).kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
         statement.show();
-        return getValue(statement.getObject());
+        return getValue(statement.Object());
     }
 
     public <T, U> T getPropertyArray(String key, ArrayList<U> list) {
         for (Statement statement : getStatements()) {
-            if (key.equals(LocalNetbase.getName(statement.predicate))) {
+            if (key.equals(graph.getName(statement.predicate))) {
                 Object value = getValue(statement.Object());
                 list.add((U) value);
             }
@@ -269,8 +268,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
     public <T> T getPropertyList(String key) {
         ArrayList list = new ArrayList();
         for (Statement statement : getStatements()) {
-            if (key.equals(LocalNetbase.getName(statement.predicate)))
-                list.add(LocalNetbase.getName(statement.object));
+            if (key.equals(graph.getName(statement.predicate)))
+                list.add(graph.getName(statement.object));
         }
         Collections.reverse(list);
         return (T) list;
@@ -279,20 +278,20 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     int getValueNode(Object value) {
         if (value instanceof Node) return ((Node) value).id;
-        if (value instanceof String) return LocalNetbase.getId((String) value);
-//        if (value instanceof String) return getNew((String) value).id;// zickzack!
+        if (value instanceof String) return graph.getId((String) value);
+//        if (value instanceof String) return graph.getNew((String) value).id;// zickzack!
         if (value instanceof Integer)
-            return LocalNetbase.valueId("" + value, (double) (Integer) value, Relation.integer);
+            return graph.valueId("" + value, (double) (Integer) value, Relation.integer);
         if (value instanceof Long)
-            return LocalNetbase.valueId("" + value, (double) (Long) value, Relation.integer);// long
+            return graph.valueId("" + value, (double) (Long) value, Relation.integer);// long
         if (value instanceof Float)
-            return LocalNetbase.valueId("" + value, (double) (Float) value, Relation.number);
+            return graph.valueId("" + value, (double) (Float) value, Relation.number);
         if (value instanceof Number)
-            return LocalNetbase.valueId("" + value, (Double) value, Relation.number);
+            return graph.valueId("" + value, (Double) value, Relation.number);
         if (value instanceof Boolean)
             return ((Boolean) value).booleanValue() == true ? Relation._true : Relation._false;
         if (value instanceof java.util.Date)
-            return LocalNetbase.valueId("" + value, (double) ((Date) value).getTime(), Relation.date);
+            return graph.valueId("" + value, (double) ((Date) value).getTime(), Relation.date);
 //        if(value instanceof java.util.Date /* ETC!@@! */) throw new IllegalArgumentException("not yet supportsSerializableObjectProperty");
         if (value instanceof ArrayList) throw new RuntimeException("Should have iterated over ArrayList before");
         if (value instanceof Iterable) throw new RuntimeException("Should have iterated over ArrayList before");
@@ -302,18 +301,18 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     @Override
     public <T> T removeProperty(String key) {
-        StatementStruct statement;
+        Statement statement;
         T r = null;
         while (true) {
-            statement = findStatement(id, getAbstract(key).id, Relation.ANY, 1, true, true, true, true);
+            statement = graph.findStatement(id, graph.getAbstract(key).id, Relation.ANY, 1, true, true, true, true);
             if (statement == null) return r;// 'break'
-            Node object = statement.getObject();
+            Node object = statement.Object();
             if (r == null)// keep first Just for testAddingRemovingEdgeProperties
                 r = getValue(object);
-            int id1 = statement.getId();
+            int id1 = (Integer) statement.getId();
             Debugger.info(id1);
-            LocalNetbase.deleteStatement(id1);
-            LocalNetbase.showNode(statement.subject);
+            graph.deleteStatement(id1);
+            graph.showNode(statement.subject);
         }
     }
 
@@ -343,22 +342,18 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if (object.kind == Relation.node) {
             Integer id = Integer.parseInt(object.getName());
             try {
-                return (T) getNode(id);
+                return (T) graph.getNode(id);
             } catch (Exception e) {
             }
             try {
-                return (T) getNode(id);
+                return (T) graph.getNode(id);
             } catch (Exception e) {
             }
         }
         if (object.kind == Relation.statement) {
             Integer id = Integer.parseInt(object.getName());
             try {
-                return (T) getStatement(id);
-            } catch (Exception e) {
-            }
-            try {
-                return (T) new Statement(getStatement(id));
+                return (T) graph.getStatement(id);
             } catch (Exception e) {
             }
         }
@@ -367,7 +362,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     @Override
     public void remove() {
-        graph().removeVertex(this);
+        graph().removeNode(id);
     }
 
     @Override
@@ -388,7 +383,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //        return _name;
 //    }
     public String getName() {
-        if (name == null) name = LocalNetbase.getName(id);
+        if (name == null) name = graph.getName(id);
         return name;
     }
 
@@ -403,14 +398,13 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public boolean hasMember(Node fog) {
 //        Node has = Netbase.has(this, fog);
-        StatementStruct has = findStatement(id, Relation.ANY, fog.id, 0, false, false, false, false);
-
-        showNode(this.id);
+        Statement has = graph.findStatement(id, Relation.ANY, fog.id, 0, false, false, false, false);
+        graph.showNode(this.id);
         return has != null;
     }
 
     public void show() {
-        LocalNetbase.showNode(id);
+        graph.showNode(id);
     }
 
     public void delete() {

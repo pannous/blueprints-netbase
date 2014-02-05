@@ -1,9 +1,6 @@
 package com.pannous.netbase.blueprints.remote;
 
-import com.pannous.netbase.blueprints.LocalNetbase;
-import com.pannous.netbase.blueprints.RemoteNetbaseGraph;
-import com.pannous.netbase.blueprints.Statement;
-import com.pannous.netbase.blueprints.StatementStruct;
+import com.pannous.netbase.blueprints.*;
 import com.tinkerpop.blueprints.Edge;
 
 import java.util.Iterator;
@@ -27,7 +24,11 @@ public class AllRemoteEdges implements Iterable<Edge>, Iterator<Edge> {
 
     @Override
     public Iterator<Edge> iterator() {
-        count = graph.statementCount();
+        try {
+            count = graph.statementCount();
+        } catch (Exception e) {
+            count=graph.statementCount;
+        }
         return this;
     }
 

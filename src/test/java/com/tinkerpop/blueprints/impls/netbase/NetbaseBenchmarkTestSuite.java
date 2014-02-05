@@ -18,7 +18,7 @@ public class NetbaseBenchmarkTestSuite extends com.tinkerpop.blueprints.TestSuit
 
     public void testNetbaseRaw() throws Exception {
         double totalTime = 0.0d;
-        NetbaseGraph graph = (NetbaseGraph) graphTest.generateGraph();
+        Graph graph = graphTest.generateGraph();
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-2.xml"));
         graph.shutdown();
 
