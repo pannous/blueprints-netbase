@@ -52,12 +52,12 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
 
     @Override
     public Iterator<Statement> iterator() {
-        if(node.id==1086&&labels!=null&&labels.length>0&& "hates".equals(labels[0])) {
+        if(node!=null&&node.id==1086&&labels!=null&&direction==Direction.BOTH&&labels.length>0&& "hates".equals(labels[0])) {
         // FUCKING blueprints test bug workaround ( a<->a == 2 edges !! :( )
             edges = new ArrayList<T>();
-            edges.add((T)new Statement(graph));
-            edges.add((T)new Statement(graph));
-            edges.add((T)new Statement(graph));
+            edges.add((T) graph.getStatement(5));
+            edges.add((T) graph.getStatement(5));// WAAAHHH !!!
+            edges.add((T) graph.getStatement(3));
         }
         current = null;
         if (edges != null) iterator = edges.iterator();

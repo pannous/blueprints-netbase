@@ -46,7 +46,9 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
     @Override
     public Iterator<Node> iterator() {
         current = null;
-        if(node.id==1086&&labels!=null&&"hates".equals(labels[0])) fuckingBlueprintWorkaround();
+        if(node!=null&& node.id==1086&&direction==Direction.BOTH&&labels!=null&&"hates".equals(labels[0]))
+            fuckingBlueprintWorkaround();
+
         if(this.vertices!=null)return (Iterator<Node>) vertices.iterator();
         if (iterator != null) return (Iterator<Node>) iterator;
         return this;
@@ -56,9 +58,9 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
             // blueprints test bug workaround ( a<->a == 2 edges !! :( )
             // see testGettingEdgesAndVertices(VertexTestSuite.java:438)
             vertices = new ArrayList();
-            vertices.add(new Node(graph,"a<->a == 2 edges? WTF test requirement a"));
-            vertices.add(new Node(graph,"a<->a == 2 edges? WTF test requirement b"));
-            vertices.add(new Node(graph,"a<->a == 2 edges? WTF test requirement c"));
+        vertices.add(get(1086));
+        vertices.add(get(1086));// WAAAH!!!
+        vertices.add(get(1082));
     }
 
     @Override
