@@ -17,12 +17,12 @@ public class Statement implements Edge { // extends Structure
 
     private Node reification;
     public int subject;
-    int predicate;
-    int object;
+    public int predicate;
+    public int object;
 
-    Node _subject;
-    Node _predicate;
-    Node _object;
+    protected Node _subject;
+    protected Node _predicate;
+    protected Node _object;
     private NetbaseGraph graph;
     public int id;
 

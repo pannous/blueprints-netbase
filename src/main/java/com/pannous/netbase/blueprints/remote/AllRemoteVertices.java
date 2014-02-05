@@ -1,7 +1,7 @@
 package com.pannous.netbase.blueprints.remote;
 
 import com.pannous.netbase.blueprints.Node;
-import com.pannous.netbase.blueprints.RemoteNetbaseGraph;
+import com.pannous.netbase.blueprints.remote.RemoteNetbaseGraph;
 import com.tinkerpop.blueprints.Vertex;
 
 import java.util.Iterator;

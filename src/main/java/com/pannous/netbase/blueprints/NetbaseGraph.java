@@ -46,4 +46,6 @@ public interface NetbaseGraph{//} extends Graph {
     int statementCount();
 
     int nodeCount();
+
+    Node[] query(String s) throws Exception;
 }

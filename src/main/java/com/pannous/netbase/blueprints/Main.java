@@ -1,5 +1,7 @@
 package com.pannous.netbase.blueprints;
 
+import com.pannous.netbase.blueprints.remote.RemoteNetbaseGraph;
+
 /**
  * Copyright 2013 Pannous GmbH
  * <p/>
