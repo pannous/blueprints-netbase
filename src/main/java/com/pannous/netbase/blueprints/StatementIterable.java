@@ -69,16 +69,20 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
         int c = 0;
         while (next != null && c++ < 333333) {
             boolean labelOK = labels==null||labels.length==0;
-            for (int i = 0; i < labels.length; i++)
-                if (LocalNetbase.getName(next.predicate).equalsIgnoreCase(labels[i]))
+            String name = LocalNetbase.getName(next.predicate);
+            for (int i = 0; i < labels.length; i++) {
+                if (name.equalsIgnoreCase(labels[i]))
                     labelOK = true;
+            }
             if(next.subject==Relation.reification) labelOK = false;
             if (labelOK) {
                 if (direction == Direction.BOTH || direction == null) return next;
                 if (direction == Direction.OUT && node != null && next.subject == node.id) return next;
                 if (direction == Direction.IN && node != null && next.object == node.id) return next;
             }
-            next = LocalNetbase.nextStatement(node.id, next);
+            StatementStruct statementStruct = LocalNetbase.nextStatement(node.id, next);
+            if(statementStruct==next)break;
+            next = statementStruct;
         }
         return next;
     }

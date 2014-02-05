@@ -4,6 +4,8 @@ import com.pannous.netbase.blueprints.*;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.VertexQuery;
+import com.tinkerpop.blueprints.util.DefaultVertexQuery;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.util.ArrayList;
@@ -18,9 +20,12 @@ import java.util.Set;
  * Date: 05/02/14
  * Time: 09:47
  */
-public class RemoteNode extends Node {
+public class RemoteNode extends Node {//implements Vertex {//
     List<RemoteStatement> statements = new ArrayList<RemoteStatement>();
     public boolean loaded = false;
+//    private final int id;
+//    private final String name;
+//    private final RemoteNetbaseGraph graph;
 
     public RemoteNode(int id, String name, RemoteNetbaseGraph adapter) {
         super(-1);
@@ -136,6 +141,11 @@ public class RemoteNode extends Node {
     }
 
     @Override
+    public void setProperty(String s, Object o) {
+        addProperty(s,o);
+    }
+
+    @Override
     public <T> T getPropertyList(String key) {
         return getPropertyArray(key, new ArrayList<Object>());
     }
@@ -154,6 +164,11 @@ public class RemoteNode extends Node {
     @Override
     public Iterable<Vertex> getVertices(Direction direction, String... labels) {
         return super.getVertices(direction, labels);
+    }
+
+    @Override
+    public VertexQuery query() {
+        return new DefaultVertexQuery(this);
     }
 
 
@@ -235,13 +250,7 @@ public class RemoteNode extends Node {
 
     @Override
     public void show() {
-        System.out.println(id + " " + name);
-        for (Edge statement : statements) {
-            if (statement instanceof RemoteStatement)
-                System.out.println(((RemoteStatement) statement).show());
-            else
-                System.out.println(statement.getLabel() + " " + statement.getVertex(Direction.OUT));
-        }
+        graph.showNode(id);
     }
 
     @Override

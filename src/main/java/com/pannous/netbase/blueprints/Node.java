@@ -32,8 +32,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //    public Value value; // for statements, numbers  WASTE!!! remove
 
     private Pointer pointer;
-    private Logger logger= Logger.getLogger("Netbase");
-    protected NetbaseGraph graph=LocalNetbaseGraph.me();
+    private Logger logger = Logger.getLogger("Netbase");
+    protected NetbaseGraph graph = LocalNetbaseGraph.me();
 
 
     @Override
@@ -48,12 +48,12 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public Node(int id) {// AVOID!! more expensive than get(id) !!!
-        if(id==-1){
-        setAutoRead(false);
-        setAutoWrite(false);
-        setAutoSynch(false);
-        }else
-        this.id = id;
+        if (id == -1) {
+            setAutoRead(false);
+            setAutoWrite(false);
+            setAutoSynch(false);
+        } else
+            this.id = id;
 //        load();
     }
 
@@ -98,8 +98,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //
 
     public Node setName(String s) {
-        if(s ==null)return this;// or clear?
-        if(s.equals(name)) return this;
+        if (s == null) return this;// or clear?
+        if (s.equals(name)) return this;
 //        name= Netbase.setLabel(this, s);
         graph.setName(id, s);
         name = s;
@@ -140,7 +140,14 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public Edge addEdge(final String label, final Vertex vertex) {
-        return graph().addStatement(id, (Integer) graph.getThe(label).getId(),(Integer)vertex.getId());
+        if (label == null || label.equals("")) throw new IllegalArgumentException("EMPTY ID not allowed as property");
+        if (label.equals(StringFactory.LABEL)) throw new IllegalArgumentException("LABEL not allowed as property");
+        if (label.equals(StringFactory.ID)) throw new IllegalArgumentException("ID not allowed as property");
+        if (vertex == null || vertex.toString().equals(""))
+            throw new IllegalArgumentException("EMPTY value not allowed as property");
+        Node node = new Node(graph(), vertex.getId());
+        Node the = graph.getThe(label);
+        return graph().addStatement(id, the.id, node.id);
     }
 
     public VertexQuery query() {
@@ -149,8 +156,11 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public boolean equals(final Object object) {
         if (object == this) return true;
-        if (object instanceof Node) return ((Node) object).id == id;
-        if (object instanceof Node) return ((Node) object).id == id;
+        if (object instanceof Node){
+            Node node = (Node) object;
+            return node.id == id;
+        }
+        if (object instanceof Vertex) return ((Vertex) object).getId().equals(id);
         return false;
 //        return object instanceof Node && ((Node) object).getId().equals(this.getId());
     }
@@ -197,11 +207,11 @@ public class Node extends Structure implements Vertex {// extends Structure make
                 Node arrayKey = graph.getNew(key);
                 graph.setKind(arrayKey.id, Relation.list);
                 for (Object o : (Iterable) value)
-                    graph.addStatement( this.id, arrayKey.id,getValueNode(o));
+                    graph.addStatement(this.id, arrayKey.id, getValueNode(o));
             } else {
                 int id1 = graph.getId(key);
                 int valueNode = getValueNode(value);
-                graph.addStatement( this.id, id1, valueNode);
+                graph.addStatement(this.id, id1, valueNode);
             }
         }
     }
@@ -211,21 +221,21 @@ public class Node extends Structure implements Vertex {// extends Structure make
         graph.setKind(arrayKey.id, Relation.array);
         if (values instanceof int[])
             for (int i : (int[]) values)
-                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
+                graph.addStatement(this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof long[])
             for (long i : (long[]) values)
-                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
+                graph.addStatement(this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof double[])
             for (double i : (double[]) values)
-                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
+                graph.addStatement(this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof float[])
             for (float i : (float[]) values)
-                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
+                graph.addStatement(this.id, arrayKey.id, getValueNode(i));
         else if (values instanceof boolean[])
             for (boolean i : (boolean[]) values)
-                graph.addStatement( this.id, arrayKey.id, getValueNode(i));
+                graph.addStatement(this.id, arrayKey.id, getValueNode(i));
         else for (Object o : (Object[]) values)
-                graph.addStatement( this.id, arrayKey.id, getValueNode(o));
+                graph.addStatement(this.id, arrayKey.id, getValueNode(o));
 //        for (Object o : Arrays.asList(value)) {
 //            graph.addStatement( this.id, arrayKey.id, getValueNode(o), false);
 //        }
@@ -252,7 +262,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
             }
         }
         if (list.size() == 0) {
-            logger.warning("EMPTY property array! "+key);
+            logger.warning("EMPTY property array! " + key);
             return (T) list.toArray();
         }
         Collections.reverse(list);
@@ -362,7 +372,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     @Override
     public void remove() {
-        graph().removeNode(id);
+        ((LocalNetbaseGraph) graph()).nodes.remove(this);
+        graph().deleteNode(id);
     }
 
     @Override
@@ -408,8 +419,10 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public void delete() {
-//        Debugger.trace("deleteNode " + id);
-        remove();
+        if (id > 0 && id < graph().nodeCount()) {
+            Debugger.trace("deleteNode " + id);
+            graph().deleteNode(id);
+        }
     }
 
     public Node load() {

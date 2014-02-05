@@ -143,6 +143,7 @@ public class Statement implements Edge { // extends Structure
     public Node getReification() {
         if (reification == null) reification = getAbstract("reification of "+id);
         reification = get(valueId("reification of " + id, (double) id, Relation.reification));
+        showNode(reification.id);
         return reification;
     }
 
@@ -196,7 +197,9 @@ public class Statement implements Edge { // extends Structure
 //        if (subjectName != null)
 //            return id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "\t" + predicate + "\t" + object;
 //        else
-            return id + "\t" + subject + "\t" + predicate + "\t" + object;
+        String s = id + "\t" + subject + "\t" + predicate + "\t" + object;
+        System.out.println(s);
+        return s;
     }
 
     public int getObject() {

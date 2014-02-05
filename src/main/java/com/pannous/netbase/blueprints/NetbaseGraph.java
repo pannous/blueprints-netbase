@@ -15,7 +15,7 @@ public interface NetbaseGraph{//} extends Graph {
 
     void setName(int id, String s);
 
-    Vertex getThe(String s);
+    Node getThe(String s);
 
     String getName(int predicate);
 
@@ -41,7 +41,7 @@ public interface NetbaseGraph{//} extends Graph {
 
     Statement getStatement(Integer id);
 
-    void removeNode(int id);
+    void deleteNode(int id);
 
     int statementCount();
 

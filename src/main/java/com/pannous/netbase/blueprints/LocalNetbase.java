@@ -17,7 +17,8 @@ public class LocalNetbase implements NetbaseAdapter{
 //        Native.setPreserveLastError(true);
 //        Native.setPreserveLastError(false);// throw LastErrorException!
         Native.register("Netbase");// libNetbase.so | libNetbase.dylib
-        LocalNetbase.init();
+        LocalNetbase.init(false);// testing
+        LocalNetbase.init(true);// live
 //        Native.getLastError()  LastErrorException
 //        NativeLibrary.getGlobalVariableAddress(java.lang.String symbolName) !
     }
@@ -25,7 +26,7 @@ public class LocalNetbase implements NetbaseAdapter{
     //    public static native int atol(String s); OK!!
     public static native int test2();
 
-    public static native void init();
+    public static native void init(boolean relations);
 
     public static Node get(int id){
 //        if(!testing&& id<1000) return Relation.byId(id);

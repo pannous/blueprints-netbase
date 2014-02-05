@@ -8,6 +8,7 @@ import com.tinkerpop.blueprints.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 
@@ -149,13 +150,13 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
     }
 
     @Override
-    public void setKind(int id, int list) {
-
+    public void setKind(int id, int kind) {
+        execute(id+".kind="+kind);
     }
 
     @Override
     public int getId(String key) {
-        return 0;
+        return getNode(key).id;
     }
 
     @Override
@@ -165,32 +166,36 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
 
     @Override
     public Node getNode(int id) {
-        return null;
+        return getNode(id,null);
     }
 
     @Override
     public int valueId(String s, double value, int integer) {
-        return 0;
+        return new RemoteNode(nodeCount++,s,this).id;// TOODOO!!
     }
 
     @Override
     public void deleteStatement(int id1) {
-
+        execute("delete $" + id1);
     }
 
     @Override
     public void showNode(int subject) {
-
+//        get(subject).show();
     }
 
     @Override
     public Statement getStatement(Integer id) {
         return null;
+//        return new NotImplementedException();
+//        return queryStatement(id);
     }
 
-    @Override
-    public void removeNode(int id) {
 
+
+    public void deleteNode(int current) {
+        execute("delete " + current);
+//        get(current).remove();
     }
 
     public void excludeProperties(String nodeOrRelation) {
@@ -370,8 +375,4 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
         return getNode(current, null);
     }
 
-    public void deleteNode(int current) {
-        execute("delete " + current);
-//        get(current).remove();
-    }
 }

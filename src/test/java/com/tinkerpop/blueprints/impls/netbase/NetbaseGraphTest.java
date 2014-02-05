@@ -27,6 +27,8 @@ public class NetbaseGraphTest extends GraphTest {
 
     public void testVertexTestSuite() throws Exception {
         this.stopWatch();
+        LocalNetbase.execute("testing", null);
+//        LocalNetbase.execute(":clear",null);
         doTestSuite(new VertexTestSuite(this));
         printTestPerformance("VertexTestSuite", this.stopWatch());
     }
@@ -86,6 +88,7 @@ public class NetbaseGraphTest extends GraphTest {
 
     public Graph generateGraph(final String name) {
         Graph graph = LocalNetbaseGraph.me();
+        cleanup();
         return graph;
     }
 
@@ -108,17 +111,34 @@ public class NetbaseGraphTest extends GraphTest {
     }
 
     private void cleanup() {
+        logger.info("cleanup start");
+        LocalNetbaseGraph.nodes.clear();// g'schummelt
+        LocalNetbaseGraph.edges.clear();// g'schummelt
+        LocalNetbase.execute("testing", null);
+        if (1 > 0)
+            return;
+
+        LocalNetbase.getAbstract("knows").delete();
         LocalNetbase.getAbstract("location").delete();// danger!
         LocalNetbase.getAbstract("name").delete();// danger!
         LocalNetbase.getAbstract("marko").delete();// danger!
         LocalNetbase.getAbstract("a").delete();
         LocalNetbase.getAbstract("b").delete();
         LocalNetbase.getAbstract("c").delete();
-        for (int i = 0; i < 1000; i++) LocalNetbase.getAbstract("" + i).delete();
-        for (Object o : LocalNetbaseGraph.me().getVertices()) {
-            LocalNetbase.getAbstract("" + o).delete();
-            ((Vertex) o).remove();
-        }
+        LocalNetbase.execute(":clear",null);
+        if (LocalNetbase.nodeCount() > 10000)
+            throw new RuntimeException("nodeCount() > 10000 please ERASE DATABASE beforehands!");
+
+        // takes AGES in LIVE data (naturally, since there are many numbers used and delete is 'clean')
+        // Klasse #1 (kind: 100), 330798 statements NOOOO! MOCK!
+
+//        for (int i = 0; i < 1000; i++) LocalNetbase.getAbstract("" + i).delete();// string 'numbers', NOT ids!
+//        for (Object o : LocalNetbaseGraph.me().getVertices()) {// ALL????????????????????????
+//            LocalNetbase.getAbstract("" + o).delete();
+//            ((Vertex) o).remove();
+//        }
+        logger.info("cleanup end");
+
 //        Netbase.getAbstract("a").delete();
     }
 

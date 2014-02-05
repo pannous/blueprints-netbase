@@ -4,7 +4,9 @@ import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.util.StringFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.pannous.netbase.blueprints.LocalNetbase.*;
@@ -16,8 +18,9 @@ import static com.pannous.netbase.blueprints.LocalNetbase.*;
  */
 public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {//} IndexableGraph implements TransactionalGraph, IndexableGraph, KeyIndexableGraph {//, MetaGraph<GraphDatabaseService>
     private static final Logger logger = Logger.getLogger(NetbaseGraph.class.getName());
-    private static ArrayList<Node> nodes = new ArrayList();
-    private static List<Statement> edges = new ArrayList();
+    public static ArrayList<Node> nodes = new ArrayList();
+//    public static Map<Integer,Node> cache=new HashMap<Integer, Node>(1000);
+    public static List<Statement> edges = new ArrayList();
 //    public static NetbaseCon
 
 //    private static final Relation ANY =(Relation) getNode(1);
@@ -74,20 +77,24 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     public Vertex addVertex(Object id) {
         Node node;
         if (id != null) {
-            if (id instanceof Integer)
-                node = get((Integer) id);
-            else if (hasNode("" + id))
+//            if (id instanceof Integer && (int)id>1000)
+//                node = get((Integer) id);
+//            else
+            if (hasNode("" + id))
                 node = getNode("" + id);
             else {
-                node = LocalNetbase.add("" + id, Relation._abstract);
+                node = LocalNetbase.getAbstract("" + id);
+//                node = LocalNetbase.add("" + id, Relation._abstract);
+                nodes.add(node);
 //                node = get(nextId());
 //                node.setName(id.toString());
             }
         } else {
 //            node = get(nextId());
             node = LocalNetbase.add("" + (nextId() + 1), Relation._abstract);// lolhack
+            nodes.add(node);
         }
-        nodes.add(node);
+//        cache.put(node.id, node);
         return node;
     }
 
@@ -97,8 +104,9 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         if (id instanceof Integer) return get((Integer) id);
         try {// for Blueprint !!
             int i = Integer.parseInt("" + id);
-            if (i > 10000)// wth?
+            if (i > 10000)// wth? don't ID Blueprint's "1" test 'ids'
                 return new Node(i);
+//            else return get(i);// RELATIONS!
         } catch (NumberFormatException e) {
         }
         if (!LocalNetbase.hasNode(id.toString())) return null;
@@ -106,6 +114,7 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     }
 
     public void removeVertex(Vertex vertex) {
+        if(vertex==null)return;
         nodes.remove(vertex);
         if (vertex.getId() instanceof Integer)
             LocalNetbase.deleteNode((Integer) vertex.getId());
@@ -197,7 +206,7 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
 
     @Override
     public String toString() {
-        return "NetbaseGraph".toLowerCase() + "_" + super.toString();
+        return "LocalNetbaseGraph".toLowerCase() + "_" + super.toString();
     }
 
     public void addStatement4(int contextId, int subjectId, int predicateId, int objectId, boolean checkNodes) {
@@ -216,7 +225,7 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         return LocalNetbase.nextId();
     }
 
-    public Vertex getThe(String name) {
+    public Node getThe(String name) {
         return LocalNetbase.getThe(name);
     }
 
@@ -237,7 +246,8 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     }
 
     @Override
-    public void removeNode(int id) {
+    public void deleteNode(int id) {
+//        nodes.remove(getNode(id));
         LocalNetbase.deleteNode(id);
     }
 
@@ -263,7 +273,9 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     }
 
     public Statement findStatement(int subject, int predicate, int object, int recurse, boolean semantic, boolean symmetric, boolean semanticPredicate, boolean matchName) {
-        return new Statement(LocalNetbase.findStatement(subject, predicate, object, recurse, semantic, symmetric, semanticPredicate, matchName));
+        StatementStruct statement = LocalNetbase.findStatement(subject, predicate, object, recurse, semantic, symmetric, semanticPredicate, matchName);
+        if(statement==null) return null;
+        return new Statement(statement);
     }
 
     public int valueId(String name, double value, int unitId) {
