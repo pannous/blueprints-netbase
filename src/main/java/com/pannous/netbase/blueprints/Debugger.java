@@ -15,6 +15,7 @@ public class Debugger {
     public static void info(Object whattt) {
         logger.setLevel(Level.ALL);
         logger.info(""+whattt);
+//        logger.flush !!!!!!
     }
 
     public static void error(Exception e) {

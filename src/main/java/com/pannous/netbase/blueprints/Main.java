@@ -21,9 +21,12 @@ public class Main {
         client.excludeProperties("Registrierung");
         client.includeProperty("T-Online", "Eigentümer");
         client.includeProperty("T-Online", "Url");
+        client.includeProperty("Unternehmen", "Sprache");
 //        client.includeProperty("T-Online", "4668573");//  wiki image
 //        client.clearView("T-Online");
         client.showView("T-Online");
+        Debugger.info("-----------------------------");
+        System.out.println("-----------------------------");
         try {
             Node[] nodes = client.query("T-Online");
             nodes[0].show();
