@@ -9,12 +9,12 @@ package com.pannous.netbase.blueprints;
  * Time: 11:34
  */
 public class RemoteStatement extends Statement {
-    private final NetbaseClient netbaseClient;
+    private final RemoteNetbaseGraph netbaseClient;
     String subjectName;
     String predicateName;
     String objectName;
 
-    public RemoteStatement(int id, NetbaseClient netbaseClient) {
+    public RemoteStatement(int id, RemoteNetbaseGraph netbaseClient) {
         super();
 //        super.setAutoRead(false);
 //        super.setAutoWrite(false);

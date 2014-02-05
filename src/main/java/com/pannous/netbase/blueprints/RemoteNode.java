@@ -18,11 +18,11 @@ import java.util.Set;
  * Time: 09:47
  */
 public class RemoteNode extends Node{
-    private NetbaseClient netbaseClient;
-    List<Edge> statements=new ArrayList<Edge>();
+    private RemoteNetbaseGraph netbaseClient;
+    List<RemoteStatement> statements=new ArrayList<RemoteStatement>();
     public boolean loaded=false;
 
-    public RemoteNode(int id, String name, NetbaseClient netbaseClient) {
+    public RemoteNode(int id, String name, RemoteNetbaseGraph netbaseClient) {
         super(-1);
         super.setAutoRead(false);
         super.setAutoWrite(false);

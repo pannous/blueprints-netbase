@@ -1,11 +1,10 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
-import com.pannous.netbase.blueprints.Netbase;
+import com.pannous.netbase.blueprints.LocalNetbase;
 import com.pannous.netbase.blueprints.NetbaseGraph;
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.impls.GraphTest;
 import com.tinkerpop.blueprints.util.io.gml.GMLReaderTestSuite;
-import com.tinkerpop.blueprints.util.io.graphml.GraphMLReaderTestSuite;
 import com.tinkerpop.blueprints.util.io.graphson.GraphSONReaderTestSuite;
 
 import java.io.File;
@@ -108,15 +107,15 @@ public class NetbaseGraphTest extends GraphTest {
     }
 
     private void cleanup() {
-        Netbase.getAbstract("location").delete();// danger!
-        Netbase.getAbstract("name").delete();// danger!
-        Netbase.getAbstract("marko").delete();// danger!
-        Netbase.getAbstract("a").delete();
-        Netbase.getAbstract("b").delete();
-        Netbase.getAbstract("c").delete();
-        for (int i = 0; i < 1000; i++) Netbase.getAbstract("" + i).delete();
+        LocalNetbase.getAbstract("location").delete();// danger!
+        LocalNetbase.getAbstract("name").delete();// danger!
+        LocalNetbase.getAbstract("marko").delete();// danger!
+        LocalNetbase.getAbstract("a").delete();
+        LocalNetbase.getAbstract("b").delete();
+        LocalNetbase.getAbstract("c").delete();
+        for (int i = 0; i < 1000; i++) LocalNetbase.getAbstract("" + i).delete();
         for (Object o : NetbaseGraph.me().getVertices()) {
-            Netbase.getAbstract("" + o).delete();
+            LocalNetbase.getAbstract("" + o).delete();
             ((Vertex) o).remove();
         }
 //        Netbase.getAbstract("a").delete();

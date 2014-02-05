@@ -23,7 +23,7 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
 
     public StatementIterable(NetbaseGraph graph, Node node, Direction direction, String[] labels) {
         this.graph = graph;
-        Netbase.showNode(node.id);
+        LocalNetbase.showNode(node.id);
         this.node=node;
         this.direction = direction;
 
@@ -65,12 +65,12 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
     }
 
     private StatementStruct findNext() {
-        StatementStruct next = Netbase.nextStatement(node.id, current);
+        StatementStruct next = LocalNetbase.nextStatement(node.id, current);
         int c = 0;
         while (next != null && c++ < 333333) {
             boolean labelOK = labels==null||labels.length==0;
             for (int i = 0; i < labels.length; i++)
-                if (Netbase.getName(next.predicate).equalsIgnoreCase(labels[i]))
+                if (LocalNetbase.getName(next.predicate).equalsIgnoreCase(labels[i]))
                     labelOK = true;
             if(next.subject==Relation.reification) labelOK = false;
             if (labelOK) {
@@ -78,7 +78,7 @@ public class StatementIterable<T extends Edge> implements CloseableIterable<Stat
                 if (direction == Direction.OUT && node != null && next.subject == node.id) return next;
                 if (direction == Direction.IN && node != null && next.object == node.id) return next;
             }
-            next = Netbase.nextStatement(node.id, next);
+            next = LocalNetbase.nextStatement(node.id, next);
         }
         return next;
     }

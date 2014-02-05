@@ -31,14 +31,14 @@ public class StatementStruct extends Structure {
     }
 
     public Node getObject() {
-        return Netbase.getNode(object);
+        return LocalNetbase.getNode(object);
     }
 
     public int getId() {
-        return Netbase.getStatementId(this);// ugly
+        return LocalNetbase.getStatementId(this);// ugly
     }
 
     public void show() {
-        Netbase.showStatement(getId());
+        LocalNetbase.showStatement(getId());
     }
 }

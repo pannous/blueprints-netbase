@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.util.StringFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import static com.pannous.netbase.blueprints.Netbase.*;
+import static com.pannous.netbase.blueprints.LocalNetbase.*;
 
 /**
  * A Blueprints implementation of the graph database netbase (https://github.com/pannous/blueprints-netbase)
@@ -78,13 +78,13 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
             else if (hasNode("" + id))
                 node = getNode("" + id);
             else {
-                node = Netbase.add("" + id,Relation._abstract);
+                node = LocalNetbase.add("" + id, Relation._abstract);
 //                node = get(nextId());
 //                node.setName(id.toString());
             }
         } else{
 //            node = get(nextId());
-            node = Netbase.add(""+(nextId()+1),Relation._abstract);// lolhack
+            node = LocalNetbase.add("" + (nextId() + 1), Relation._abstract);// lolhack
         }
         nodes.add(node);
         return node;
@@ -100,16 +100,16 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
                 return new Node(i);
         } catch (NumberFormatException e) {
         }
-        if (!Netbase.hasNode(id.toString())) return null;
-        return Netbase.getAbstract("" + id);
+        if (!LocalNetbase.hasNode(id.toString())) return null;
+        return LocalNetbase.getAbstract("" + id);
     }
 
     public void removeVertex(Vertex vertex) {
         nodes.remove(vertex);
         if(vertex.getId() instanceof Integer)
-            Netbase.deleteNode((Integer) vertex.getId());
+            LocalNetbase.deleteNode((Integer) vertex.getId());
         else
-            Netbase.deleteNode(getId("" + vertex.getId()));
+            LocalNetbase.deleteNode(getId("" + vertex.getId()));
     }
 
     public Iterable<Vertex> getVertices() {
@@ -134,7 +134,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
         Node predicate = getNode(label);
         Node subject = getNode(outVertex);
         Node object = getNode(inVertex);
-        StatementStruct s = Netbase.addStatement4(0, subject.id, predicate.id, object.id, false);
+        StatementStruct s = LocalNetbase.addStatement4(0, subject.id, predicate.id, object.id, false);
         if (s == null) throw new RuntimeException("addStatement4 Unsuccessful!");
         Statement statement = new Statement(s);
         if (id != null){
@@ -158,11 +158,11 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     public Edge getEdge(Object id) {
         if (id == null) throw new IllegalArgumentException("getEdge id Must not be null");
         if (!(id instanceof Integer)) return null;// BAD Requirement
-        return new Statement(Netbase.getStatement((Integer) id));
+        return new Statement(LocalNetbase.getStatement((Integer) id));
     }
 
     public void removeEdge(Edge edge) {
-        Netbase.deleteStatement((Integer) edge.getId());
+        LocalNetbase.deleteStatement((Integer) edge.getId());
     }
 
     public Iterable<Edge> getEdges() {
@@ -186,7 +186,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     }
 
     public void shutdown() {
-        Netbase.doExecute("exit");
+        LocalNetbase.doExecute("exit");
     }
 
     public static NetbaseGraph me() {

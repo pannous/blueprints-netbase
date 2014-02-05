@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.ExceptionFactory;
 
 import java.util.Set;
-import static com.pannous.netbase.blueprints.Netbase.*;
+import static com.pannous.netbase.blueprints.LocalNetbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -70,7 +70,7 @@ public class Statement implements Edge { // extends Structure
         subject = statementStruct.subject;
         predicate = statementStruct.predicate;
         object = statementStruct.object;
-        id = Netbase.getStatementId(statementStruct);// double, expensive
+        id = LocalNetbase.getStatementId(statementStruct);// double, expensive
     }
 
     @Override
@@ -166,7 +166,7 @@ public class Statement implements Edge { // extends Structure
 
     @Override
     public void remove() {
-        Netbase.deleteStatement((int)id);
+        LocalNetbase.deleteStatement((int) id);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
 import com.pannous.netbase.blueprints.*;
-import com.tinkerpop.blueprints.*;
+import com.tinkerpop.blueprints.BaseTest;
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
@@ -9,18 +11,19 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.pannous.netbase.blueprints.LocalNetbase.*;
 
 
 /**
  * @author Pannous (http://Pannous.com)
  */
-public class NetbaseCoreTest extends BaseTest {
-    private static final Logger logger = Logger.getLogger(NetbaseCoreTest.class.getName());
+public class RemoteNetbaseTest extends BaseTest {
+    private static final Logger logger = Logger.getLogger(RemoteNetbaseTest.class.getName());
+    final RemoteNetbaseGraph graph;
 
-    public NetbaseCoreTest() {
+    public RemoteNetbaseTest() {
         super();
         logger.setLevel(Level.ALL);
+        graph = new RemoteNetbaseGraph("0:81");
 //        Debugger.logger.setLevel(Level.ALL);
     }
 
@@ -37,6 +40,14 @@ public class NetbaseCoreTest extends BaseTest {
         assertEquals(q,3);
         String t=ar.getProperty("tab").toString();
         assertEquals(t,"3");
+    }
+
+    private Node getNew(String name) {
+        return graph.getNode(name);
+    }
+
+    private Node get(int id) {
+        return graph.getNode(id, null);
     }
 
     public void testNetbaseArray() throws Exception {
@@ -57,6 +68,10 @@ public class NetbaseCoreTest extends BaseTest {
 //        int[] t = ar.getProperty("t");
         Integer[] t = ar.getProperty("t");
         assertTrue("Arrays.equals(arr, t)",Arrays.equals(arr, t));
+    }
+
+    private void showNode(int id) {
+        graph.getNode(id,null).show();
     }
 
     public void testNetbaseArrayList() throws Exception {
@@ -95,6 +110,10 @@ public class NetbaseCoreTest extends BaseTest {
         int count = count(edges);
 //        assertEquals(count, frau.statementCount - 1);// -1 wegen next ^^
 //        frau.getEdgeIterator();
+    }
+
+    private Node getThe(String name) {
+        return graph.getThe(name);
     }
 
     public void testNetbaseEdges2() {

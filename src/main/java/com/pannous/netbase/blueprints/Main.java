@@ -14,7 +14,7 @@ public class Main {
     }
 
     private static void testRemoteGraph(String[] args) {
-        NetbaseClient client = new NetbaseClient("http://de.netbase.pannous.com:81");
+        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
 //        client.includeProperty("T-Online", "Url");
 //        client.showView("T-Online");
         client.clearView("T-Online");
@@ -39,11 +39,11 @@ public class Main {
     private static void testLocalGraph(String[] args) {
 //        Netbase netbase = new Netbase();
 //        NetbaseGraph<Node> graph = new NetbaseGraph();
-        Netbase.doExecute("help");
+        LocalNetbase.doExecute("help");
 //        Netbase.doExecute("console");
         String command = "";
         for (String arg : args) command += arg + " ";
-        Netbase.doExecute(command);
+        LocalNetbase.doExecute(command);
     }
 
 }

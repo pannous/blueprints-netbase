@@ -1,7 +1,7 @@
 package com.pannous.netbase.jdbc;
 
 
-import com.pannous.netbase.blueprints.Netbase;
+import com.pannous.netbase.blueprints.LocalNetbase;
 import com.pannous.netbase.blueprints.Node;
 import com.tinkerpop.blueprints.BaseTest;
 
@@ -33,19 +33,19 @@ public class NetbaseSqlTest extends BaseTest {
     public void testNetbaseQuery(){
         String sql="select * from dog";
 //        String sql="select Oberklasse from dog";
-        Node[] nodes = Netbase.doExecute(sql);
+        Node[] nodes = LocalNetbase.doExecute(sql);
         assertTrue(nodes.length>2);
         assertTrue(nodes[0].name.contains("Gattung")||nodes[0].name.contains("dog")||nodes[0].name.contains("Dog"));
-        Netbase.showNodes(nodes);
+        LocalNetbase.showNodes(nodes);
     }
     public void testQueryField(){
         String sql="select Klasse from dog where Doenges";
 //        String sql="select Oberklasse from dog";
-        Node[] nodes = Netbase.doExecute(sql);
+        Node[] nodes = LocalNetbase.doExecute(sql);
         assertNotNull(nodes);
         assertTrue("nodes.length==1",nodes.length==1);
         String name = nodes[0].name;
         assertTrue(name.equals("Conant"));
-        Netbase.showNodes(nodes);
+        LocalNetbase.showNodes(nodes);
     }
 }

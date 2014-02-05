@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static com.pannous.netbase.blueprints.Netbase.*;
+import static com.pannous.netbase.blueprints.LocalNetbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -102,7 +102,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if(s ==null)return this;// or clear?
         if(s.equals(name)) return this;
 //        name= Netbase.setLabel(this, s);
-        Netbase.setName(id, s);
+        LocalNetbase.setName(id, s);
         name = s;
         return this;
     }
@@ -167,7 +167,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         for (Statement statement : getStatements()) {
             if (statement.object == Relation.reification) continue;
             if (statement.predicate == Relation.instance) continue;
-            String propertyKey = Netbase.getName(statement.predicate);
+            String propertyKey = LocalNetbase.getName(statement.predicate);
             list.add(propertyKey);
         }
         return list;
@@ -196,11 +196,11 @@ public class Node extends Structure implements Vertex {// extends Structure make
             if (value instanceof Iterable) {
 //            Node arrayKey = getNew(key,Relation.Array);
                 Node arrayKey = getNew(key);
-                Netbase.setKind(arrayKey.id, Relation.list);
+                LocalNetbase.setKind(arrayKey.id, Relation.list);
                 for (Object o : (Iterable) value)
                     addStatement4(0, this.id, arrayKey.id, getValueNode(o), false);
             } else {
-                int id1 = Netbase.getId(key);
+                int id1 = LocalNetbase.getId(key);
                 int valueNode = getValueNode(value);
                 addStatement4(0, this.id, id1, valueNode, false);
             }
@@ -209,7 +209,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     private <T> void addAll(String key, T values) {
         Node arrayKey = getNew(key);
-        Netbase.setKind(arrayKey.id, Relation.array);
+        LocalNetbase.setKind(arrayKey.id, Relation.array);
         if (values instanceof int[])
             for (int i : (int[]) values)
                 addStatement4(0, this.id, arrayKey.id, getValueNode(i), false);
@@ -236,7 +236,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     @Override
     public <T> T getProperty(String key) {
         show();
-        int keyId = Netbase.getId(key);
+        int keyId = LocalNetbase.getId(key);
         StatementStruct statement = findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
         if (getNode(statement.predicate).kind == Relation.list) return getPropertyList(key);
@@ -247,7 +247,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public <T, U> T getPropertyArray(String key, ArrayList<U> list) {
         for (Statement statement : getStatements()) {
-            if (key.equals(Netbase.getName(statement.predicate))) {
+            if (key.equals(LocalNetbase.getName(statement.predicate))) {
                 Object value = getValue(statement.Object());
                 list.add((U) value);
             }
@@ -269,8 +269,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
     public <T> T getPropertyList(String key) {
         ArrayList list = new ArrayList();
         for (Statement statement : getStatements()) {
-            if (key.equals(Netbase.getName(statement.predicate)))
-                list.add(Netbase.getName(statement.object));
+            if (key.equals(LocalNetbase.getName(statement.predicate)))
+                list.add(LocalNetbase.getName(statement.object));
         }
         Collections.reverse(list);
         return (T) list;
@@ -279,20 +279,20 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     int getValueNode(Object value) {
         if (value instanceof Node) return ((Node) value).id;
-        if (value instanceof String) return Netbase.getId((String) value);
+        if (value instanceof String) return LocalNetbase.getId((String) value);
 //        if (value instanceof String) return getNew((String) value).id;// zickzack!
         if (value instanceof Integer)
-            return Netbase.valueId("" + value, (double) (Integer) value, Relation.integer);
+            return LocalNetbase.valueId("" + value, (double) (Integer) value, Relation.integer);
         if (value instanceof Long)
-            return Netbase.valueId("" + value, (double) (Long) value, Relation.integer);// long
+            return LocalNetbase.valueId("" + value, (double) (Long) value, Relation.integer);// long
         if (value instanceof Float)
-            return Netbase.valueId("" + value, (double) (Float) value, Relation.number);
+            return LocalNetbase.valueId("" + value, (double) (Float) value, Relation.number);
         if (value instanceof Number)
-            return Netbase.valueId("" + value, (Double) value, Relation.number);
+            return LocalNetbase.valueId("" + value, (Double) value, Relation.number);
         if (value instanceof Boolean)
             return ((Boolean) value).booleanValue() == true ? Relation._true : Relation._false;
         if (value instanceof java.util.Date)
-            return Netbase.valueId("" + value, (double) ((Date) value).getTime(), Relation.date);
+            return LocalNetbase.valueId("" + value, (double) ((Date) value).getTime(), Relation.date);
 //        if(value instanceof java.util.Date /* ETC!@@! */) throw new IllegalArgumentException("not yet supportsSerializableObjectProperty");
         if (value instanceof ArrayList) throw new RuntimeException("Should have iterated over ArrayList before");
         if (value instanceof Iterable) throw new RuntimeException("Should have iterated over ArrayList before");
@@ -312,8 +312,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
                 r = getValue(object);
             int id1 = statement.getId();
             Debugger.info(id1);
-            Netbase.deleteStatement(id1);
-            Netbase.showNode(statement.subject);
+            LocalNetbase.deleteStatement(id1);
+            LocalNetbase.showNode(statement.subject);
         }
     }
 
@@ -388,7 +388,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //        return _name;
 //    }
     public String getName() {
-        if (name == null) name = Netbase.getName(id);
+        if (name == null) name = LocalNetbase.getName(id);
         return name;
     }
 
@@ -410,7 +410,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public void show() {
-        Netbase.showNode(id);
+        LocalNetbase.showNode(id);
     }
 
     public void delete() {
@@ -425,6 +425,10 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public void addProperty(String key, Object value) {
         setProperty(key, value);
+    }
+
+    public <T> T getValue() {
+        return (T) toString();
     }
 
 //    public void setValue(Object object) {

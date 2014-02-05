@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.Vertex;
 
 import java.util.Iterator;
 import java.util.List;
-import static com.pannous.netbase.blueprints.Netbase.*;
+import static com.pannous.netbase.blueprints.LocalNetbase.*;
 
 /**
  * @author Pannous (http://Pannous.com)
@@ -58,16 +58,16 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
     }
 
     private StatementStruct findNext() {
-        StatementStruct next = Netbase.nextStatement(node.id, current);
+        StatementStruct next = LocalNetbase.nextStatement(node.id, current);
         int c=0;
         while (next!=null && c++ <333333) {
             boolean labelOK = labels==null||labels.length==0;
             if(labels !=null)
             for (int i = 0; i < labels.length; i++) {
                 String label = labels[i];
-                if (Netbase.getName(next.predicate).equalsIgnoreCase(label))// expensive!
+                if (LocalNetbase.getName(next.predicate).equalsIgnoreCase(label))// expensive!
                     labelOK = true;
-                if (Netbase.getName(next.object).equalsIgnoreCase(label))// expensive!
+                if (LocalNetbase.getName(next.object).equalsIgnoreCase(label))// expensive!
                     labelOK = true;// valueOK !?!
             }
             if (labelOK) {
@@ -75,7 +75,7 @@ public class NodeIterable<T extends Vertex> implements CloseableIterable<Node>, 
                 if (direction == Direction.OUT && next.subject == node.id) return next;
                 if (direction == Direction.IN && next.object == node.id) return next;
             }
-            next = Netbase.nextStatement(node.id, next);
+            next = LocalNetbase.nextStatement(node.id, next);
         }
         return next;
     }

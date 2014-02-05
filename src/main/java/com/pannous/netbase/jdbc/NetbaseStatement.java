@@ -1,7 +1,7 @@
 package com.pannous.netbase.jdbc;
 
 import com.pannous.netbase.blueprints.Debugger;
-import com.pannous.netbase.blueprints.Netbase;
+import com.pannous.netbase.blueprints.LocalNetbase;
 import com.pannous.netbase.blueprints.Node;
 
 import java.sql.*;
@@ -31,7 +31,7 @@ public class NetbaseStatement implements Statement {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Node[] nodes= Netbase.doExecute(sql);
+                Node[] nodes= LocalNetbase.doExecute(sql);
                 resultSet = new NetbaseResultSet(sql, nodes);
             }
         });
@@ -45,7 +45,7 @@ public class NetbaseStatement implements Statement {
             throw new SQLException(e);
         }                     }
         else  {
-            Node[] nodes = Netbase.doExecute(sql);
+            Node[] nodes = LocalNetbase.doExecute(sql);
             resultSet = new NetbaseResultSet(sql, nodes);
         }
         return resultSet;

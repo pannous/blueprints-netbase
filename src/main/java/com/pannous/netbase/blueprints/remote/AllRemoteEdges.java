@@ -1,5 +1,9 @@
-package com.pannous.netbase.blueprints;
+package com.pannous.netbase.blueprints.remote;
 
+import com.pannous.netbase.blueprints.LocalNetbase;
+import com.pannous.netbase.blueprints.RemoteNetbaseGraph;
+import com.pannous.netbase.blueprints.Statement;
+import com.pannous.netbase.blueprints.StatementStruct;
 import com.tinkerpop.blueprints.Edge;
 
 import java.util.Iterator;
@@ -11,14 +15,19 @@ import java.util.Iterator;
  * Date: 04/02/14
  * Time: 15:20
  */
-public class AllEdges implements Iterable<Edge>, Iterator<Edge> {
+public class AllRemoteEdges implements Iterable<Edge>, Iterator<Edge> {
 
     private int current=1;
     private int count;
+    private final RemoteNetbaseGraph graph;
+
+    public AllRemoteEdges(RemoteNetbaseGraph graph) {
+       this.graph = graph;
+   }
 
     @Override
     public Iterator<Edge> iterator() {
-        count = LocalNetbase.statementCount();
+        count = graph.statementCount();
         return this;
     }
 
