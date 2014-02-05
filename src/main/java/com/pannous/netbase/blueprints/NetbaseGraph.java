@@ -17,6 +17,7 @@ public class NetbaseGraph<T extends Node> implements Graph {//} IndexableGraph i
     private static final Logger logger = Logger.getLogger(NetbaseGraph.class.getName());
     private static ArrayList<Node> nodes = new ArrayList();
     private static List<Statement> edges = new ArrayList();
+//    public static NetbaseCon
 
 //    private static final Relation ANY =(Relation) getNode(1);
 

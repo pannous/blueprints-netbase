@@ -9,12 +9,34 @@ package com.pannous.netbase.blueprints;
  */
 public class Main {
     public static void main(String[] args) {
-        Netbase netbase = new Netbase();
-        NetbaseGraph<Node> graph = new NetbaseGraph();
+        testRemoteGraph(args);
+//        testLocalGraph(args);
+    }
+
+    private static void testRemoteGraph(String[] args) {
+        NetbaseClient client = new NetbaseClient("http://de.netbase.pannous.com:81");
+        client.clearView("T-Online");
+        client.excludeProperties("Registrierung");
+        client.includeProperty("T-Online", "Eigentümer");
+        client.includeProperty("T-Online", "Url");
+        client.includeProperty("T-Online", "4668573");//  wiki image
+        try {
+            Node[] nodes = client.query("T-Online");
+            nodes[0].show();
+        } catch (Exception e) {
+            Debugger.error(e);
+        }
+    }
+
+
+    private static void testLocalGraph(String[] args) {
+//        Netbase netbase = new Netbase();
+//        NetbaseGraph<Node> graph = new NetbaseGraph();
         Netbase.doExecute("help");
 //        Netbase.doExecute("console");
         String command = "";
         for (String arg : args) command += arg + " ";
         Netbase.doExecute(command);
     }
+
 }

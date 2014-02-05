@@ -36,7 +36,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
     private Logger logger= Logger.getLogger("Netbase");
     protected NetbaseGraph graph;
 
-    //    @Override
+
+    @Override
     protected List getFieldOrder() {
 //        JdbcRowSet
 
@@ -48,9 +49,11 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public Node(int id) {// AVOID!! more expensive than get(id) !!!
-//        setAutoRead(false);
-//        setAutoWrite(false);
-//        setAutoSynch(false);
+        if(id==-1){
+        setAutoRead(false);
+        setAutoWrite(false);
+        setAutoSynch(false);
+        }else
         this.id = id;
 //        load();
     }
@@ -95,11 +98,13 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //    }
 //
 
-    public void setName(String s) {
-//        name=
-//        Netbase.setLabel(this, s);
+    public Node setName(String s) {
+        if(s ==null)return this;// or clear?
+        if(s.equals(name)) return this;
+//        name= Netbase.setLabel(this, s);
         Netbase.setName(id, s);
         name = s;
+        return this;
     }
 
     public Node(Edge edge) {// reified statement!

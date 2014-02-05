@@ -20,9 +20,9 @@ public class Statement implements Edge { // extends Structure
     int predicate;
     int object;
 
-    private Node _subject;
-    private Node _predicate;
-    private Node _object;
+    Node _subject;
+    Node _predicate;
+    Node _object;
     private NetbaseGraph graph;
     public int id;
 
@@ -77,22 +77,21 @@ public class Statement implements Edge { // extends Structure
     public Vertex getVertex(Direction direction) {
         if (direction == Direction.OUT) return Subject();
         if (direction == Direction.IN) return Object();
-        else
-            throw ExceptionFactory.bothIsNotSupported();
+        else throw ExceptionFactory.bothIsNotSupported();// LOL tinkerpop --
     }
 
     @Override
     public String getLabel() {
 //        return Subject().toString()+"->"+Predicate().toString()+"->"+Object();
-        return getName(predicate);
+        return Predicate().getName();// getName(predicate);
     }
 
-    protected Node Subject() {
+    Node Subject() {
         if (_subject == null) _subject = get(subject);
         return _subject;
     }
 
-    private Node Predicate() {
+    Node Predicate() {
         if (_predicate == null) _predicate = get(predicate);
         return _predicate;
     }
@@ -186,4 +185,11 @@ public class Statement implements Edge { // extends Structure
 //        this.id = id;
 //        return this;
 //    }
+
+    public String print() {
+//        if (subjectName != null)
+//            return id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "\t" + predicate + "\t" + object;
+//        else
+            return id + "\t" + subject + "\t" + predicate + "\t" + object;
+    }
 }
