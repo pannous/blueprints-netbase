@@ -1,10 +1,8 @@
 package com.pannous.netbase.blueprints;
 
-import com.sun.jna.Pointer;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.VertexQuery;
 import org.apache.commons.lang.NotImplementedException;
 
 import java.util.ArrayList;
@@ -29,6 +27,7 @@ public class RemoteNode extends Node{
         super.setAutoRead(false);
         super.setAutoWrite(false);
         super.setAutoSynch(false);
+        this.id = id;
         this.name = name;
         this.netbaseClient = netbaseClient;
     }
@@ -220,7 +219,7 @@ public class RemoteNode extends Node{
         System.out.println(id + " " + name);
         for (Edge statement : statements) {
             if(statement instanceof RemoteStatement)
-                System.out.println(((RemoteStatement)statement).print());
+                System.out.println(((RemoteStatement)statement).show());
         else
             System.out.println(statement.getLabel() + " " +statement.getVertex(Direction.OUT));
         }

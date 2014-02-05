@@ -29,10 +29,9 @@ public class Internet {
     private static String authName;
     private static String authPass;
 
-    public static String download(String address, String localFileName,
-                                  int timeout) throws Exception {
-
+    public static String download(String address, String localFileName,int timeout) throws Exception {
         Debugger.info("downloading " + address);
+        address = address.replaceAll(" ", "%20");
         String txt = new String(new byte[]{}, encoding);
         OutputStream out = null;
         if (localFileName != null)

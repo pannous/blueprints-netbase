@@ -15,11 +15,15 @@ public class Main {
 
     private static void testRemoteGraph(String[] args) {
         NetbaseClient client = new NetbaseClient("http://de.netbase.pannous.com:81");
+//        client.includeProperty("T-Online", "Url");
+//        client.showView("T-Online");
         client.clearView("T-Online");
         client.excludeProperties("Registrierung");
         client.includeProperty("T-Online", "Eigentümer");
         client.includeProperty("T-Online", "Url");
-        client.includeProperty("T-Online", "4668573");//  wiki image
+//        client.includeProperty("T-Online", "4668573");//  wiki image
+//        client.clearView("T-Online");
+        client.showView("T-Online");
         try {
             Node[] nodes = client.query("T-Online");
             nodes[0].show();

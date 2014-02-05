@@ -186,7 +186,7 @@ public class Statement implements Edge { // extends Structure
 //        return this;
 //    }
 
-    public String print() {
+    public String show() {
 //        if (subjectName != null)
 //            return id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "\t" + predicate + "\t" + object;
 //        else

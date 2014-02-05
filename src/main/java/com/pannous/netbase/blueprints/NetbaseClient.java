@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Copyright 2013 Pannous GmbH
@@ -32,10 +31,9 @@ public class NetbaseClient {
 
     public Node[] query(String query) throws Exception {
         query.replaceAll("^/", "");
-        if (local) return Netbase.doExecute(query);
-//        RemoteNode
-//        new XMLParser
+        if (local) Netbase.doExecute(query);
         String json = Internet.download(host + "/json/verbose/" + query);
+//        String json = Internet.download(host + "/json/all/" + query);// Ignore filters
         JSONObject root = new JSONObject(json);
         JSONArray results = root.getJSONArray("results");// xml.getJSONArray("entity");
         Node[] nodes = new Node[results.length()];
@@ -47,8 +45,14 @@ public class NetbaseClient {
         return nodes;
     }
 
-    public Node[] execute(String query) throws Exception {
-        return query(query);
+    public void execute(String query) {
+        query.replaceAll("^/", "");
+        if (local) Netbase.doExecute(query);
+        try {
+            String json = Internet.download(host + "/json/verbose/" + query);
+        } catch (Exception e) {
+            Debugger.error(e);
+        }
     }
 
     private Node loadNode(JSONObject result) throws JSONException {
@@ -112,11 +116,7 @@ public class NetbaseClient {
     }
 
     public void includeProperty(String node, String property) {
-        try {
             execute("include " + node + " " + property);
-        } catch (Exception e) {
-            Debugger.error(e);
-        }
     }
 
     public void includeProperties(String node) {
@@ -127,11 +127,21 @@ public class NetbaseClient {
         }
     }
 
+    public void showView(String node) {
+        try {
+            Node[] excludeds = query("showview/" + node);
+            for (Node excluded : excludeds)
+                excluded.show();
+        } catch (Exception e) {
+            Debugger.error(e);
+        }
+    }
     public void clearView(String node) {
         try {
             Node[] excludeds = query("excluded/" + node);
             for (Node excluded : excludeds) {
                 for (Statement s : excluded.getStatements()) {
+                    s.show();
                     s.remove();
                 }
             }
@@ -139,4 +149,5 @@ public class NetbaseClient {
             Debugger.error(e);
         }
     }
+
 }
