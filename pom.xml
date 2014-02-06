@@ -90,7 +90,6 @@
 		            <index>true</index>
 		            <manifest>
 		              <addClasspath>true</addClasspath>
-
                         <mainClass>
                             com.pannous.netbase.samples.Main
                         </mainClass>

@@ -1,8 +1,5 @@
 package com.pannous.netbase.blueprints;
 
-import com.sun.xml.internal.ws.api.model.ParameterBinding;
-import com.tinkerpop.blueprints.*;
-
 /**
  * Copyright 2013 Pannous GmbH
  * <p/>
