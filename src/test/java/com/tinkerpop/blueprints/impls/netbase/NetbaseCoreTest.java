@@ -35,6 +35,7 @@ public class NetbaseCoreTest extends BaseTest {
         ar.setProperty("mabb",map);
         HashMap mabb = ar.getProperty("mabb");
         show(mabb);
+
         for (Object o : map.keySet()) assertEquals(map.get(o), mabb.get(o));
         for (Object o : mabb.keySet()) assertEquals(mabb.get(o), map.get(o));
 //        assertEquals(mabb,map); //        HashMap.equals
