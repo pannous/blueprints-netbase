@@ -17,7 +17,7 @@ public class LocalNetbase implements NetbaseAdapter{
 //        Native.setPreserveLastError(true);
 //        Native.setPreserveLastError(false);// throw LastErrorException!
         Native.register("Netbase");// libNetbase.so | libNetbase.dylib
-        LocalNetbase.init(false);// testing
+//        LocalNetbase.init(false);// testing
         LocalNetbase.init(true);// live
 //        Native.getLastError()  LastErrorException
 //        NativeLibrary.getGlobalVariableAddress(java.lang.String symbolName) !
