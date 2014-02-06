@@ -399,28 +399,36 @@ public class Node extends Structure implements Vertex {// extends Structure make
     private <T> T getValue(Node object) {
         object.show();
         Debugger.info("KIND " + Relation.name(object.kind));
+        String value = object.getName();
+        if(value==null) return null;
         try {
             if (object.kind == Relation.date)
-                return (T) DateFormat.getDateTimeInstance().parse(object.getName());
+                return (T) DateFormat.getDateTimeInstance().parse(value);
         } catch (Exception e) {
+        }
+        if (value.equalsIgnoreCase("true")||value.equalsIgnoreCase("Wahr")) {// //object.kind == Relation.bool)
+            return (T) (Boolean) true;
+        }
+        if (value.equalsIgnoreCase("false")||value.equalsIgnoreCase("Falsch")) {// //object.kind == Relation.bool)
+            return (T) (Boolean) false;
         }
         try {
             if (object.kind == Relation.date)
-                return (T) DateFormat.getDateInstance().parse(object.getName());
+                return (T) DateFormat.getDateInstance().parse(value);
         } catch (Exception e) {
         }
         try {
             if (object.kind == Relation.integer)// and long
-                return (T) (Integer) Integer.parseInt(object.getName());
+                return (T) (Integer) Integer.parseInt(value);
         } catch (Exception e) {
         }
         try {
             if (object.kind == Relation.number)
-                return (T) (Double) Double.parseDouble(object.getName());
+                return (T) (Double) Double.parseDouble(value);
         } catch (Exception e) { // can't cast double to int :(
         }
         if (object.kind == Relation.node) {
-            Integer id = Integer.parseInt(object.getName());
+            Integer id = Integer.parseInt(value);
             try {
                 return (T) graph.getNode(id);
             } catch (Exception e) {
@@ -431,13 +439,13 @@ public class Node extends Structure implements Vertex {// extends Structure make
             }
         }
         if (object.kind == Relation.statement) {
-            Integer id = Integer.parseInt(object.getName());
+            Integer id = Integer.parseInt(value);
             try {
                 return (T) graph.getStatement(id);
             } catch (Exception e) {
             }
         }
-        return (T) object.getName();
+        return (T) value;
     }
 
     @Override

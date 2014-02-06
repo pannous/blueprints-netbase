@@ -88,7 +88,6 @@ public class NetbaseGraphTest extends GraphTest {
 
     public Graph generateGraph(final String name) {
         Graph graph = LocalNetbaseGraph.me();
-        cleanup();
         return graph;
     }
 
