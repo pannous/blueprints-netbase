@@ -294,6 +294,10 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         return LocalNetbase.doExecute(s);
     }
 
+    public void execute(String s) {
+        LocalNetbase.doExecute(s);
+    }
+
     @Override
     public void save(int id, byte[] bytes) {
         boolean copy = true;// false;
@@ -318,5 +322,29 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         String test = new String(byteArray);
         System.out.println(test);
         return byteArray;
+    }
+
+    @Override
+    public void renameAll(int id, String newName) {
+        LocalNetbase.setLabel(get(id), newName, false, true);
+    }
+
+    public void showNodes(Node[] nodes) {
+        for (Node node : nodes) {
+            node.show();
+        }
+    }
+
+    public Node queryNode(String s) {
+        return query(s+" limit 10")[0];
+    }
+
+
+    public boolean has(String node) {
+        return LocalNetbase.hasNode(node);
+    }
+
+    public void clear() {// DANGER!!
+        LocalNetbase.execute(":clear",null);
     }
 }

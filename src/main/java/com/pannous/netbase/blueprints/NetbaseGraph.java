@@ -54,4 +54,6 @@ public interface NetbaseGraph{//} extends Graph {
     Value getValue(int id);
 
     byte[] getData(int id, int size);
+
+    void renameAll(int id, String newName);
 }

@@ -80,6 +80,11 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
         return new byte[0];
     }
 
+    @Override
+    public void renameAll(int id, String newName) {
+        execute("label "+id+" "+newName);
+    }
+
     public void execute(String query) {
         query.replaceAll("^/", "");
 //        if (local) LocalNetbase.doExecute(query);

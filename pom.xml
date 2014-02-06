@@ -92,7 +92,7 @@
 		              <addClasspath>true</addClasspath>
 
                         <mainClass>
-                            com.pannous.netbase.blueprints.Main
+                            com.pannous.netbase.samples.Main
                         </mainClass>
 		            </manifest>
 		            <manifestEntries>

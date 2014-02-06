@@ -516,6 +516,11 @@ public class Node extends Structure implements Vertex {// extends Structure make
         return (T) toString();
     }
 
+    public void renameAll(String newName) {
+        graph.renameAll(id, newName);
+        name=newName;
+    }
+
 //    public void setValue(Object object) {
 //        Netbase.setValue(id, object);
 //    }

@@ -53,7 +53,7 @@ public class LocalNetbase implements NetbaseAdapter{
 
     public static native String getName(int id);
 
-//    public static native long setLabel(Node node, String label);
+    public static native long setLabel(Node node, String label,boolean addInstance/*=true*/,boolean renameInstances/*false*/);
     public static native void setName(int node, String label);
 
     public static native int statementCount();
@@ -63,7 +63,7 @@ public class LocalNetbase implements NetbaseAdapter{
     public static native int nextId();
 
 
-    public static native boolean hasNode(String property);
+    public static native boolean hasNode(String node);
 
     public static native Node getNode(int id);
 //    public static Node getNode(int id) {
@@ -149,6 +149,7 @@ public class LocalNetbase implements NetbaseAdapter{
         Pointer n= LocalNetbase.execute(sql, hitRef);
         int hits = hitRef.getValue();
         Node[] nodes = new Node[hits];
+        if(hits==0) return nodes;
         if(hits==1)nodes=new Node[]{new Node(n).load()};
         else
         for (Pointer p : n.getPointerArray(0, hits)) {
