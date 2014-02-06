@@ -65,6 +65,21 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
         return nodes;
     }
 
+    @Override
+    public void save(int id, byte[] bytes) {
+
+    }
+
+    @Override
+    public Value getValue(int id) {
+        return null;
+    }
+
+    @Override
+    public byte[] getData(int id, int size) {
+        return new byte[0];
+    }
+
     public void execute(String query) {
         query.replaceAll("^/", "");
 //        if (local) LocalNetbase.doExecute(query);

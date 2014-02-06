@@ -1,5 +1,6 @@
 package com.pannous.netbase.blueprints;
 
+import com.sun.jna.Pointer;
 import com.sun.jna.Union;
 
 /**
@@ -11,10 +12,14 @@ import com.sun.jna.Union;
  */
 public class Value extends Union {
 
+    // http://twall.github.io/jna/4.0/javadoc/overview-summary.html#overview_description
+
     public Value(){
 //        setType(Double.class);
         setType(double.class);
     }
+
+    public Pointer data;
 
     public String text; // wiki abstracts etc
     //    char* name;

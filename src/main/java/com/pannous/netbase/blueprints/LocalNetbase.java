@@ -160,6 +160,14 @@ public class LocalNetbase implements NetbaseAdapter{
 //        Node[] nodes = (Node[]) n.toArray(2);// hits.getValue());
         return nodes;
     }
+
+//   data= byte[] bytes
+public static native void saveData(int node, byte[] data, int size, boolean copy);
+//    public static native void saveData(int node, Pointer data, int size, boolean copy);
+//    public static native byte[] getData(int node);//, data, int size);
+    public static native Pointer getData(int node);//, data, int size);
+    public static native Value getValue(int node);
+
 //    public static native void showStatement(Statement s);
 
 //    public static native int addNode(String hi);

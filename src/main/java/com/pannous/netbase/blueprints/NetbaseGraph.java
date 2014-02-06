@@ -48,4 +48,10 @@ public interface NetbaseGraph{//} extends Graph {
     int nodeCount();
 
     Node[] query(String s) throws Exception;
+
+    void save(int id, byte[] bytes);
+
+    Value getValue(int id);
+
+    byte[] getData(int id, int size);
 }

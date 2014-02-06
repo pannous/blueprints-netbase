@@ -10,6 +10,7 @@ import com.tinkerpop.blueprints.util.DefaultVertexQuery;
 import com.tinkerpop.blueprints.util.StringFactory;
 import org.apache.commons.collections.set.ListOrderedSet;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.util.*;
 import java.util.logging.Logger;
@@ -134,9 +135,9 @@ public class Node extends Structure implements Vertex {// extends Structure make
         return new NodeIterable(graph(), this, direction, labels);
     }
 
-    private NetbaseGraph graph() {
+    private LocalNetbaseGraph graph() {
         if (graph == null) return LocalNetbaseGraph.me();
-        return graph;
+        return (LocalNetbaseGraph) graph;
     }
 
     public Edge addEdge(final String label, final Vertex vertex) {
@@ -156,7 +157,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public boolean equals(final Object object) {
         if (object == this) return true;
-        if (object instanceof Node){
+        if (object instanceof Node) {
             Node node = (Node) object;
             return node.id == id;
         }
@@ -191,30 +192,34 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if (value == null || value.equals(""))
             throw new IllegalArgumentException("EMPTY value not allowed as property");
 
+        deleteProperty(key);// or merge ! blah.friends={1:a,2:b,3:c}
+
         if (value instanceof HashMap) {
             HashMap map = (HashMap) value;
-            Node hashmap = graph.getNew("hashmap");
-            graph.addStatement(this.id, (Integer) graph.getAbstract(key).getId(), hashmap.id);
+//            Node hashmap = graph.getNew("hashmap");
+            Node hashmap = graph.getNew(key);
+            graph.setKind(hashmap.id, Relation.map);
+            graph.addStatement(this.id, hashmap.id, hashmap.id);// :( wegen findStatement(.,KEY,*)
+//            graph.addStatement(this.id, Relation.map, hashmap.id);
+//            graph.addStatement(this.id, Relation.has, hashmap.id);
             for (Object k : map.keySet())
                 graph.addStatement(hashmap.id, graph.getAbstract("" + k).id, getValueNode(map.get(k)));
 // OR FORGET KEY:graph.addStatement( this.id, graph.getAbstract(""+k).id,getValueNode(map.get(k)).id, false);
-        }
-        if (value.getClass().isArray()) {
+        } else if (value.getClass().isArray()) {
             addAll(key, value);
-        } else {
-            if (value instanceof Iterable) {
+        } else if (value instanceof Iterable) {
 //            Node arrayKey = graph.getNew(key,Relation.Array);
-                Node arrayKey = graph.getNew(key);
-                graph.setKind(arrayKey.id, Relation.list);
-                for (Object o : (Iterable) value)
-                    graph.addStatement(this.id, arrayKey.id, getValueNode(o));
-            } else {
-                int id1 = graph.getId(key);
-                int valueNode = getValueNode(value);
-                graph.addStatement(this.id, id1, valueNode);
-            }
+            Node arrayKey = graph.getNew(key);
+            graph.setKind(arrayKey.id, Relation.list);
+            for (Object o : (Iterable) value)
+                graph.addStatement(this.id, arrayKey.id, getValueNode(o));
+        } else {
+            int id1 = graph.getId(key);
+            int valueNode = getValueNode(value);
+            graph.addStatement(this.id, id1, valueNode);
         }
     }
+
 
     private <T> void addAll(String key, T values) {
         Node arrayKey = graph.getNew(key);
@@ -242,16 +247,44 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
 
+    private void deleteProperty(String key) {
+//        show();
+        int keyId = graph.getId(key);
+//        logger.info(key+" -> "+keyId);
+        Statement statement = graph.findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
+        if (statement == null) return;
+        Node predicate = graph.getNode(statement.predicate);
+        Node object = graph.getNode(statement.object);
+        object.delete();
+        show();
+    }
+
     @Override
     public <T> T getProperty(String key) {
         show();
         int keyId = graph.getId(key);
         Statement statement = graph.findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
-        if (graph.getNode(statement.predicate).kind == Relation.list) return getPropertyList(key);
-        if (graph.getNode(statement.predicate).kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
+        Node predicate = graph.getNode(statement.predicate);
+        Node object = graph.getNode(statement.object);
+        if (predicate.kind == Relation.list) return getPropertyList(key);
+        if (predicate.kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
+        if (predicate.kind == Relation.bytes || object.kind == Relation.bytes) return getSerialized(object);
+        if (predicate.kind == Relation.map || object.kind == Relation.map) return getPropertyMap(object);
         statement.show();
         return getValue(statement.Object());
+    }
+
+
+    private <T> T getPropertyMap(Node key) {
+        HashMap map = new HashMap();
+        for (Statement statement : key.getStatements()) {
+            Node predicate = statement.Predicate();
+            Node object = statement.Object();
+            if (statement.subject == key.id && statement.predicate != key.id && statement.object != key.id)
+                map.put(predicate.getName(), getValue(object));
+        }
+        return (T) map;
     }
 
     public <T, U> T getPropertyArray(String key, ArrayList<U> list) {
@@ -305,7 +338,44 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //        if(value instanceof java.util.Date /* ETC!@@! */) throw new IllegalArgumentException("not yet supportsSerializableObjectProperty");
         if (value instanceof ArrayList) throw new RuntimeException("Should have iterated over ArrayList before");
         if (value instanceof Iterable) throw new RuntimeException("Should have iterated over ArrayList before");
+        if (value instanceof Serializable) return serialized((Serializable) value);
         throw new IllegalArgumentException("not yet supportsSerializableObjectProperty " + value + " -> " + value.getClass());
+    }
+
+
+    private <T> T getSerialized(Node object) {
+        try {
+            int size = object.getProperty("size");
+            byte[] byteArray= graph().getData(object.id,size);
+//            if(byteArray[0]==-84&&byteArray[1]==-19) Java signature
+            ByteArrayInputStream stream = new ByteArrayInputStream(byteArray);
+            ObjectInput input = new ObjectInputStream(stream);
+            return (T) input.readObject();
+        } catch (Exception e) {
+            Debugger.error(e);
+        }
+        return null;
+    }
+
+    private int serialized(Serializable value) {
+        int dataId = 0;
+        try {
+            ByteArrayOutputStream s = new ByteArrayOutputStream();
+            ObjectOutput outputStream = new ObjectOutputStream(s);
+            outputStream.writeObject(value);
+            byte[] bytes = s.toByteArray();
+            for (int i = 0; i < bytes.length; i++) {
+                System.out.print(bytes[i]+",");
+            }
+            dataId = graph().valueId("byte[]", bytes.length, Relation.bytes);
+            System.out.println(new String(bytes));
+            graph().addStatement(dataId, graph().getAbstract("size").id, getValueNode(bytes.length));
+            logger.info("------------------------");
+            graph.save(dataId, bytes);
+        } catch (IOException e) {
+            Debugger.error(e);
+        }
+        return dataId;
     }
 
 

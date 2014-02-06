@@ -1,12 +1,11 @@
 package com.pannous.netbase.blueprints;
 
+import com.sun.jna.Pointer;
 import com.tinkerpop.blueprints.*;
 import com.tinkerpop.blueprints.util.StringFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.pannous.netbase.blueprints.LocalNetbase.*;
@@ -104,7 +103,7 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         if (id instanceof Integer) return get((Integer) id);
         try {// for Blueprint !!
             int i = Integer.parseInt("" + id);
-            if (i > 10000)// wth? don't ID Blueprint's "1" test 'ids'
+            if (i >= 1000)// don't ID Blueprint's "1" test 'ids'
                 return new Node(i);
 //            else return get(i);// RELATIONS!
         } catch (NumberFormatException e) {
@@ -293,5 +292,31 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     @Override
     public Node[] query(String s) {
         return LocalNetbase.doExecute(s);
+    }
+
+    @Override
+    public void save(int id, byte[] bytes) {
+        boolean copy = true;// false;
+//        new Memory(bytes.length).setByte()
+//        new Buffer()
+        LocalNetbase.saveData(id, bytes, bytes.length, copy);
+
+    }
+
+    @Override
+    public Value getValue(int id) {
+        return LocalNetbase.getValue(id);
+    }
+    @Override
+    public byte[] getData(int id, int size){
+//        byte[] byteArray  = LocalNetbase.getData(id);
+//        byte[] byteArray = pointer.getByteArray(0, size);
+        Pointer pointer = LocalNetbase.getData(id);
+        logger.info(pointer.dump(0,size));
+        logger.info(pointer.toString());
+        byte[] byteArray = pointer.getByteArray(0, size);
+        String test = new String(byteArray);
+        System.out.println(test);
+        return byteArray;
     }
 }

@@ -2,10 +2,13 @@ package com.tinkerpop.blueprints.impls.netbase;
 
 import com.pannous.netbase.blueprints.*;
 import com.tinkerpop.blueprints.*;
+import com.tinkerpop.blueprints.util.io.MockSerializable;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +27,32 @@ public class NetbaseCoreTest extends BaseTest {
 //        Debugger.logger.setLevel(Level.ALL);
     }
 
+    public void testNetbasePropertyMap(){
+        final HashMap map = new HashMap();
+        map.put("testString", "try");
+        map.put("testInt", 4);
+        Node ar = getNew("argg");
+        ar.setProperty("mabb",map);
+        HashMap mabb = ar.getProperty("mabb");
+        show(mabb);
+        for (Object o : map.keySet()) assertEquals(map.get(o), mabb.get(o));
+        for (Object o : mabb.keySet()) assertEquals(mabb.get(o), map.get(o));
+//        assertEquals(mabb,map); //        HashMap.equals
+    }
+
+    public void testNetbaseSerializableProperty(){
+        final MockSerializable mockSerializable = new MockSerializable();
+        mockSerializable.setTestField("test");
+        Node ar = getNew("serialTest");
+        ar.setProperty("serial",mockSerializable);
+        Object mabb = ar.getProperty("serial");
+        show(mabb);
+        assertEquals(mabb,mockSerializable);
+    }
+
+    private void show(Object mabb) {
+        logger.info(""+mabb);
+    }
 
     public void testNetbaseProperty(){;
         assertEquals(Relation.object,Relation.Object.id);

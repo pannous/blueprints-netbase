@@ -44,6 +44,9 @@ public class Relation extends Node {
     public  static int verb = 111;
     public  static int adjective = 112;
     public  static int adverb = 113;
+
+    public  static int bytes = 119;// byte[] serialization data etc !! ++ needs size attribute!
+    public  static int map = 120;
     public  static int array = 121;
     public  static int list = 122;// because T == [] or ArrayList ????
     public  static int number= 123;
@@ -87,6 +90,7 @@ public class Relation extends Node {
             part = 11,
             partof = 12,
             member = 13,
+            has = 13,
             owner = 14,
             substance = 15,
             substanceowner = 16,
@@ -171,8 +175,13 @@ public class Relation extends Node {
     public static Relation Date;
     public static Relation Float;
     public static Relation Integer;
+
+    public static Relation Map;
     public static Relation Array;
     public static Relation List;
+
+    public static Relation Bytes;// byte[] data serialization etc!! ++
+
     public static Relation Range;
     public static Relation Unit;
 
@@ -343,6 +352,8 @@ public class Relation extends Node {
         Adverb = addRelation(adverb, "adverb");
         Number = addRelation(number, "number");
         Unit = addRelation(unit, "unit");
+
+        Map= addRelation(array, "map");
         Array = addRelation(array, "array");
         List = addRelation(list, "list");
 
