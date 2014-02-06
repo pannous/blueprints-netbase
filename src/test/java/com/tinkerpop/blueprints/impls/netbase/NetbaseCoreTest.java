@@ -23,6 +23,7 @@ public class NetbaseCoreTest extends BaseTest {
 
     public NetbaseCoreTest() {
         super();
+        LocalNetbaseGraph.testing = true;
         logger.setLevel(Level.ALL);
 //        Debugger.logger.setLevel(Level.ALL);
     }

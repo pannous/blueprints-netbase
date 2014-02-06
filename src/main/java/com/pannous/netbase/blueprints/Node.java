@@ -261,7 +261,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     @Override
     public <T> T getProperty(String key) {
-        show();
+//        show();
         int keyId = graph.getId(key);
         Statement statement = graph.findStatement(id, keyId, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
@@ -271,7 +271,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if (predicate.kind == Relation.array) return getPropertyArray(key, new ArrayList<T>());
         if (predicate.kind == Relation.bytes || object.kind == Relation.bytes) return getSerialized(object);
         if (predicate.kind == Relation.map || object.kind == Relation.map) return getPropertyMap(object);
-        statement.show();
+//        statement.show();
         return getValue(statement.Object());
     }
 
@@ -397,7 +397,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     private <T> T getValue(Node object) {
-        object.show();
+//        object.show();
         Debugger.info("KIND " + Relation.name(object.kind));
         String value = object.getName();
         if(value==null) return null;

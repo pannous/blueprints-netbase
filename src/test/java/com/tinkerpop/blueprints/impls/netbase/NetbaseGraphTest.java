@@ -26,6 +26,7 @@ public class NetbaseGraphTest extends GraphTest {
     }*/
 
     public void testVertexTestSuite() throws Exception {
+        LocalNetbaseGraph.testing = true;
         this.stopWatch();
         LocalNetbase.execute("testing", null);
 //        LocalNetbase.execute(":clear",null);

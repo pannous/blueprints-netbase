@@ -1,5 +1,6 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
+import com.pannous.netbase.blueprints.LocalNetbaseGraph;
 import com.tinkerpop.blueprints.TestSuite;
 import com.tinkerpop.blueprints.impls.GraphTest;
 
@@ -9,6 +10,7 @@ import com.tinkerpop.blueprints.impls.GraphTest;
 public class NetbaseGraphSpecificTestSuite extends TestSuite {
 
     public NetbaseGraphSpecificTestSuite() {
+        LocalNetbaseGraph.testing = true;
     }
 
     public NetbaseGraphSpecificTestSuite(final GraphTest graphTest) {

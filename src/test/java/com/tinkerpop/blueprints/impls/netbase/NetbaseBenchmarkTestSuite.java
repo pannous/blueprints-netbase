@@ -1,5 +1,6 @@
 package com.tinkerpop.blueprints.impls.netbase;
 
+import com.pannous.netbase.blueprints.LocalNetbaseGraph;
 import com.pannous.netbase.blueprints.NetbaseGraph;
 import com.pannous.netbase.blueprints.Node;
 import com.pannous.netbase.blueprints.Statement;
@@ -17,6 +18,7 @@ public class NetbaseBenchmarkTestSuite extends com.tinkerpop.blueprints.TestSuit
 
 
     public void testNetbaseRaw() throws Exception {
+        LocalNetbaseGraph.testing = true;
         double totalTime = 0.0d;
         Graph graph = graphTest.generateGraph();
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-2.xml"));

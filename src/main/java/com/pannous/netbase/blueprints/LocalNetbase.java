@@ -144,6 +144,7 @@ public class LocalNetbase implements NetbaseAdapter{
     }
 
     public static native Pointer execute(String s,IntByReference hits);// -> Node[] :
+
     public static Node[] doExecute(String sql) {
         IntByReference hitRef = new IntByReference();
         Pointer n= LocalNetbase.execute(sql, hitRef);
@@ -155,7 +156,7 @@ public class LocalNetbase implements NetbaseAdapter{
         for (Pointer p : n.getPointerArray(0, hits)) {
             Node node = new Node(p);
             node.load();
-            showNode(node.id);
+//            showNode(node.id);
             nodes[--hits] = node;
         }
 //        Node[] nodes = (Node[]) n.toArray(2);// hits.getValue());

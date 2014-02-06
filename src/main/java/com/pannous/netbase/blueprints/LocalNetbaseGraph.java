@@ -68,6 +68,8 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         FEATURES.supportsThreadedTransactions = false;
     }
 
+    public static boolean testing=false;
+
 
     public Features getFeatures() {
         return FEATURES;
@@ -109,7 +111,10 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
         } catch (NumberFormatException e) {
         }
         if (!LocalNetbase.hasNode(id.toString())) return null;
+        if(testing)
         return LocalNetbase.getAbstract("" + id);
+        else
+        return LocalNetbase.getThe("" + id);
     }
 
     public void removeVertex(Vertex vertex) {
@@ -345,6 +350,6 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     }
 
     public void clear() {// DANGER!!
-        LocalNetbase.execute(":clear",null);
+        LocalNetbase.execute(":clear", null);
     }
 }
