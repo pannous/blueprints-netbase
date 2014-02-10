@@ -28,4 +28,8 @@ public class Debugger {
     public static void trace(String s) {
         logger.info(s);
     }
+
+    public static void warn(String s) {
+        logger.warning(s);
+    }
 }

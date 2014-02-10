@@ -60,10 +60,6 @@ public class RemoteStatement extends Statement {
         }
     }
 
-    public void show() {
-        System.out.println(this);
-    }
-
     @Override
     public String toString() {
         String x;

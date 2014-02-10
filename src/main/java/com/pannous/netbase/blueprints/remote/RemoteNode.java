@@ -205,6 +205,7 @@ public class RemoteNode extends Node {//implements Vertex {//
 
     @Override
     public <T> T removeProperty(String key) {
+        if(!loaded)Debugger.warn("RemoteNode Should be fully loaded to remove property (todo better) ");
         T vertex = null;
         if (statements != null && statements.size() > 0) {
             for (Edge statement : new LinkedList<Edge>(statements)) {

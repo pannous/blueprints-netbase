@@ -45,7 +45,7 @@ public class Main {
 //        graph.clear();
 
 //        logger.info(System.getProperty("user.dir"));
-        if(graph.nodeCount()<10000)
+        if (graph.nodeCount() < 10000)
             graph.execute("import ./import/cities1000.txt");
 
 
@@ -56,7 +56,7 @@ public class Main {
         gehren.show();
 
         int population = gehren.getProperty("population");
-        logger.info("population in Gehren: "+population);
+        logger.info("population in Gehren: " + population);
 
         graph.execute("quiet!");
 //        Node node = graph.queryNode("city where population=3703");
@@ -73,7 +73,7 @@ public class Main {
         Graph graph = new LocalNetbaseGraph();
         Vertex gehren = graph.getVertex("Gehren");
         Integer population = gehren.getProperty("population");
-        logger.info("population in Gehren via TinkerPop api: "+population);
+        logger.info("population in Gehren via TinkerPop api: " + population);
     }
 
 
@@ -85,34 +85,28 @@ public class Main {
         client.showView("T-Online");
         client.excludeProperties("Registrierung");
         client.includeProperty("T-Online", "Eigentümer");
-//        client.includeProperty("T-Online", "Url");
+        client.includeProperty("T-Online", "Typ");// debug
         client.learn("T-Online Typ Firma");
         client.includeProperty("Firma", "Url");
         client.includeProperty("Firma", "Sprachen");
-//        client.learn("T-Online Typ Unternehmen");
-//        client.includeProperty("Unternehmen", "Url");
-//        client.includeProperty("Unternehmen", "Sprachen");
-//        client.includeProperty("T-Online", "4668573");//  wiki image
-//        client.showAll("T-Online");
-//        client.showNode(164861);
-//        client.showAll("Unternehmen");
-        client.showView("T-Online");
 
-//        client.showView("Unternehmen");
+        client.showView("T-Online");
+        Debugger.info(" VIEW ^^ --------------------------- RESULT :");
         try {
             Node node = client.queryNode("T-Online");//Filtered with view
 //            Node node = client.fetchNode("T-Online");// Complete
 //            node.removeProperty("Typ");
             node.show();
             Node type = node.getType();
-            if(type!=null){
-            type.load();
+            if (type != null) {
+                type.load();
 //            type.show();
             }
         } catch (Exception e) {
             Debugger.error(e);
         }
     }
+
     private static void remoteGraphSample2(String[] args) throws Exception {
         // remote works ok too, but not passing tinkerpop specific standard yet
         RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
@@ -130,7 +124,6 @@ public class Main {
             Debugger.error(e);
         }
     }
-
 
 
 }
