@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.util.StringFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import static com.pannous.netbase.blueprints.LocalNetbase.*;
@@ -341,7 +342,9 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
     }
 
     public Node queryNode(String s) {
-        return query(s+" limit 10")[0];
+        Node[] query = query(s + " limit 10");
+        if(query==null||query.length==0) throw new NoSuchElementException(s + " not found!");
+        return query[0];
     }
 
 

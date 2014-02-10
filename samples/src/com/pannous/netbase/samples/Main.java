@@ -57,7 +57,7 @@ public class Main {
         city.show();
 
         Node gehren = graph.getThe("Gehren");
-//        gehren.show();
+        gehren.show();
 
         int population = gehren.getProperty("population");
         logger.info("population in Gehren: "+population);
