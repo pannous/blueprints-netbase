@@ -21,13 +21,13 @@ public class Main {
     public static void main(String[] args) {
         try {
             remoteGraphSample(args);
-//            remoteGraphSample2(args);
+            remoteGraphSample2(args);
         } catch (Exception e) {
             Debugger.error(e);
         }
         try {
             // also see NetbaseCoreTest
-//            localGraphSample(args);
+            localGraphSample(args);
 //            localGraphSampleTinkerPop();
         } catch (Exception e) {
             Debugger.error(e);
