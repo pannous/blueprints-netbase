@@ -60,12 +60,17 @@ public class RemoteStatement extends Statement {
         }
     }
 
-    public String show() {
+    public void show() {
+        System.out.println(this);
+    }
+
+    @Override
+    public String toString() {
         String x;
         if (subjectName != null)
-            x= id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "->" + predicate + "->" + object;
+            x = id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "->" + predicate + "->" + object;
         else
-            x= id + "\t" + subject + "\t" + predicate + "\t" + object;
+            x = id + "\t" + subject + "\t" + predicate + "\t" + object;
         return x;
     }
 }

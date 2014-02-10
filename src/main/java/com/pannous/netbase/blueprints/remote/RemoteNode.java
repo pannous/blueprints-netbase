@@ -250,7 +250,11 @@ public class RemoteNode extends Node {//implements Vertex {//
 
     @Override
     public void show() {
-        graph.showNode(id);
+        System.out.println(this);
+        for (RemoteStatement statement : statements) {
+            statement.show();
+        }
+//        graph.showNode(id);
     }
 
     @Override

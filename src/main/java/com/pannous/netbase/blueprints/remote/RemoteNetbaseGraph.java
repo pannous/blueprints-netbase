@@ -97,7 +97,8 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
 
     private RemoteNode loadNode(JSONObject result) throws JSONException {
         RemoteNode node = (RemoteNode) getNode(result.getInt("id"), result.getString("name"));
-        node.kind = result.getInt("kind");
+        if(result.has("kind"))
+            node.kind = result.getInt("kind");
         if (result.getInt("statementCount") > 0 && !result.has("statements"))
             return node;
         JSONArray statements = result.getJSONArray("statements");
@@ -393,6 +394,10 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
 
     public Node get(int current) {
         return getNode(current, null);
+    }
+
+    public void learn(String statement) {
+        execute("learn "+statement);
     }
 
 }

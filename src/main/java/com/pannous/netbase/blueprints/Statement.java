@@ -193,13 +193,14 @@ public class Statement implements Edge { // extends Structure
 //        return this;
 //    }
 
-    public String show() {
+    public void show() {
+        System.out.println(this);
 //        if (subjectName != null)
 //            return id + "\t" + subjectName + "\t" + predicateName + "\t" + objectName + "\t" + subject + "\t" + predicate + "\t" + object;
 //        else
-        String s = id + "\t" + subject + "\t" + predicate + "\t" + object;
-        System.out.println(s);
-        return s;
+//        String s = id + "\t" + subject + "\t" + predicate + "\t" + object;
+//        System.out.println(s);
+//        return s;
     }
 
     public int getObject() {
