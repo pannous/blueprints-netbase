@@ -1,9 +1,6 @@
 package com.pannous.netbase.samples;
 
-import com.pannous.netbase.blueprints.Debugger;
-import com.pannous.netbase.blueprints.LocalNetbaseGraph;
-import com.pannous.netbase.blueprints.NetbaseGraph;
-import com.pannous.netbase.blueprints.Node;
+import com.pannous.netbase.blueprints.*;
 import com.pannous.netbase.blueprints.remote.RemoteNetbaseGraph;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -51,12 +48,11 @@ public class Main {
         if(graph.nodeCount()<10000)
             graph.execute("import ./import/cities1000.txt");
 
-        Node city = graph.getAbstract("cities1000");
+
+        Node gehren = graph.getThe("Gehren");// cities1000
+        Node city = gehren.getType();
         city.show();
         city.renameAll("city");
-        city.show();
-
-        Node gehren = graph.getThe("Gehren");
         gehren.show();
 
         int population = gehren.getProperty("population");

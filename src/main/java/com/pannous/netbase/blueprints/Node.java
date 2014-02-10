@@ -259,6 +259,15 @@ public class Node extends Structure implements Vertex {// extends Structure make
         show();
     }
 
+
+    public Node getField(int property) {
+        Statement statement = graph.findStatement(id, property, Relation.ANY, 0, false, false, false, true);
+        if (statement == null) return null;
+        Node object = graph.getNode(statement.object);
+        return object;
+    }
+
+
     @Override
     public <T> T getProperty(String key) {
 //        show();
@@ -272,7 +281,11 @@ public class Node extends Structure implements Vertex {// extends Structure make
         if (predicate.kind == Relation.bytes || object.kind == Relation.bytes) return getSerialized(object);
         if (predicate.kind == Relation.map || object.kind == Relation.map) return getPropertyMap(object);
 //        statement.show();
-        return getValue(statement.Object());
+//        try {
+//            return (T) statement.Object();
+//        } catch (Exception e) {
+            return getValue(statement.Object());
+//        }
     }
 
 
@@ -346,7 +359,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     private <T> T getSerialized(Node object) {
         try {
             int size = object.getProperty("size");
-            byte[] byteArray= graph().getData(object.id,size);
+            byte[] byteArray = graph().getData(object.id, size);
 //            if(byteArray[0]==-84&&byteArray[1]==-19) Java signature
             ByteArrayInputStream stream = new ByteArrayInputStream(byteArray);
             ObjectInput input = new ObjectInputStream(stream);
@@ -365,7 +378,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
             outputStream.writeObject(value);
             byte[] bytes = s.toByteArray();
             for (int i = 0; i < bytes.length; i++) {
-                System.out.print(bytes[i]+",");
+                System.out.print(bytes[i] + ",");
             }
             dataId = graph().valueId("byte[]", bytes.length, Relation.bytes);
             System.out.println(new String(bytes));
@@ -400,16 +413,16 @@ public class Node extends Structure implements Vertex {// extends Structure make
 //        object.show();
         Debugger.info("KIND " + Relation.name(object.kind));
         String value = object.getName();
-        if(value==null) return null;
+        if (value == null) return null;
         try {
             if (object.kind == Relation.date)
                 return (T) DateFormat.getDateTimeInstance().parse(value);
         } catch (Exception e) {
         }
-        if (value.equalsIgnoreCase("true")||value.equalsIgnoreCase("Wahr")) {// //object.kind == Relation.bool)
+        if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("Wahr")) {// //object.kind == Relation.bool)
             return (T) (Boolean) true;
         }
-        if (value.equalsIgnoreCase("false")||value.equalsIgnoreCase("Falsch")) {// //object.kind == Relation.bool)
+        if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("Falsch")) {// //object.kind == Relation.bool)
             return (T) (Boolean) false;
         }
         try {
@@ -518,8 +531,16 @@ public class Node extends Structure implements Vertex {// extends Structure make
 
     public void renameAll(String newName) {
         graph.renameAll(id, newName);
-        name=newName;
+        name = newName;
     }
+
+    public Node getType() {
+        return getField(Relation.type);
+    }
+
+//    public Node getProperty(Relation type) {
+//        return getProperty(type.getName());
+//    }
 
 //    public void setValue(Object object) {
 //        Netbase.setValue(id, object);

@@ -332,7 +332,8 @@ public class LocalNetbaseGraph<T extends Node> implements NetbaseGraph, Graph {/
 
     @Override
     public void renameAll(int id, String newName) {
-        LocalNetbase.setLabel(get(id), newName, false, true);
+//        LocalNetbase.setLabel(get(id), newName, false, true);
+        LocalNetbase.setLabel(get(id), newName, true, true);
     }
 
     public void showNodes(Node[] nodes) {
