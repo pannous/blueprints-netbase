@@ -79,10 +79,10 @@ public class Main {
 
     private static void remoteGraphSample(String[] args) throws Exception {
         // remote works ok too, but not passing tinkerpop specific standard yet
-//        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
-        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://localhost:81");// local TCP instead of JNA connection
+        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
+//        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://localhost:81");// local TCP instead of JNA connection
         client.clearView("T-Online");
-        client.showView("T-Online");
+//        client.showView("T-Online");
         client.excludeProperties("Registrierung");
         client.includeProperty("T-Online", "Eigentümer");
         client.includeProperty("T-Online", "Typ");// debug
@@ -91,17 +91,15 @@ public class Main {
         client.includeProperty("Firma", "Sprachen");
 
         client.showView("T-Online");
-        Debugger.info(" VIEW ^^ --------------------------- RESULT :");
+//        Debugger.info(" VIEW ^^ --------------------------- RESULT :");
         try {
             Node node = client.queryNode("T-Online");//Filtered with view
 //            Node node = client.fetchNode("T-Online");// Complete
 //            node.removeProperty("Typ");
             node.show();
-            Node type = node.getType();
-            if (type != null) {
-                type.load();
+//            Node type = node.getType();
+//            type.load();
 //            type.show();
-            }
         } catch (Exception e) {
             Debugger.error(e);
         }
