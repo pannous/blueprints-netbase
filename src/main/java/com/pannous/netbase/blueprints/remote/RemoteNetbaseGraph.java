@@ -54,7 +54,13 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
 //        if (local) LocalNetbase.doExecute(query);
         String json = Internet.download(host + "/json/verbose/" + query);
 //        String json = Internet.download(host + "/json/all/" + query);// Ignore filters
-        JSONObject root = new JSONObject(json);
+        JSONObject root = null;
+        try {
+            root = new JSONObject(json);
+        } catch (JSONException e) {
+            Debugger.trace("ERROR in JSON >>"+json+"<<");
+            throw e;
+        }
         JSONArray results = root.getJSONArray("results");// xml.getJSONArray("entity");
         RemoteNode[] nodes = new RemoteNode[results.length()];
         for (int i = 0; i < results.length(); i++) {
@@ -152,7 +158,7 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
         return queryNode("a " + key);
     }
 
-    private RemoteNode queryNode(String s) {
+    public RemoteNode queryNode(String s) {
         try {
             return (RemoteNode) query(s)[0];
         } catch (Exception e) {
@@ -242,6 +248,17 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
     public void includeProperties(String node) {
         try {
             execute("include " + node);
+        } catch (Exception e) {
+            Debugger.error(e);
+        }
+    }
+
+
+    public void showAll(String name) {
+        try {
+            Node[] nodes = query("all/" + name);
+            for (Node excluded : nodes)
+                excluded.show();
         } catch (Exception e) {
             Debugger.error(e);
         }
