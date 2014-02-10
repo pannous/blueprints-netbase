@@ -20,14 +20,14 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-//            remoteGraphSample(args);
-            remoteGraphSample2(args);
+            remoteGraphSample(args);
+//            remoteGraphSample2(args);
         } catch (Exception e) {
             Debugger.error(e);
         }
         try {
             // also see NetbaseCoreTest
-            localGraphSample(args);
+//            localGraphSample(args);
 //            localGraphSampleTinkerPop();
         } catch (Exception e) {
             Debugger.error(e);
@@ -79,21 +79,36 @@ public class Main {
 
     private static void remoteGraphSample(String[] args) throws Exception {
         // remote works ok too, but not passing tinkerpop specific standard yet
-        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
+//        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://de.netbase.pannous.com:81");
+        RemoteNetbaseGraph client = new RemoteNetbaseGraph("http://localhost:81");// local TCP instead of JNA connection
+        client.clearView("T-Online");
+        client.showView("T-Online");
         client.excludeProperties("Registrierung");
         client.includeProperty("T-Online", "Eigentümer");
-        client.includeProperty("T-Online", "Url");
-        client.includeProperty("Unternehmen", "Sprache");
-        client.learn("T-Online Typ Unternehmen");
+//        client.includeProperty("T-Online", "Url");
+        client.learn("T-Online Typ Firma");
+        client.includeProperty("Firma", "Url");
+        client.includeProperty("Firma", "Sprachen");
+//        client.learn("T-Online Typ Unternehmen");
+//        client.includeProperty("Unternehmen", "Url");
+//        client.includeProperty("Unternehmen", "Sprachen");
 //        client.includeProperty("T-Online", "4668573");//  wiki image
-//        client.clearView("T-Online");
-//        client.showView("T-Online");
 //        client.showAll("T-Online");
 //        client.showNode(164861);
-        client.showAll("Unternehmen");
+//        client.showAll("Unternehmen");
+        client.showView("T-Online");
+
+//        client.showView("Unternehmen");
         try {
-            Node node = client.queryNode("T-Online");
-//            node.show();
+            Node node = client.queryNode("T-Online");//Filtered with view
+//            Node node = client.fetchNode("T-Online");// Complete
+//            node.removeProperty("Typ");
+            node.show();
+            Node type = node.getType();
+            if(type!=null){
+            type.load();
+//            type.show();
+            }
         } catch (Exception e) {
             Debugger.error(e);
         }

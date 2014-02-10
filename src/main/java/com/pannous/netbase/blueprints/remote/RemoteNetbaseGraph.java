@@ -279,7 +279,7 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
             Node[] excludeds = query("excluded/" + node);
             for (Node excluded : excludeds) {
                 for (Statement s : excluded.getStatements()) {
-                    s.show();
+//                    s.show();
                     s.remove();
                 }
             }
@@ -417,4 +417,7 @@ public class RemoteNetbaseGraph implements Graph ,NetbaseGraph {
         execute("learn "+statement);
     }
 
+    public Node fetchNode(String s) {
+        return queryNode("all/" + s);
+    }
 }

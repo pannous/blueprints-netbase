@@ -8,10 +8,7 @@ import com.tinkerpop.blueprints.VertexQuery;
 import com.tinkerpop.blueprints.util.DefaultVertexQuery;
 import org.apache.commons.lang.NotImplementedException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright 2013 Pannous GmbH
@@ -51,7 +48,7 @@ public class RemoteNode extends Node {//implements Vertex {//
 //            else
 //                return name;// the? new?
 //            vertex.save()
-            String s = ""+vertex.getId();// toString();
+            String s = "" + vertex.getId();// toString();
             Node[] nodes = graph.query("learn " + this.id + " " + label + " " + s);
             return nodes[0].getStatements().iterator().next();// FIRST / LAST ??
         } catch (Exception e) {
@@ -142,7 +139,7 @@ public class RemoteNode extends Node {//implements Vertex {//
 
     @Override
     public void setProperty(String s, Object o) {
-        addProperty(s,o);
+        addProperty(s, o);
     }
 
     @Override
@@ -185,7 +182,10 @@ public class RemoteNode extends Node {//implements Vertex {//
     @Override
     public Node load() {
         try {
-            return graph.query("" + id)[0];
+            RemoteNode node = (RemoteNode) graph.query("all/" + id)[0];// todo better
+            this.statements = node.statements;
+            loaded = true;
+            return this;
         } catch (Exception e) {
             Debugger.error(e);
         }
@@ -205,20 +205,18 @@ public class RemoteNode extends Node {//implements Vertex {//
 
     @Override
     public <T> T removeProperty(String key) {
+        T vertex = null;
         if (statements != null && statements.size() > 0) {
-            for (Edge statement : statements) {
+            for (Edge statement : new LinkedList<Edge>(statements)) {
                 if (statement.getLabel().equalsIgnoreCase(key)) {
-                    T vertex = (T) statement.getVertex(Direction.OUT);
+                    vertex = (T) statement.getVertex(Direction.OUT);
+                    ((RemoteStatement) statement).show();
                     statement.remove();
-                    return vertex;
+                    statements.remove(statement);
                 }
             }
         }
-        try {
-//            return (T) graph.query(delete id + "." + key)[0];
-        } catch (Exception e) {
-        }
-        return null;
+        return vertex;// LAST property
     }
 
     @Override
@@ -256,6 +254,21 @@ public class RemoteNode extends Node {//implements Vertex {//
         }
 //        graph.showNode(id);
     }
+
+    @Override
+    public Node getType() {
+        if (!loaded) load();
+        return getField(Relation.Type);
+    }
+
+    public Node getField(Node property) {
+        if (!loaded) load();
+        for (RemoteStatement statement : statements) {
+            if (statement.predicate == property.id) return statement.Object();
+        }
+        throw new NoSuchElementException(this + " : " + property);
+    }
+
 
     @Override
     public String toString() {

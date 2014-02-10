@@ -260,8 +260,8 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
 
-    public Node getField(int property) {
-        Statement statement = graph.findStatement(id, property, Relation.ANY, 0, false, false, false, true);
+    public Node getField(Node property) {
+        Statement statement = graph.findStatement(id, property.id, Relation.ANY, 0, false, false, false, true);
         if (statement == null) return null;
         Node object = graph.getNode(statement.object);
         return object;
@@ -535,7 +535,7 @@ public class Node extends Structure implements Vertex {// extends Structure make
     }
 
     public Node getType() {
-        return getField(Relation.type);
+        return getField(Relation.Type);
     }
 
 //    public Node getProperty(Relation type) {
